@@ -1,11 +1,14 @@
-import { useState } from 'react'
-import './App.css'
+import './App.scss'
+import Header from "./header/Header.tsx";
+import Footer from "./footer/Footer.tsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
   return (
     <>
-      HELLO SAALPROJEKT
+        <Header/>
+        <Footer/>
     </>
   )
 }

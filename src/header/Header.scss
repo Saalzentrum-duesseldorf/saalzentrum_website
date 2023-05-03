@@ -1,0 +1,15 @@
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  .image-container {
+    background-size: cover;
+    background: url(/public/saalBild.png) no-repeat center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
