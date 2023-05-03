@@ -1,12 +1,10 @@
 import './Header.scss';
-import { Container } from 'react-bootstrap';
 
 function Header(){
     return (
         <div className="header">
-            <Container fluid className="p-0">
-                <div className="image-container"></div>
-            </Container>
+          <h1 className={'title'}>Saalzentrum Dusseldorf</h1>
+           <img className={"image-container"} src={"src/assets/saalBild.png"} alt={'header image'}/>
         </div>
     );
 }
