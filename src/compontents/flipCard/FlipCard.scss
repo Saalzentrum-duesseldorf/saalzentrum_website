@@ -4,43 +4,20 @@
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
- // height: 100vh;
-  font-family: "Open Sans";
   margin-top: 80%;
 }
 
 .education {
-  --bg-color: #59899b;
-  --bg-color-light: #0002ff;
+  --bg-color: #c4d1ff;
+  --bg-color-light: #6566af;
   --text-color-hover: #4C5656;
   --box-shadow-color: rgba(90, 139, 166, 0.48);
-}
-
-.credentialing {
-  --bg-color: #B8F9D3;
-  --bg-color-light: #e2fced;
-  --text-color-hover: #4C5656;
-  --box-shadow-color: rgba(184, 249, 211, 0.48);
-}
-
-.wallet {
-  --bg-color: #CEB2FC;
-  --bg-color-light: #F0E7FF;
-  --text-color-hover: #fff;
-  --box-shadow-color: rgba(206, 178, 252, 0.48);
-}
-
-.human-resources {
-  --bg-color: #DCE9FF;
-  --bg-color-light: #f1f7ff;
-  --text-color-hover: #4C5656;
-  --box-shadow-color: rgba(220, 233, 255, 0.48);
 }
 
 .card {
   width: 220px;
   height: 321px;
-  background: #fff;
+  background: #ffffff;
   border-top-right-radius: 10px;
   overflow: hidden;
   display: flex;
@@ -132,4 +109,20 @@
   left: 50px;
   z-index: 0;
   transition: transform 0.3s ease-out;
+}
+
+.svgItem {
+  align-content: center;
+  height: 90px;
+  z-index: 10001;
+
+}
+
+.card1 {
+
+}
+
+.card2 {
+
+
 }
