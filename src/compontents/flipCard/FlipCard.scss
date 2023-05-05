@@ -4,15 +4,16 @@
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  height: 100vh;
+ // height: 100vh;
   font-family: "Open Sans";
+  margin-top: 80%;
 }
 
 .education {
-  --bg-color: #ffd861;
-  --bg-color-light: #ffeeba;
+  --bg-color: #59899b;
+  --bg-color-light: #0002ff;
   --text-color-hover: #4C5656;
-  --box-shadow-color: rgba(255, 215, 97, 0.48);
+  --box-shadow-color: rgba(90, 139, 166, 0.48);
 }
 
 .credentialing {
