@@ -6,13 +6,16 @@
   height: 45%;
 
   .title{
+    background-color: rgba(63, 90, 105, 0.4);
+
+    padding-bottom: 2px;
     color: #ffffff;
     font-weight: inherit;
-    font-size: 130px;
+    font-size: 50px;
     position: absolute;
     left: 25%;
     right: 25%;
-    top: 20%;
+    top: 85%;
     z-index: 1;
     text-shadow: 3px 3px 4px #919191;
 
