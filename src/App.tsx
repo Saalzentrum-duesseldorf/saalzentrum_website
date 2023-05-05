@@ -16,10 +16,15 @@ function App() {
     <div className={'text-center'}>
       <BurgerMenu/>
      <FlipCard/>
+
+      {/*<Box className={'ma'} component="div" sx={{ whiteSpace: 'normal' }}>*/}
+      {/*  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.*/}
+      {/*</Box>*/}
     </div>
 
 
         <Footer/>
+
     </>
   )
 }

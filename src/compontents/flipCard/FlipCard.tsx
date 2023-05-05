@@ -7,7 +7,7 @@ import Calendar from '../../assets/calendar-date-event-svgrepo-com.svg'
 
 function FlipCard() {
   return (
-    <div className={"card-body container row"}>
+    <div className={"card-body row"}>
       <link
         href="https://fonts.googleapis.com/css?family=Open+Sans"
         rel="stylesheet"
@@ -22,7 +22,7 @@ function FlipCard() {
           <p>Kalender</p>
         </a>
       </div>
-      <div className={"col-6 card2"}>
+      <div className={"col-6"}>
         <a href="#" className="card education">
 
           <div className="overlay"> </div>
