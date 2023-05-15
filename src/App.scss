@@ -3,5 +3,15 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+
+  .blueCorner {
+    top: 35%;
+    right: 0;
+    width: 50%;
+    position: absolute;
+
+    background-color: #6464ce;
+  }
+
 }
 

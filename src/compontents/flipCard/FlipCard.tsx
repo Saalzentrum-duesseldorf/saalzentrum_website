@@ -13,7 +13,7 @@ function FlipCard() {
         rel="stylesheet"
       />
 
-      <div className={"col-6"}>
+      <div className={"col-6 cardLeft"}>
         <a href="#" className="card education">
           <div className="overlay"></div>
           <div className="circle">
@@ -22,7 +22,7 @@ function FlipCard() {
           <p>Kalender</p>
         </a>
       </div>
-      <div className={"col-6"}>
+      <div className={"col-6 cardRight"}>
         <a href="#" className="card education">
 
           <div className="overlay"> </div>

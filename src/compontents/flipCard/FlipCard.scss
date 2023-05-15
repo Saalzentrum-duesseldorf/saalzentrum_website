@@ -4,7 +4,7 @@
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 80%;
+  margin-top:80%;
 }
 
 .education {
@@ -14,10 +14,19 @@
   --box-shadow-color: rgba(90, 139, 166, 0.48);
 }
 
+.cardLeft {
+  padding-right: 100px;
+}
+
+.cardRight {
+  padding-left: 100px;
+
+}
+
 .card {
   width: 220px;
   height: 321px;
-  background: #ffffff;
+  background: #cddbff;
   border-top-right-radius: 10px;
   overflow: hidden;
   display: flex;

@@ -1,4 +1,5 @@
 import "./BurgerMenu.scss";
+import { Link } from 'react-router-dom';
 
 function BurgerMenu() {
   return (
@@ -12,15 +13,15 @@ function BurgerMenu() {
           <span></span>
 
           <ul id="menu">
-            <a href="#">
+            <Link to="/">
               <li>Startseite</li>
-            </a>
-            <a href="#">
+            </Link>
+            <Link to="/calendar">
               <li>Kalender</li>
-            </a>
-            <a href="#">
+            </Link>
+            <Link to="/tickets">
               <li>Tickets</li>
-            </a>
+            </Link>
           </ul>
         </div>
       </nav>
