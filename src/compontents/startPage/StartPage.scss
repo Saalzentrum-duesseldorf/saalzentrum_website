@@ -1,0 +1,25 @@
+.startpage {
+  top: 5%;
+  left:  25%;
+  right: 25%;
+  position: absolute;
+  align-content: center;
+
+  .starterText {
+
+    //background-color: #c4d1ff;
+
+    background-color: rgba(196,209,255,0.5);
+
+    margin-top: 10%;
+
+    border-radius: 20px;
+    margin-bottom: 20%;
+    padding: 10px;
+
+  }
+
+  .starterTextHeader{
+    font-weight: bold;
+  }
+}
