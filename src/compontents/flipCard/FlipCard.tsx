@@ -3,6 +3,7 @@ import "./FlipCard.scss";
 import Pin from '../../assets/pin-pinned-priority-svgrepo-com.svg'
 
 import Calendar from '../../assets/calendar-date-event-svgrepo-com.svg'
+import { Link } from "react-router-dom";
 
 
 function FlipCard() {
@@ -14,23 +15,23 @@ function FlipCard() {
       />
 
       <div className={"col-6 cardLeft"}>
-        <a href="#" className="card education">
+        <Link to="/calendar" className="card education">
           <div className="overlay"></div>
           <div className="circle">
             <img src={Calendar} className={'svgItem'} alt="React Logo" />
           </div>
           <p>Kalender</p>
-        </a>
+        </Link>
       </div>
       <div className={"col-6 cardRight"}>
-        <a href="#" className="card education">
+        <Link to="/tickets" className="card education">
 
           <div className="overlay"> </div>
           <div className="circle">
             <img src={Pin} className={'svgItem'} alt="React Logo" />
           </div>
           <p>Tickets</p>
-        </a>
+        </Link>
       </div>
     </div>
   );
