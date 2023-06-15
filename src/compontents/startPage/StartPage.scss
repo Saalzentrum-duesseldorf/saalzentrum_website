@@ -1,25 +1,32 @@
-.startpage {
-  top: 5%;
-  left:  25%;
-  right: 25%;
-  position: absolute;
+.startPage {
   align-content: center;
 
-  .starterText {
+  .startPageBody {
+    width: 80%;
 
-    //background-color: #c4d1ff;
+    margin-top: 35%;
+    margin-left: 17%;
+    margin-right: 5%;
 
-    background-color: rgba(196,209,255,0.5);
+    .flipCards {
+    }
 
-    margin-top: 10%;
+    .starterTextBox {
+      width: 83%;
+      margin-top: 8%;
+      background-color: #cddbff;
+      border-radius: 20px;
+      padding: 10px;
 
-    border-radius: 20px;
-    margin-bottom: 20%;
-    padding: 10px;
+      .starterTextHeader {
+        padding: 5px;
+        font-weight: bold;
+        color: #575757;
+      }
 
-  }
-
-  .starterTextHeader{
-    font-weight: bold;
+      .starterText {
+        padding: 10px;
+      }
+    }
   }
 }

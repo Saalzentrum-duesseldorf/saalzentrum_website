@@ -18,7 +18,7 @@ function FlipCard() {
         <Link to="/calendar" className="card education">
           <div className="overlay"></div>
           <div className="circle">
-            <img src={Calendar} className={'svgItem'} alt="React Logo" />
+            <img src={Calendar} className={'svgItem'} alt="Calendar" />
           </div>
           <p>Kalender</p>
         </Link>
@@ -28,7 +28,7 @@ function FlipCard() {
 
           <div className="overlay"> </div>
           <div className="circle">
-            <img src={Pin} className={'svgItem'} alt="React Logo" />
+            <img src={Pin} className={'svgItem'} alt="Tickets" />
           </div>
           <p>Tickets</p>
         </Link>
