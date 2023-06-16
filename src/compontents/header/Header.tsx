@@ -5,7 +5,7 @@ function Header(){
         <div className="header">
           <span className={'title'}>Saalzentrum Düsseldorf</span>
           <div className={'image-overlay'}></div>
-           <img className={"image-container"} src={"src/compontents/header/saalBild.webp"} alt={'header image'}/>
+           <img className={"image-container"} src={"public/saalBild.webp"} alt={'header image'}/>
         </div>
     );
 }
