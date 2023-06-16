@@ -6,7 +6,6 @@ function App() {
   return (
     <div className={"startPage"}>
       <Header />
-
       <div className={"startPageBody"}>
         <div className={"flipCards"}>
         <FlipCard />
