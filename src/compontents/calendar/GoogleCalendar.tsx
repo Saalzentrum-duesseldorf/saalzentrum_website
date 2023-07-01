@@ -4,7 +4,7 @@ import "./Calendar.scss";
 import { css } from "@emotion/react";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 
-const API_KEY = "AIzaSyCkk_ciI_yU9yjgi6MCmpmO5zQ_6Io13kU";
+const API_KEY = "";
 const calendars = [
   {
     calendarId: "ht3jlfaac5lfd6263ulfh4tql8@group.calendar.google.com",
