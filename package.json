@@ -10,8 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.8",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.10.8",
+    "@ericz1803/react-google-calendar": "^4.2.2",
     "@fullcalendar/core": "^6.1.7",
     "@fullcalendar/daygrid": "^6.1.7",
     "@fullcalendar/react": "^6.1.7",
@@ -26,7 +27,7 @@
     "react-burger-menu": "^3.0.9",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.1",
-    "reactstrap": "^9.1.10",
+    "reactstrap": "^9.2.0",
     "sass": "^1.62.1"
   },
   "devDependencies": {
