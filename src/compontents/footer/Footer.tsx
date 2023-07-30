@@ -1,6 +1,7 @@
 import './Footer.scss'
+import { Link } from "react-router-dom";
 
-function Footer() {
+const Footer = () => {
 
     return (
         <div className={'footer'}>
@@ -9,11 +10,19 @@ function Footer() {
 
               <div className={"footer-row row text-center"}>
               <div className={" col-md-6 text-muted"}>
-              <a href={'#'}>Impressum</a>
+
+                <Link to="/impressum">
+                  <li>Impressum</li>
+                </Link>
+
               </div>
 
                 <div className={"col-md-6 text-muted"}>
-              <a  href={'#'}>Datenschutz</a>
+
+                  <Link to="/datenschutz">
+                    <li>Datenschutz</li>
+                  </Link>
+
               </div>
               </div>
             </div>

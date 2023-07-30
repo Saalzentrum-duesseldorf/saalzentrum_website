@@ -28,23 +28,39 @@ const styles = {
   `,
 };
 
-export class GoogleCalendar extends React.Component {
-  render() {
+export default function GoogleCalendar () {
+
     return (
       <div className={"calendar"}>
         <div className={'burgerMenu-container'}>
           <BurgerMenu/>
         </div>
 
-        <div className={'header'}>
+        <div className={'page-header'}>
           <img className={'calendar-image'} src={'calendar.jpg'} alt={'calendar_image'}/>
         </div>
 
         <div className={'calendar-container'}>
+          {/*TODO: Customizable Calendar*/}
+          {/*<div className={'monthButtonsContainer'}>*/}
+          {/*  <Button className={'monthButtons'}>Januar</Button>*/}
+          {/*  <Button className={'monthButtons'}>Februar</Button>*/}
+          {/*  <Button className={'monthButtons'}>März</Button>*/}
+          {/*  <Button className={'monthButtons'}>April</Button>*/}
+          {/*  <Button className={'monthButtons'}>Mai</Button>*/}
+          {/*  <Button className={'monthButtons'}>Juni</Button>*/}
+          {/*  <Button className={'monthButtons'}>Juli</Button>*/}
+          {/*  <Button className={'monthButtons'}>August</Button>*/}
+          {/*  <Button className={'monthButtons'}>September</Button>*/}
+          {/*  <Button className={'monthButtons'}>Oktober</Button>*/}
+          {/*  <Button className={'monthButtons'}>November</Button>*/}
+          {/*  <Button className={'monthButtons'}>Dezember</Button>*/}
+          {/*</div>*/}
         <Calendar apiKey={API_KEY} calendars={calendars} styles={styles} showFooter={false} language={'DE'} />
         </div>
 
       </div>
     );
-  }
+
 }
+

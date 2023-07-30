@@ -2,7 +2,6 @@ import Header from "../header/Header.tsx";
 import "./StartPage.scss";
 import FlipCard from "../flipCard/FlipCard.tsx";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
-import React from "react";
 
 function App() {
   return (
