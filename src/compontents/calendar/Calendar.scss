@@ -10,7 +10,7 @@
       font-family: "Avenir Next", "Avenir", sans-serif;
       position: fixed;
       left: 0;
-      top: 15%;
+      top: 18%;
       z-index: 1;
     }
   }
@@ -33,20 +33,12 @@
   }
 
   .calendar-container {
-    padding-top: 250px;
+    left: 10%;
+    padding-top: 15%;
   }
 
   .calendar-header {
     background-color: #5681FFF4;
-  }
-
-  .monthButtonsContainer {
-
-    .monthButtons {
-      margin: 5px;
-
-    }
-
   }
 
 }

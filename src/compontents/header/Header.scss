@@ -6,17 +6,16 @@
   height: 55%;
 
   .title {
-    background-color: rgba(17, 40, 45, 0.4);
+    background-color: rgba(17, 40, 45, 0.56);
     padding-bottom: 2px;
     color: #ffffff;
     font-weight: inherit;
     font-size: 50px;
     position: absolute;
-    left: 30%;
-    right: 30%;
+    left: 35%;
+    right: 35%;
     top: 30%;
     z-index: 2;
-    text-shadow: 2px 2px 2px #919191;
   }
 
   .image-container {
@@ -27,7 +26,6 @@
     object-fit: cover;
     object-position: 0 50%;
   }
-
 
   .image-overlay {
     position: fixed;
@@ -46,4 +44,3 @@
     background-color: rgba(86, 129, 255, 0.96);
   }
 }
-

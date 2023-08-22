@@ -1,0 +1,21 @@
+.privacyPolicy {
+  padding-left: 15%;
+
+  .starterTextBox {
+    width: 83%;
+    margin-top: 8%;
+    background-color: #cddbff;
+    border-radius: 20px;
+    padding: 10px;
+
+    .starterTextHeader {
+      padding: 5px;
+      font-weight: bold;
+      color: #575757;
+    }
+
+    .starterText {
+      padding: 10px;
+    }
+  }
+}
