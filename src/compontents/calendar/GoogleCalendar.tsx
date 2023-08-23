@@ -3,7 +3,7 @@ import "./Calendar.scss";
 import { css } from "@emotion/react";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 
-const API_KEY = "AIzaSyCkk_ciI_yU9yjgi6MCmpmO5zQ_6Io13kU";
+const API_KEY = "";
 
 const styles = {
   calendar: {
