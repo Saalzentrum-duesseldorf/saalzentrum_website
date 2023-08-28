@@ -1,0 +1,72 @@
+.Calendar {
+  top: 0;
+  left: 0;
+  position: fixed;
+
+  .Calendar-header {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .Calendar-button-container {
+    margin-bottom: 16px;
+
+    .Calendar-button {
+      margin-right: 200px;
+      margin-left: 200px;
+    }
+  }
+
+  .Calendar-month-button {
+    margin-right: 15px;
+    margin-left: 15px;
+    width: 70px;
+    border: none;
+  }
+
+  .Calendar-day-names,
+  .Calendar-days {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .Calendar-week-day {
+    margin-top: 25px;
+    width: 180px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    background: #9396ff;
+    font-family: "Avenir Next", "Avenir", sans-serif;
+    font-weight: bold;
+  }
+
+  .Calendar-day {
+    width: 180px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+
+    .Calendar-day-container {
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .Calendar-day-header {
+      width: 100%;
+      align-self: flex-start;
+      background: rgb(206, 206, 206);
+    }
+
+    .Calendar-day-body {
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+}
