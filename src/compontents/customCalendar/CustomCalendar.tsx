@@ -1,5 +1,5 @@
 import "./CustomCalendar.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
 import { Dialog } from "@mui/material";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
@@ -15,9 +15,13 @@ export interface CustomCalendarProps {
   dates: CustomCalendarDates[];
 }
 
+
 const CustomCalendar = (props: CustomCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [showDialog, setShowDialog] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [selectedDateDetails, setSelectedDateDetails] = useState<CustomCalendarDates | null>(null);
+
 
   const daysInMonth: number = new Date(
     currentMonth.getFullYear(),
@@ -54,6 +58,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     week.push(0);
   }
   weeks.push(week);
+
+  useEffect(() => {
+    console.log(selectedDate)
+    console.log(selectedDateDetails);
+
+  } , [selectedDate, selectedDateDetails])
 
   return (
     <div className={"Calendar"}>
@@ -97,7 +107,18 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         {weeks.map((week: number[], index: number) => (
           <div className="Calendar-days" key={index}>
             {week.map((day: number, index: number) => (
-              <div key={index} className="Calendar-day">
+              <div key={index} className="Calendar-day" style={{ borderColor: day === selectedDay ? 'green' : 'grey' }}
+                   onClick={() => {
+                     const clickedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+
+                     setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day));
+                     setSelectedDay(day);
+
+                     const clickedDateDetails = props.dates.find(
+                       _date => _date.date.toDateString() === clickedDate.toDateString()
+                     );
+                     setSelectedDateDetails(clickedDateDetails ? clickedDateDetails : null);
+                   }}>
                 <Container className={"Calendar-day-container"}>
                   <Row>
                     <Col>
@@ -113,11 +134,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                           <div
                             className={"Calendar-day-body"}
                             key={index}
-                            style={{ background: _date.color }}
-                            onClick={() => {
-                              setShowDialog(true);
-                            }}
-                          >
+                            style={{ background: _date.color }}>
                             {new Date(
                               currentMonth.getFullYear(),
                               currentMonth.getMonth(),
@@ -125,13 +142,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             ).toString() === _date.date.toString()
                               ? _date.name
                               : ""}
-                            <Dialog
-                              style={{ background: "none" }}
-                              open={showDialog}
-                            >
-                              {" "}
-                              {_date.name + " " + _date.description}{" "}
-                            </Dialog>
                           </div>
                         )
                       )}
@@ -143,7 +153,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
           </div>
         ))}
       </div>
-      <CalendarDetails title={"Kalender details"} />
+      <CalendarDetails title={"Kalender details"} dateDetails={selectedDateDetails}  />
     </div>
   );
 };

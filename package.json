@@ -19,6 +19,8 @@
     "@mui/material": "^5.12.2",
     "@types/react-router-dom": "^5.3.3",
     "bootstrap": "^5.2.3",
+    "gapi-client": "^0.0.3",
+    "gapi-script": "^1.2.0",
     "jquery": "^3.7.0",
     "pnpm": "^8.5.0",
     "prettier": "^2.8.8",
