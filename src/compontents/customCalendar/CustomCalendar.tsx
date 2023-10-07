@@ -2,6 +2,7 @@ import "./CustomCalendar.scss";
 import { useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
 import { Dialog } from "@mui/material";
+import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 
 export interface CustomCalendarDates {
   date: Date;
@@ -16,7 +17,6 @@ export interface CustomCalendarProps {
 
 const CustomCalendar = (props: CustomCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-
   const [showDialog, setShowDialog] = useState(false);
 
   const daysInMonth: number = new Date(
@@ -24,6 +24,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     currentMonth.getMonth() + 1,
     0
   ).getDate();
+
   const firstDay: number = new Date(
     currentMonth.getFullYear(),
     currentMonth.getMonth(),
@@ -84,28 +85,14 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         </Button>
       </div>
 
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(0)))}>Jan</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(1)))}>Feb</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(2)))}>Mär</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(3)))}>Apr</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(4)))}>Mai</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(5)))}>Jun</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(6)))}>Jul</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(7)))}>Aug</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(8)))}>Sep</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(9)))}>Okt</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(10)))}>Nov</Button>
-    <Button className={"Calendar-month-button"} onClick={() => setCurrentMonth(new Date(currentMonth.setMonth(11)))}>Dez</Button>
+      <MonthButtons
+        setCurrentMonth={setCurrentMonth}
+        currentMonth={currentMonth}
+      />
 
       <div>
         <div className="Calendar-day-names">
-          <div className="Calendar-week-day"> Sun</div>
-          <div className="Calendar-week-day"> Mon</div>
-          <div className="Calendar-week-day"> Tue</div>
-          <div className="Calendar-week-day"> Wed</div>
-          <div className="Calendar-week-day"> Thu</div>
-          <div className="Calendar-week-day"> Fri</div>
-          <div className="Calendar-week-day"> Sat</div>
+          <WeekDays />
         </div>
         {weeks.map((week: number[], index: number) => (
           <div className="Calendar-days" key={index}>
@@ -127,15 +114,24 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             className={"Calendar-day-body"}
                             key={index}
                             style={{ background: _date.color }}
-                            onClick={() => {setShowDialog(true)}}
+                            onClick={() => {
+                              setShowDialog(true);
+                            }}
                           >
                             {new Date(
                               currentMonth.getFullYear(),
                               currentMonth.getMonth(),
-                              day).toString() === _date.date.toString() ? _date.name : ""}
-                             <Dialog style={{background: "none"}} open={showDialog}> {
-                               _date.name + "  " + _date.description
-                             } </Dialog>
+                              day
+                            ).toString() === _date.date.toString()
+                              ? _date.name
+                              : ""}
+                            <Dialog
+                              style={{ background: "none" }}
+                              open={showDialog}
+                            >
+                              {" "}
+                              {_date.name + " " + _date.description}{" "}
+                            </Dialog>
                           </div>
                         )
                       )}
@@ -147,7 +143,54 @@ const CustomCalendar = (props: CustomCalendarProps) => {
           </div>
         ))}
       </div>
+      <CalendarDetails title={"Kalender details"} />
     </div>
+  );
+};
+
+const MonthButtons = (setCurrentMonth: any, currentMonth: Date) => {
+  const months = [
+    "Jan",
+    "Feb",
+    "Mär",
+    "Apr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Dez",
+  ];
+  return (
+    <>
+      {months.map((month, index) => (
+        <Button
+          key={index}
+          className={"Calendar-month-button"}
+          onClick={() =>
+            setCurrentMonth(new Date(currentMonth.setMonth(index)))
+          }
+        >
+          {month}
+        </Button>
+      ))}
+    </>
+  );
+};
+
+const WeekDays = () => {
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return (
+    <>
+      {weekDays.map((weekDay, index) => (
+        <div key={index} className="Calendar-week-day">
+          {" "}
+          {weekDay}{" "}
+        </div>
+      ))}
+    </>
   );
 };
 

@@ -2,8 +2,8 @@ import { Dialog } from "@mui/material";
 
 const DatePopup = () => {
 
- return(<Dialog>HDF</Dialog>)
+  return (<Dialog open={false}>HDF</Dialog>);
 
-}
+};
 
 export default DatePopup;
