@@ -1,27 +1,37 @@
 import "./CustomCalendar.scss";
 import { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
-import { Dialog } from "@mui/material";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 
-export interface CustomCalendarDates {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+
+
+export interface CustomCalendarEvent {
+  eventId: string;
   date: Date;
+  dateFrom?: Date;
+  dateTo?: Date;
+  isAllDay?: boolean;
   name: string;
   description: string;
   color: string;
 }
 
 export interface CustomCalendarProps {
-  dates: CustomCalendarDates[];
+  events: CustomCalendarEvent[];
 }
-
 
 const CustomCalendar = (props: CustomCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [selectedDateDetails, setSelectedDateDetails] = useState<CustomCalendarDates | null>(null);
+  const [selectedDay, setSelectedDay] = useState<number>();
+  const [selectedDateDetails, setSelectedDateDetails] = useState<
+    CustomCalendarEvent[] | null
+  >(null);
 
+  const [selectedMonth, setSelectedMonth] = useState<number>();
 
   const daysInMonth: number = new Date(
     currentMonth.getFullYear(),
@@ -35,130 +45,217 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     1
   ).getDay();
 
-  const weeks: number[][] = [];
-  let week: number[] = [];
+  const weeks: { day: number; monthOffset: number }[][] = [];
+  let week: { day: number; monthOffset: number }[] = [];
+
+  const lastDayOfPrevMonth: number = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    0
+  ).getDate();
+
+  let dayFromLastMonth = lastDayOfPrevMonth - firstDay + 1;
 
   // Start the first week with empty days until the first day of the month
   for (let i = 0; i < firstDay; i++) {
-    week.push(0);
+    week.push({ day: dayFromLastMonth++, monthOffset: -1 });
   }
 
   // Add the days of the month
   for (let day = 1; day <= daysInMonth; day++) {
-    week.push(day);
-
+    week.push({ day, monthOffset: 0 });
     if (week.length === 7) {
-      weeks.push(week);
+      weeks.push([...week]);
       week = [];
     }
   }
 
-  // Add any remaining empty days to the last week
+  let dayFromNextMonth = 1;
   while (week.length < 7) {
-    week.push(0);
+    week.push({ day: dayFromNextMonth++, monthOffset: 1 });
   }
-  weeks.push(week);
+
+  if (week.length > 0) {
+    weeks.push(week);
+  }
 
   useEffect(() => {
-    console.log(selectedDate)
+    console.log(selectedDate);
     console.log(selectedDateDetails);
+  }, [selectedDate, selectedDateDetails]);
 
-  } , [selectedDate, selectedDateDetails])
+  const handleDateClick = (day: number, monthOffset: number) => {
+    const selectedDate = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() + monthOffset,
+      day
+    );
+
+    setSelectedDate(selectedDate);
+    setSelectedDay(day);
+    setSelectedMonth(currentMonth.getMonth() + monthOffset);
+
+    const clickedDateDetails = props.events.filter((event) =>
+      areDatesEqual(event.date, selectedDate)
+    );
+
+    setSelectedDateDetails(clickedDateDetails || null);
+  };
+
+  function areDatesEqual(date1: Date, date2: Date) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate()
+    );
+  }
 
   return (
     <div className={"Calendar"}>
-      <h1 className="Calendar-header">
-        {currentMonth.toLocaleString("default", { month: "long" })}{" "}
-        {currentMonth.getFullYear()}
-      </h1>
-      <div className="Calendar-button-container">
-        <Button
-          className={"Calendar-button"}
-          onClick={() =>
-            setCurrentMonth(
-              new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
-            )
-          }
-        >
-          Vorheriger Monat
-        </Button>
+      <Container>
+        
+        <Row>
+          <h1 style={{ fontSize: 40 }} className="Calendar-header">
+            {currentMonth.toLocaleString("default", { month: "long" })}{" "}
+            {currentMonth.getFullYear()}
+          </h1>
+        </Row>
 
-        <Button
-          className={"Calendar-button"}
-          onClick={() =>
-            setCurrentMonth(
-              new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
-            )
-          }
-        >
-          Nächster Monat
-        </Button>
-      </div>
+        <Row>
+          <Button
+            className={"Calendar-button Calendar-button-left"}
+            onClick={() =>
+              setCurrentMonth(
+                new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
+              )
+            }
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </Button>
 
-      <MonthButtons
-        setCurrentMonth={setCurrentMonth}
-        currentMonth={currentMonth}
-      />
+          <Col md={8}>
+            <MonthButtons
+              setCurrentMonth={setCurrentMonth}
+              currentMonth={currentMonth}
+            />
 
-      <div>
-        <div className="Calendar-day-names">
-          <WeekDays />
-        </div>
-        {weeks.map((week: number[], index: number) => (
-          <div className="Calendar-days" key={index}>
-            {week.map((day: number, index: number) => (
-              <div key={index} className="Calendar-day" style={{ borderColor: day === selectedDay ? 'green' : 'grey' }}
-                   onClick={() => {
-                     const clickedDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-
-                     setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day));
-                     setSelectedDay(day);
-
-                     const clickedDateDetails = props.dates.find(
-                       _date => _date.date.toDateString() === clickedDate.toDateString()
-                     );
-                     setSelectedDateDetails(clickedDateDetails ? clickedDateDetails : null);
-                   }}>
-                <Container className={"Calendar-day-container"}>
-                  <Row>
-                    <Col>
-                      <div className={"Calendar-day-header"}>
-                        {day !== 0 ? day : ""}
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      {props.dates.map(
-                        (_date: CustomCalendarDates, index: number) => (
-                          <div
-                            className={"Calendar-day-body"}
-                            key={index}
-                            style={{ background: _date.color }}>
-                            {new Date(
-                              currentMonth.getFullYear(),
-                              currentMonth.getMonth(),
-                              day
-                            ).toString() === _date.date.toString()
-                              ? _date.name
-                              : ""}
-                          </div>
-                        )
-                      )}
-                    </Col>
-                  </Row>
-                </Container>
+            <div>
+              <div className="Calendar-day-names">
+                <WeekDays />
               </div>
-            ))}
-          </div>
-        ))}
-      </div>
-      <CalendarDetails title={"Kalender details"} dateDetails={selectedDateDetails}  />
+              {weeks.map(
+                (
+                  week: { day: number; monthOffset: number }[],
+                  index: number
+                ) => (
+                  <div className="Calendar-days" key={index}>
+                    {week.map(
+                      (
+                        day: { day: number; monthOffset: number },
+                        index: number
+                      ) => (
+                        <div
+                          key={index}
+                          className="Calendar-day"
+                          style={{
+                            borderColor:
+                              day.day === selectedDay &&
+                              currentMonth.getMonth() + day.monthOffset ===
+                                selectedMonth
+                                ? "red"
+                                : "grey",
+                          }}
+                          onClick={() =>
+                            handleDateClick(day.day, day.monthOffset)
+                          }
+                        >
+                          <Container className={"Calendar-day-container"}>
+                            <Row>
+                              <Col>
+                                <div className={"Calendar-day-header"}>
+                                  {day.day !== 0 ? day.day : ""}
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col>
+                                {props.events.map(
+                                  (
+                                    _event: CustomCalendarEvent,
+                                    index: number
+                                  ) => {
+                                    if (
+                                      areDatesEqual(
+                                        new Date(
+                                          currentMonth.getFullYear(),
+                                          currentMonth.getMonth(),
+                                          day.day
+                                        ),
+                                        _event.date
+                                      )
+                                    ) {
+                                      return (
+                                        <div
+                                          className={"Calendar-day-body"}
+                                          key={index}
+                                          style={{ background: _event.color }}
+                                        >
+                                          {_event.name}
+                                        </div>
+                                      );
+                                    }
+                                    return null;
+                                  }
+                                )}
+                              </Col>
+                            </Row>
+                          </Container>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )
+              )}
+            </div>
+          </Col>
+
+          <Button
+            className={"Calendar-button Calendar-button-right"}
+            onClick={() =>
+              setCurrentMonth(
+                new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
+              )
+            }
+          >
+           <FontAwesomeIcon icon={faArrowRight}/>
+          </Button>
+
+          <Col md={4} style={{paddingLeft: 40}}>
+            <CalendarDetails
+              title={"Kalender details"}
+              events={selectedDateDetails}
+              day={parseDateToReadableString(selectedDate)}
+            />
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
 
-const MonthButtons = (setCurrentMonth: any, currentMonth: Date) => {
+const parseDateToReadableString = (date: Date) => {
+  return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+};
+
+interface MonthButtonsProps {
+  setCurrentMonth: (date: Date) => void;
+  currentMonth: Date;
+}
+
+const MonthButtons: React.FC<MonthButtonsProps> = ({
+  setCurrentMonth,
+  currentMonth,
+}) => {
   const months = [
     "Jan",
     "Feb",
@@ -174,19 +271,21 @@ const MonthButtons = (setCurrentMonth: any, currentMonth: Date) => {
     "Dez",
   ];
   return (
-    <>
+    <Row>
       {months.map((month, index) => (
-        <Button
-          key={index}
-          className={"Calendar-month-button"}
-          onClick={() =>
-            setCurrentMonth(new Date(currentMonth.setMonth(index)))
-          }
-        >
-          {month}
-        </Button>
+        <Col md={1} key={index}>
+          <Button
+            key={index}
+            className={"Calendar-month-button"}
+            onClick={() =>
+              setCurrentMonth(new Date(currentMonth.setMonth(index)))
+            }
+          >
+            {month}
+          </Button>
+        </Col>
       ))}
-    </>
+    </Row>
   );
 };
 

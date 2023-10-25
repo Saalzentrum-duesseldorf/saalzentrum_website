@@ -1,6 +1,56 @@
 .calendar-details {
-  height: 800px;
-  width: 400px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #ccc;
 
+  .all-day-section {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+
+    .all-day-event {
+      background-color: #a0a0a0;
+      padding: 5px;
+      margin: 5px;
+      border-radius: 4px;
+    }
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+
+    .hour-block {
+      display: flex; /* Add flex display to the hour block */
+      align-items: stretch;
+      height: 40px; /* Or however tall you want each hour block to be */
+      border-bottom: 1px solid #ccc;
+
+      .hour-label {
+        flex: 0 0 40px; /* This will give a fixed width of 40px to the hour label */
+        display: flex;
+        align-items: center; /* Vertically center the hour text */
+        justify-content: center; /* Horizontally center the hour text */
+        border-right: 2px solid #ccc;
+      }
+
+      .time-slots {
+        position: relative;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+
+        .event {
+          border-radius: 4px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 30px;
+          width: 50%;
+          background-color: red;
+        }
+      }
+    }
+  }
 }
