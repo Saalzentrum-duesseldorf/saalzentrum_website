@@ -1,5 +1,6 @@
 import './CalendarDetails.scss'
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
+import { getOverlappingEvents } from "../../../utils.ts";
 
 export interface CalendarDetailsProps {
   title: string;
@@ -14,8 +15,6 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
     if (events) {
       for (const element of events) {
         if (element.isAllDay) {
-          console.log("TREUUUEUEUUS")
-          console.log(element)
           return true;
         }
       }
@@ -32,7 +31,7 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
     });
   }
 
-  function getEventTopPosition(event: CustomCalendarEvent, hour: number): number {
+  function getEventTopPosition(event: CustomCalendarEvent): number {
     if (event.dateFrom) {
       return (event.dateFrom.getMinutes() / 60) * 40; // 40px ist die Höhe eines hour-blocks
     }
@@ -46,7 +45,6 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
     }
     return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
   }
-  
 
   return (
     <div className="calendar-details">
@@ -81,22 +79,24 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
 
             <div className="time-slots">
               {getEventsForHour(hour, events).map((event, index, allEvents) => {
-                // Detect overlaps
-                const overlappingEvents = allEvents.filter(e =>
-                  (e.date >= event.date && e.date <= event.dateTo) ||
-                  (e.dateTo >= event.date && e.dateTo <= event.dateTo)
-                );
+
+                const overlappingEvents = getOverlappingEvents(event, events);
+
+                console.log("eventOverlapping");
+                console.log(overlappingEvents);
+                console.log(overlappingEvents.length)
 
                 const eventWidthPercentage = 100 / overlappingEvents.length;
+                
                 const positionIndex = overlappingEvents.findIndex(e => e.name === event.name);
-
+                
                 return (
                   <div
                     className="event"
                     key={event.name}
                     style={{
                       background: event.color,
-                      top: `${getEventTopPosition(event, hour)}px`,
+                      top: `${getEventTopPosition(event)}px`,
                       height: `${getEventHeight(event)}px`,
                       width: `${eventWidthPercentage}%`,
                       left: `${eventWidthPercentage * positionIndex}%`

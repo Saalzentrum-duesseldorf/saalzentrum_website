@@ -112,6 +112,10 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
+
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
   }
 }

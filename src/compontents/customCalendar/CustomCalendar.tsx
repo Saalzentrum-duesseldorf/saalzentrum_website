@@ -1,12 +1,12 @@
 import "./CustomCalendar.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { areDatesEqual, parseDateToReadableString, truncateText } from "../../utils.ts";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -79,11 +79,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     weeks.push(week);
   }
 
-  useEffect(() => {
-    console.log(selectedDate);
-    console.log(selectedDateDetails);
-  }, [selectedDate, selectedDateDetails]);
-
   const handleDateClick = (day: number, monthOffset: number) => {
     const selectedDate = new Date(
       currentMonth.getFullYear(),
@@ -102,18 +97,18 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     setSelectedDateDetails(clickedDateDetails || null);
   };
 
-  function areDatesEqual(date1: Date, date2: Date) {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
+  function getEventsForDay(day: number): CustomCalendarEvent[] {
+    return props.events.filter((event) =>
+      areDatesEqual(
+        event.date,
+        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+      )
     );
   }
 
   return (
     <div className={"Calendar"}>
       <Container>
-        
         <Row>
           <h1 style={{ fontSize: 40 }} className="Calendar-header">
             {currentMonth.toLocaleString("default", { month: "long" })}{" "}
@@ -153,65 +148,65 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                       (
                         day: { day: number; monthOffset: number },
                         index: number
-                      ) => (
-                        <div
-                          key={index}
-                          className="Calendar-day"
-                          style={{
-                            borderColor:
-                              day.day === selectedDay &&
-                              currentMonth.getMonth() + day.monthOffset ===
-                                selectedMonth
-                                ? "red"
-                                : "grey",
-                          }}
-                          onClick={() =>
-                            handleDateClick(day.day, day.monthOffset)
-                          }
-                        >
-                          <Container className={"Calendar-day-container"}>
-                            <Row>
-                              <Col>
-                                <div className={"Calendar-day-header"}>
-                                  {day.day !== 0 ? day.day : ""}
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                {props.events.map(
-                                  (
-                                    _event: CustomCalendarEvent,
-                                    index: number
-                                  ) => {
-                                    if (
-                                      areDatesEqual(
-                                        new Date(
-                                          currentMonth.getFullYear(),
-                                          currentMonth.getMonth(),
-                                          day.day
-                                        ),
-                                        _event.date
-                                      )
-                                    ) {
-                                      return (
+                      ) => {
+                        const dayEvents = getEventsForDay(day.day);
+                        return (
+                          <div
+                            key={index}
+                            className="Calendar-day"
+                            style={{
+                              borderColor:
+                                day.day === selectedDay &&
+                                currentMonth.getMonth() + day.monthOffset ===
+                                  selectedMonth
+                                  ? "red"
+                                  : "grey",
+                            }}
+                            onClick={() =>
+                              handleDateClick(day.day, day.monthOffset)
+                            }
+                          >
+                            <Container className={"Calendar-day-container"}>
+                              <Row>
+                                <Col>
+                                  <div className={"Calendar-day-header"}>
+                                    {day.day !== 0 ? day.day : ""}
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  {dayEvents
+                                    .slice(0, 2)
+                                    .map(
+                                      (
+                                        _event: CustomCalendarEvent,
+                                        index: number
+                                      ) => (
                                         <div
                                           className={"Calendar-day-body"}
                                           key={index}
                                           style={{ background: _event.color }}
                                         >
-                                          {_event.name}
+                                          {truncateText(_event.name, 15)}
                                         </div>
-                                      );
-                                    }
-                                    return null;
-                                  }
-                                )}
-                              </Col>
-                            </Row>
-                          </Container>
-                        </div>
-                      )
+                                      )
+                                    )}
+                                  {dayEvents.length > 2 && (
+                                    <div
+                                      className={
+                                        "Calendar-day-body More-Indicator"
+                                      }
+                                    >
+                                      +{dayEvents.length - 2} more
+                                    </div>
+                                  )}
+                                </Col>
+                              </Row>
+                            </Container>
+                          </div>
+                        );
+                      }
                     )}
                   </div>
                 )
@@ -227,10 +222,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               )
             }
           >
-           <FontAwesomeIcon icon={faArrowRight}/>
+            <FontAwesomeIcon icon={faArrowRight} />
           </Button>
 
-          <Col md={4} style={{paddingLeft: 40}}>
+          <Col md={4} style={{ paddingLeft: 40 }}>
             <CalendarDetails
               title={"Kalender details"}
               events={selectedDateDetails}
@@ -241,10 +236,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
       </Container>
     </div>
   );
-};
-
-const parseDateToReadableString = (date: Date) => {
-  return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 };
 
 interface MonthButtonsProps {
