@@ -1,14 +1,33 @@
-import './CalendarDetails.scss'
+import "./CalendarDetails.scss";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
-import { getOverlappingEvents } from "../../../utils.ts";
+import { getOverlappingEvents, Resources } from "../../../utils.ts";
 
 export interface CalendarDetailsProps {
   title: string;
   events: CustomCalendarEvent[] | null;
   day: string;
+  resource: string;
 }
 
-const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   // Generate hour blocks. You might want to make this more dynamic.
+const CalendarDetails = ({
+  title,
+  events,
+  day,
+  resource,
+}: CalendarDetailsProps) => {
+
+  const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
+    const resourceEmail = (Resources as never)[resource]; // Type assertion here
+    const result = events?.filter((event) => event.email === resourceEmail);
+
+    if (resource != "" && result) {
+      return result;
+    }
+    return events;
+  };
+
+  events = filterEvents(resource);
+
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   function containsAllDayEvent(events: CustomCalendarEvent[] | null): boolean {
@@ -22,9 +41,12 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
     return false;
   }
 
-  function getEventsForHour(hour: number, events: CustomCalendarEvent[] | null): CustomCalendarEvent[] {
+  function getEventsForHour(
+    hour: number,
+    events: CustomCalendarEvent[] | null
+  ): CustomCalendarEvent[] {
     if (!events) return [];
-    return events.filter(event => {
+    return events.filter((event) => {
       if (event.isAllDay) return false; // Exclude all-day events
       const eventStartHour = event.dateFrom?.getHours();
       return eventStartHour === hour;
@@ -40,7 +62,8 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
 
   function getEventHeight(event: CustomCalendarEvent): number {
     if (event.dateFrom && event.dateTo) {
-      const durationInHours = (event.dateTo.getTime() - event.dateFrom.getTime()) / (1000 * 60 * 60);
+      const durationInHours =
+        (event.dateTo.getTime() - event.dateFrom.getTime()) / (1000 * 60 * 60);
       return durationInHours * 40; // 40px ist die Höhe eines hour-blocks
     }
     return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
@@ -55,41 +78,40 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
       <div className="all-day-section">
         <span>All Day: </span>
         {events && containsAllDayEvent(events) ? (
-          events.filter((e => e.isAllDay)).map((event) => (
-            <div
-              className="event"
-              key={event.name}
-              style={{ background: event.color }}
-            >
-              {event.name}
-            </div>
-          ))
+          events
+            .filter((e) => e.isAllDay)
+            .map((event) => (
+              <div
+                className="event"
+                key={event.name}
+                style={{ background: event.color }}
+              >
+                {event.name}
+              </div>
+            ))
         ) : (
           <div className="no-events">No events</div>
         )}
       </div>
 
-
       <div className="timeline">
         {hours.map((hour) => (
           <div className="hour-block" key={hour}>
-            <div className="hour-label">
-              {hour}:00
-            </div>
+            <div className="hour-label">{hour}:00</div>
 
             <div className="time-slots">
-              {getEventsForHour(hour, events).map((event, index, allEvents) => {
-
+              {getEventsForHour(hour, events).map((event) => {
                 const overlappingEvents = getOverlappingEvents(event, events);
 
                 console.log("eventOverlapping");
                 console.log(overlappingEvents);
-                console.log(overlappingEvents.length)
+                console.log(overlappingEvents.length);
 
                 const eventWidthPercentage = 100 / overlappingEvents.length;
-                
-                const positionIndex = overlappingEvents.findIndex(e => e.name === event.name);
-                
+                const positionIndex = overlappingEvents.findIndex(
+                  (e) => e.name === event.name
+                );
+
                 return (
                   <div
                     className="event"
@@ -99,7 +121,7 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
                       top: `${getEventTopPosition(event)}px`,
                       height: `${getEventHeight(event)}px`,
                       width: `${eventWidthPercentage}%`,
-                      left: `${eventWidthPercentage * positionIndex}%`
+                      left: `${eventWidthPercentage * positionIndex}%`,
                     }}
                   >
                     {event.name}
@@ -112,6 +134,6 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {   //
       </div>
     </div>
   );
-}
+};
 
 export default CalendarDetails;

@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { areDatesEqual, parseDateToReadableString, truncateText } from "../../utils.ts";
+import MonthButtons from "./monthButtons/MonthButtons.tsx";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -17,6 +19,7 @@ export interface CustomCalendarEvent {
   name: string;
   description: string;
   color: string;
+  email?: string;
 }
 
 export interface CustomCalendarProps {
@@ -30,6 +33,9 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   const [selectedDateDetails, setSelectedDateDetails] = useState<
     CustomCalendarEvent[] | null
   >(null);
+
+  const [currentResource, setResource] = useState<string>('');
+
 
   const [selectedMonth, setSelectedMonth] = useState<number>();
 
@@ -106,6 +112,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     );
   }
 
+  const handleSelectResource = (event: SelectChangeEvent) => {
+    setResource(event.target.value as string);
+  };
+
   return (
     <div className={"Calendar"}>
       <Container>
@@ -115,6 +125,25 @@ const CustomCalendar = (props: CustomCalendarProps) => {
             {currentMonth.getFullYear()}
           </h1>
         </Row>
+
+        <FormControl fullWidth>
+          <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
+          <Select
+            labelId="select-resource-lable"
+            id="select-resource"
+            label="Raum"
+            onChange={handleSelectResource}>
+            <MenuItem value={''}>Kein Raum</MenuItem>
+            <MenuItem value={'room1'}>Saal 1</MenuItem>
+            <MenuItem value={'room2'}>Nebenraum 1</MenuItem>
+            <MenuItem value={'room3'}>Saal 2</MenuItem>
+            <MenuItem value={'room4'}>Nebenraum 2</MenuItem>
+            <MenuItem value={'room5'}>Saal 3</MenuItem>
+            <MenuItem value={'room6'}>Nebenraum 3</MenuItem>
+            <MenuItem value={'room7'}>Saal 4</MenuItem>
+            <MenuItem value={'room8'}>Nebenraum 4</MenuItem>
+          </Select>
+        </FormControl>
 
         <Row>
           <Button
@@ -230,53 +259,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               title={"Kalender details"}
               events={selectedDateDetails}
               day={parseDateToReadableString(selectedDate)}
+              resource={currentResource}
             />
           </Col>
         </Row>
       </Container>
     </div>
-  );
-};
-
-interface MonthButtonsProps {
-  setCurrentMonth: (date: Date) => void;
-  currentMonth: Date;
-}
-
-const MonthButtons: React.FC<MonthButtonsProps> = ({
-  setCurrentMonth,
-  currentMonth,
-}) => {
-  const months = [
-    "Jan",
-    "Feb",
-    "Mär",
-    "Apr",
-    "Mai",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Dez",
-  ];
-  return (
-    <Row>
-      {months.map((month, index) => (
-        <Col md={1} key={index}>
-          <Button
-            key={index}
-            className={"Calendar-month-button"}
-            onClick={() =>
-              setCurrentMonth(new Date(currentMonth.setMonth(index)))
-            }
-          >
-            {month}
-          </Button>
-        </Col>
-      ))}
-    </Row>
   );
 };
 
