@@ -2,9 +2,11 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
-
   overflow: scroll;
-  height: 70%;
+  height: 980px;
+  width: 160%;
+  margin-top: 64px;
+
 
   .all-day-section {
     background-color: #f0f0f0;

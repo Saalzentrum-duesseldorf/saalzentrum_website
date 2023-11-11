@@ -1,21 +1,22 @@
 import "./CalendarDetails.scss";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 import { getOverlappingEvents, Resources } from "../../../utils.ts";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+import { useState } from "react";
 
 export interface CalendarDetailsProps {
   title: string;
   events: CustomCalendarEvent[] | null;
   day: string;
-  resource: string;
 }
 
-const CalendarDetails = ({
-  title,
-  events,
-  day,
-  resource,
-}: CalendarDetailsProps) => {
-
+const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
     const resourceEmail = (Resources as never)[resource]; // Type assertion here
     const result = events?.filter((event) => event.email === resourceEmail);
@@ -26,7 +27,9 @@ const CalendarDetails = ({
     return events;
   };
 
-  events = filterEvents(resource);
+  const [currentResource, setResource] = useState<string>("");
+
+  events = filterEvents(currentResource);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -69,10 +72,34 @@ const CalendarDetails = ({
     return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
   }
 
+  const handleSelectResource = (event: SelectChangeEvent) => {
+    setResource(event.target.value as string);
+  };
+
   return (
     <div className="calendar-details">
       <h2>{title}</h2>
       <h3>{day}</h3>
+
+      <FormControl size="small">
+        <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
+        <Select
+          labelId="select-resource-lable"
+          id="select-resource"
+          label="Raum"
+          onChange={handleSelectResource}
+        >
+          <MenuItem value={""}>Kein Raum</MenuItem>
+          <MenuItem value={"room1"}>Saal 1</MenuItem>
+          <MenuItem value={"room2"}>Nebenraum 1</MenuItem>
+          <MenuItem value={"room3"}>Saal 2</MenuItem>
+          <MenuItem value={"room4"}>Nebenraum 2</MenuItem>
+          <MenuItem value={"room5"}>Saal 3</MenuItem>
+          <MenuItem value={"room6"}>Nebenraum 3</MenuItem>
+          <MenuItem value={"room7"}>Saal 4</MenuItem>
+          <MenuItem value={"room8"}>Nebenraum 4</MenuItem>
+        </Select>
+      </FormControl>
 
       {/* All Day events section */}
       <div className="all-day-section">

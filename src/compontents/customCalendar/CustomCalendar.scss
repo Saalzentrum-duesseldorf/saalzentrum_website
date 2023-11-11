@@ -1,23 +1,14 @@
 .Calendar {
   top: 0;
   left: 0;
-  position: fixed;
   width: 100%;
+  margin: 0;
 
   .Calendar-header {
     font-size: 24px;
     margin-bottom: 16px;
   }
-
-  .Calendar-button-container {
-    margin-bottom: 16px;
-
-    .Calendar-button {
-      margin-right: 200px;
-      margin-left: 200px;
-    }
-  }
-
+  
   .Calendar-content {
     position: relative; // This makes sure the absolute positioning of the buttons is relative to this container.
   }
@@ -29,18 +20,17 @@
     display: flex;
     align-items: center;
 
-
-    position: absolute;
-    top: 40%; // This will vertically center the button
+    position: relative;
+    top: 100px; // This will vertically center the button
     transform: translateY(-50%); // This is to ensure the centering is perfect
     z-index: 10; // This is to ensure the button is clickable and on top of other elements
 
     &.Calendar-button-left {
-      left: 30px; // Position the button to the left of the calendar. Adjust the value as needed.
+      left: 0; // Position the button to the left of the calendar. Adjust the value as needed.
     }
 
     &.Calendar-button-right {
-      right: 410px; // Position the button to the right of the calendar, before the Calendar Details. Adjust the value as needed.
+      left: 5px
     }
   }
 
@@ -65,12 +55,11 @@
     }
   }
 
-
-
   .Calendar-day-names,
   .Calendar-days {
     display: flex;
     justify-content: space-around;
+    width: 950px;
   }
 
   .Calendar-week-day {
@@ -87,8 +76,8 @@
   }
 
   .Calendar-day {
-    width: 180px;
-    height: 140px;
+    width: 160px;
+    height: 190px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,9 +102,13 @@
       justify-content: center;
       cursor: pointer;
 
+      font-size: 14px;
+
       overflow: hidden;
       text-overflow: ellipsis;
       max-width: 100%;
     }
+    
+
   }
 }

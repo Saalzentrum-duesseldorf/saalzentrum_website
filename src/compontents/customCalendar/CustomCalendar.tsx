@@ -6,9 +6,12 @@ import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { areDatesEqual, parseDateToReadableString, truncateText } from "../../utils.ts";
+import {
+  areDatesEqual,
+  parseDateToReadableString,
+  truncateText,
+} from "../../utils.ts";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -33,9 +36,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   const [selectedDateDetails, setSelectedDateDetails] = useState<
     CustomCalendarEvent[] | null
   >(null);
-
-  const [currentResource, setResource] = useState<string>('');
-
 
   const [selectedMonth, setSelectedMonth] = useState<number>();
 
@@ -112,10 +112,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     );
   }
 
-  const handleSelectResource = (event: SelectChangeEvent) => {
-    setResource(event.target.value as string);
-  };
-
   return (
     <div className={"Calendar"}>
       <Container>
@@ -126,38 +122,34 @@ const CustomCalendar = (props: CustomCalendarProps) => {
           </h1>
         </Row>
 
-        <FormControl fullWidth>
-          <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
-          <Select
-            labelId="select-resource-lable"
-            id="select-resource"
-            label="Raum"
-            onChange={handleSelectResource}>
-            <MenuItem value={''}>Kein Raum</MenuItem>
-            <MenuItem value={'room1'}>Saal 1</MenuItem>
-            <MenuItem value={'room2'}>Nebenraum 1</MenuItem>
-            <MenuItem value={'room3'}>Saal 2</MenuItem>
-            <MenuItem value={'room4'}>Nebenraum 2</MenuItem>
-            <MenuItem value={'room5'}>Saal 3</MenuItem>
-            <MenuItem value={'room6'}>Nebenraum 3</MenuItem>
-            <MenuItem value={'room7'}>Saal 4</MenuItem>
-            <MenuItem value={'room8'}>Nebenraum 4</MenuItem>
-          </Select>
-        </FormControl>
-
         <Row>
-          <Button
-            className={"Calendar-button Calendar-button-left"}
-            onClick={() =>
-              setCurrentMonth(
-                new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
-              )
-            }
-          >
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </Button>
+          <Col md={1}>
+            <Row>
+              <Button
+                className={"Calendar-button Calendar-button-left"}
+                onClick={() =>
+                  setCurrentMonth(
+                    new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
+                  )
+                }
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </Button>
 
-          <Col md={8}>
+              <Button
+                className={"Calendar-button Calendar-button-right"}
+                onClick={() =>
+                  setCurrentMonth(
+                    new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
+                  )
+                }
+              >
+                <FontAwesomeIcon icon={faArrowRight} />
+              </Button>
+            </Row>
+          </Col>
+
+          <Col md={9}>
             <MonthButtons
               setCurrentMonth={setCurrentMonth}
               currentMonth={currentMonth}
@@ -243,23 +235,11 @@ const CustomCalendar = (props: CustomCalendarProps) => {
             </div>
           </Col>
 
-          <Button
-            className={"Calendar-button Calendar-button-right"}
-            onClick={() =>
-              setCurrentMonth(
-                new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
-              )
-            }
-          >
-            <FontAwesomeIcon icon={faArrowRight} />
-          </Button>
-
-          <Col md={4} style={{ paddingLeft: 40 }}>
+          <Col md={2}>
             <CalendarDetails
               title={"Kalender details"}
               events={selectedDateDetails}
               day={parseDateToReadableString(selectedDate)}
-              resource={currentResource}
             />
           </Col>
         </Row>
@@ -267,7 +247,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     </div>
   );
 };
-
 const WeekDays = () => {
   const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return (
