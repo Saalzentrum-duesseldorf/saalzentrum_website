@@ -1,11 +1,18 @@
 .calendar-details {
+
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
   overflow: scroll;
   height: 980px;
   width: 160%;
-  margin-top: 64px;
+  margin-top: 10px;
+  border-radius: 10px;
+
+  .calendar-details-header {
+    font-size: 20px;
+    background: #4c5883;
+  }
 
 
   .all-day-section {
@@ -32,11 +39,12 @@
       border-bottom: 1px solid #ccc;
 
       .hour-label {
-        flex: 0 0 40px; /* This will give a fixed width of 40px to the hour label */
+        flex: 0 0 45px; /* This will give a fixed width of 40px to the hour label */
         display: flex;
         align-items: center; /* Vertically center the hour text */
         justify-content: center; /* Horizontally center the hour text */
-        border-right: 2px solid #ccc;
+        border-right: 1px solid #cccccc;
+        
       }
 
       .time-slots {
@@ -47,7 +55,7 @@
         width: 100%;
 
         .event {
-          border-radius: 4px;
+          border-radius: 6px;
           position: absolute;
           left: 0;
           right: 0;

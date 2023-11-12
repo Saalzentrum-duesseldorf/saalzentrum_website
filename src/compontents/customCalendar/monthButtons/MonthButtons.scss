@@ -1,20 +1,26 @@
-.Calendar-month-button {
-  background-color: transparent; // Removes the default button background
-  border: none; // Removes the default button border
-  color: grey; // Sets the text color to grey
-  text-decoration: underline; // Adds an underline to the text
-  font-size: 18px;
 
-  &:hover {
-    cursor: pointer; // Changes the cursor to a hand when hovering
-    text-decoration: none; // Optionally removes the underline when hovering
-  }
+.Calendar-month-button-Container {
+  margin-left: 100px;
 
-  &:focus {
-    outline: none; // Removes the default focus outline
-  }
+  .Calendar-month-button {
+    background-color: transparent; // Removes the default button background
+    border: none; // Removes the default button border
+    color: grey; // Sets the text color to grey
+    text-decoration: underline; // Adds an underline to the text
+    font-size: 18px;
 
-  &:active {
-    color: darken(grey, 10%); // Darkens the text color slightly when the button is pressed
+    &:hover {
+      cursor: pointer; // Changes the cursor to a hand when hovering
+      text-decoration: none; // Optionally removes the underline when hovering
+    }
+
+    &:focus {
+      outline: none; // Removes the default focus outline
+    }
+
+    &:active {
+      color: darken(grey, 10%); // Darkens the text color slightly when the button is pressed
+    }
   }
 }
+

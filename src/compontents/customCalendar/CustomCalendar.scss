@@ -5,110 +5,87 @@
   margin: 0;
 
   .Calendar-header {
-    font-size: 24px;
+    font-size: 40px;
     margin-bottom: 16px;
-  }
-  
-  .Calendar-content {
-    position: relative; // This makes sure the absolute positioning of the buttons is relative to this container.
   }
 
   .Calendar-button {
-    width: 20px;
-    height: 60px;
+    background: #9da4bd;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
     justify-content: center;
     display: flex;
     align-items: center;
-
     position: relative;
-    top: 100px; // This will vertically center the button
+    top: 35px; // This will vertically center the button
     transform: translateY(-50%); // This is to ensure the centering is perfect
     z-index: 10; // This is to ensure the button is clickable and on top of other elements
-
     &.Calendar-button-left {
       left: 0; // Position the button to the left of the calendar. Adjust the value as needed.
     }
 
     &.Calendar-button-right {
-      left: 5px
+      left: 5px;
     }
   }
 
-  .Calendar-month-button {
-    background-color: transparent; // Removes the default button background
-    border: none; // Removes the default button border
-    color: grey; // Sets the text color to grey
-    text-decoration: underline; // Adds an underline to the text
-    font-size: 18px;
+  .Calendar-Grid-Container {
+    margin-top: 10px;
+    padding: 0;
 
-    &:hover {
-      cursor: pointer; // Changes the cursor to a hand when hovering
-      text-decoration: none; // Optionally removes the underline when hovering
+    .Calendar-day-names,
+    .Calendar-days {
+      display: flex;
+      justify-content: space-around;
+      width: 950px;
     }
 
-    &:focus {
-      outline: none; // Removes the default focus outline
-    }
-
-    &:active {
-      color: darken(grey, 10%); // Darkens the text color slightly when the button is pressed
-    }
-  }
-
-  .Calendar-day-names,
-  .Calendar-days {
-    display: flex;
-    justify-content: space-around;
-    width: 950px;
-  }
-
-  .Calendar-week-day {
-    margin-top: 25px;
-    width: 180px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ccc;
-    background: #9396ff;
-    font-family: "Avenir Next", "Avenir", sans-serif;
-    font-weight: bold;
-  }
-
-  .Calendar-day {
-    width: 160px;
-    height: 190px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ccc;
-
-    .Calendar-day-container {
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .Calendar-day-header {
-      width: 100%;
-      align-self: flex-start;
-      background: rgb(206, 206, 206);
-    }
-
-    .Calendar-day-body {
-      border-radius: 4px;
-      border: 1px solid #000000;
-      align-items: center;
+    .Calendar-week-day {
+      color: #ffffff;
+      width: 180px;
+      height: 30px;
+      display: flex;
       justify-content: center;
-      cursor: pointer;
-
-      font-size: 14px;
-
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
+      align-items: center;
+      border: 0 solid #ccc;
+      background: #4c5883;
     }
-    
 
+    .Calendar-day {
+      width: 160px;
+      height: 190px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 3px solid #ccc;
+
+      .Calendar-day-container {
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .Calendar-day-header {
+        width: 100%;
+        align-self: flex-start;
+        background: rgb(206, 206, 206);
+      }
+
+      .Calendar-day-body {
+        border-radius: 6px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        margin: 4px;
+
+        font-size: 14px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+    }
   }
 }

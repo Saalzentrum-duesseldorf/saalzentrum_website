@@ -7,27 +7,27 @@ export interface MonthButtonsProps {
 }
 
 const MonthButtons: React.FC<MonthButtonsProps> = ({
-  setCurrentMonth,
-  currentMonth,
-}) => {
+                                                     setCurrentMonth,
+                                                     currentMonth
+                                                   }) => {
   const months = [
-    "Jan",
-    "Feb",
-    "Mär",
-    "Apr",
+    "Januar",
+    "Februar",
+    "März",
+    "April",
     "Mai",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Okt",
-    "Nov",
-    "Dez",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember"
   ];
   return (
-    <Row>
+    <Row className={"Calendar-month-button-Container"}>
       {months.map((month, index) => (
-        <Col md={1} key={index}>
+        <Col key={index}>
           <Button
             key={index}
             className={"Calendar-month-button"}

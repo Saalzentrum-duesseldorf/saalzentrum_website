@@ -78,8 +78,7 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
 
   return (
     <div className="calendar-details">
-      <h2>{title}</h2>
-      <h3>{day}</h3>
+      <div className={"calendar-details-header"}>{day}</div>
 
       <FormControl size="small">
         <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
@@ -109,9 +108,9 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
             .filter((e) => e.isAllDay)
             .map((event) => (
               <div
-                className="event"
+                className={"event"}
                 key={event.name}
-                style={{ background: event.color }}
+                style={{ background: event.color, borderRadius: 6 }}
               >
                 {event.name}
               </div>

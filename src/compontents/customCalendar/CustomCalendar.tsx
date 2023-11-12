@@ -4,8 +4,8 @@ import { Col, Row, Container, Button } from "reactstrap";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import {
   areDatesEqual,
   parseDateToReadableString,
@@ -116,10 +116,17 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     <div className={"Calendar"}>
       <Container>
         <Row>
-          <h1 style={{ fontSize: 40 }} className="Calendar-header">
+          <h1 className="Calendar-header">
             {currentMonth.toLocaleString("default", { month: "long" })}{" "}
             {currentMonth.getFullYear()}
           </h1>
+        </Row>
+
+        <Row>
+          <MonthButtons
+            setCurrentMonth={setCurrentMonth}
+            currentMonth={currentMonth}
+          />
         </Row>
 
         <Row>
@@ -133,7 +140,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                   )
                 }
               >
-                <FontAwesomeIcon icon={faArrowLeft} />
+                <FontAwesomeIcon icon={faChevronLeft} />
               </Button>
 
               <Button
@@ -144,17 +151,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                   )
                 }
               >
-                <FontAwesomeIcon icon={faArrowRight} />
+                <FontAwesomeIcon icon={faChevronRight} />
               </Button>
             </Row>
           </Col>
 
-          <Col md={9}>
-            <MonthButtons
-              setCurrentMonth={setCurrentMonth}
-              currentMonth={currentMonth}
-            />
-
+          <Col md={9} className={"Calendar-Grid-Container"}>
             <div>
               <div className="Calendar-day-names">
                 <WeekDays />
@@ -176,12 +178,15 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             key={index}
                             className="Calendar-day"
                             style={{
+                            background:
+                              day.monthOffset == 0 ? "#ffffff"
+                                : "#f3f3f3",
                               borderColor:
                                 day.day === selectedDay &&
                                 currentMonth.getMonth() + day.monthOffset ===
                                   selectedMonth
-                                  ? "red"
-                                  : "grey",
+                                  ? "#9da4bd"
+                                  : "#d7d7d7",
                             }}
                             onClick={() =>
                               handleDateClick(day.day, day.monthOffset)
@@ -198,7 +203,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                               <Row>
                                 <Col>
                                   {dayEvents
-                                    .slice(0, 2)
+                                    .slice(0, 5)
                                     .map(
                                       (
                                         _event: CustomCalendarEvent,
@@ -213,13 +218,13 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                                         </div>
                                       )
                                     )}
-                                  {dayEvents.length > 2 && (
+                                  {dayEvents.length > 5 && (
                                     <div
                                       className={
-                                        "Calendar-day-body More-Indicator"
+                                        "Calendar-day-body"
                                       }
                                     >
-                                      +{dayEvents.length - 2} more
+                                      + {dayEvents.length - 5} more
                                     </div>
                                   )}
                                 </Col>
@@ -248,7 +253,15 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   );
 };
 const WeekDays = () => {
-  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const weekDays = [
+    "Sonntag",
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+  ];
   return (
     <>
       {weekDays.map((weekDay, index) => (

@@ -29,7 +29,7 @@ export function isOverlapping(
 }
 
 export const parseDateToReadableString = (date: Date) => {
-  return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
 };
 
 export function getOverlappingEvents(
@@ -56,7 +56,7 @@ export enum Resources {
 export enum ColorEmail {
   "#00b5ff" = "jtatwcook@gmail.com",
   "blue" = "room2",
-  "green" = "room3",
+  "green" = "jt@wcook.de",
   "yellow" = "room4",
   "orange" = "room5",
   "purple" = "room6",
@@ -65,14 +65,14 @@ export enum ColorEmail {
 }
 
 export enum EmailColor {
-  "jtatwcook@gmail.com" = "#4b388a",
-  "room2" = "blue",
-  "room3" = "green",
-  "room4" = "yellow",
-  "room5" = "orange",
-  "room6" = "purple",
-  "room7" = "pink",
-  "room8" = "grey",
+  "jtatwcook@gmail.com" = "#96ac83",
+  "room2" =   "#c6cbdd",
+  "jt@wcook.de" = "#d8715c",
+  "room4" = "#8c7e77",
+  "room5" = "#667f7c",
+  "room6" = "#6471a2",
+  "room7" = "#d7d7d7",
+  "room8" = "#eabd9e",
 }
 
 
