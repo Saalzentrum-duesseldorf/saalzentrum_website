@@ -130,7 +130,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         </Row>
 
         <Row>
-          <Col md={1}>
+          <Col md={1} className={"Calendar-button-container"}>
             <Row>
               <Button
                 className={"Calendar-button Calendar-button-left"}
@@ -140,7 +140,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                   )
                 }
               >
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <FontAwesomeIcon icon={faChevronLeft} style={{fontSize: 25}}/>
               </Button>
 
               <Button
@@ -151,7 +151,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                   )
                 }
               >
-                <FontAwesomeIcon icon={faChevronRight} />
+                <FontAwesomeIcon icon={faChevronRight} style={{fontSize: 25}}/>
               </Button>
             </Row>
           </Col>
@@ -187,6 +187,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                                   selectedMonth
                                   ? "#9da4bd"
                                   : "#d7d7d7",
+                              borderWidth:
+                                day.day === selectedDay &&
+                                currentMonth.getMonth() + day.monthOffset ===
+                                  selectedMonth
+                                  ? 3
+                                  : 1,
                             }}
                             onClick={() =>
                               handleDateClick(day.day, day.monthOffset)
@@ -195,7 +201,11 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             <Container className={"Calendar-day-container"}>
                               <Row>
                                 <Col>
-                                  <div className={"Calendar-day-header"}>
+                                  <div className={"Calendar-day-header"}
+                                  style={{background: day.monthOffset
+                                    == 0 ? "#d7d7d7"
+                                    : "#e7e7e7"}}
+                                  >
                                     {day.day !== 0 ? day.day : ""}
                                   </div>
                                 </Col>
@@ -242,7 +252,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
 
           <Col md={2}>
             <CalendarDetails
-              title={"Kalender details"}
               events={selectedDateDetails}
               day={parseDateToReadableString(selectedDate)}
             />

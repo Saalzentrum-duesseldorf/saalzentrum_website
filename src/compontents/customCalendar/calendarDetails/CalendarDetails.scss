@@ -4,27 +4,50 @@
   flex-direction: column;
   border: 1px solid #ccc;
   overflow: scroll;
+  overflow-y: auto; // Enables vertical scrolling if needed
+  overflow-x: hidden; // Hides horizontal scrollbar
   height: 980px;
   width: 160%;
   margin-top: 10px;
   border-radius: 10px;
+  margin-left: 8px;
+
+  // Scrollbar styles
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #bebebe;
+    border-radius: 10px;
+
+    &:hover {
+      background: #555;
+    }
+  }
 
   .calendar-details-header {
     font-size: 20px;
     background: #4c5883;
+    color: #ffffff;
   }
 
-
   .all-day-section {
-    background-color: #f0f0f0;
+    background-color: #4b5782;
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    color: #ffffff;
+
 
     .all-day-event {
-      background-color: #a0a0a0;
-      padding: 5px;
-      margin: 5px;
-      border-radius: 4px;
+      border-radius: 6px;
+      border: 2px solid #4b5782;
     }
   }
 
@@ -37,6 +60,10 @@
       align-items: stretch;
       height: 40px; /* Or however tall you want each hour block to be */
       border-bottom: 1px solid #ccc;
+
+      &:hover {
+        background-color: #f8f6f6;
+      }
 
       .hour-label {
         flex: 0 0 45px; /* This will give a fixed width of 40px to the hour label */
@@ -62,6 +89,8 @@
           height: 30px;
           width: 50%;
           background-color: red;
+          border: 1px solid rgb(255, 255, 255);
+
         }
       }
     }

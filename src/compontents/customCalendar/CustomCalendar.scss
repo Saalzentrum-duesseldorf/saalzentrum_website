@@ -7,32 +7,44 @@
   .Calendar-header {
     font-size: 40px;
     margin-bottom: 16px;
+    color: #8a8a8a;
   }
 
-  .Calendar-button {
-    background: #9da4bd;
-    border-radius: 100%;
-    width: 50px;
-    height: 50px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    position: relative;
-    top: 35px; // This will vertically center the button
-    transform: translateY(-50%); // This is to ensure the centering is perfect
-    z-index: 10; // This is to ensure the button is clickable and on top of other elements
-    &.Calendar-button-left {
-      left: 0; // Position the button to the left of the calendar. Adjust the value as needed.
-    }
+  .Calendar-button-container {
 
-    &.Calendar-button-right {
-      left: 5px;
+    .Calendar-button {
+      background: #9da4bd;
+      border: none;
+      border-radius: 100%;
+      width: 50px;
+      height: 50px;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      position: relative;
+      top: 35px; // This will vertically center the button
+      transform: translateY(-50%); // This is to ensure the centering is perfect
+      z-index: 10; // This is to ensure the button is clickable and on top of other elements
+
+      &:hover {
+        background: #8c93ac; /* Slightly darker shade on hover */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+      }
+
+      &.Calendar-button-left {
+        left: 0; // Position the button to the left of the calendar. Adjust the value as needed.
+      }
+
+      &.Calendar-button-right {
+        left: 5px;
+      }
     }
   }
+
 
   .Calendar-Grid-Container {
     margin-top: 10px;
-    padding: 0;
+    padding-left: 12px;
 
     .Calendar-day-names,
     .Calendar-days {
@@ -42,6 +54,7 @@
     }
 
     .Calendar-week-day {
+
       color: #ffffff;
       width: 180px;
       height: 30px;
@@ -58,12 +71,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 3px solid #ccc;
+      border: 1px solid #ccc;
 
       .Calendar-day-container {
         padding: 0;
         width: 100%;
         height: 100%;
+
+        &:hover {
+          background-color: #f8f6f6;
+        }
+
       }
 
       .Calendar-day-header {
@@ -73,15 +91,13 @@
       }
 
       .Calendar-day-body {
+        
         border-radius: 6px;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-
         margin: 4px;
-
         font-size: 14px;
-
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;

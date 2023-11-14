@@ -11,12 +11,11 @@ import {
 import { useState } from "react";
 
 export interface CalendarDetailsProps {
-  title: string;
   events: CustomCalendarEvent[] | null;
   day: string;
 }
 
-const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
+const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
     const resourceEmail = (Resources as never)[resource]; // Type assertion here
     const result = events?.filter((event) => event.email === resourceEmail);
@@ -80,13 +79,14 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
     <div className="calendar-details">
       <div className={"calendar-details-header"}>{day}</div>
 
-      <FormControl size="small">
+      <FormControl size="small" >
         <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
         <Select
           labelId="select-resource-lable"
           id="select-resource"
           label="Raum"
           onChange={handleSelectResource}
+          style={{height: 40, borderRadius: 0}}
         >
           <MenuItem value={""}>Kein Raum</MenuItem>
           <MenuItem value={"room1"}>Saal 1</MenuItem>
@@ -108,9 +108,9 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
             .filter((e) => e.isAllDay)
             .map((event) => (
               <div
-                className={"event"}
+                className={"all-day-event"}
                 key={event.name}
-                style={{ background: event.color, borderRadius: 6 }}
+                style={{ background: event.color }}
               >
                 {event.name}
               </div>
@@ -128,10 +128,6 @@ const CalendarDetails = ({ title, events, day }: CalendarDetailsProps) => {
             <div className="time-slots">
               {getEventsForHour(hour, events).map((event) => {
                 const overlappingEvents = getOverlappingEvents(event, events);
-
-                console.log("eventOverlapping");
-                console.log(overlappingEvents);
-                console.log(overlappingEvents.length);
 
                 const eventWidthPercentage = 100 / overlappingEvents.length;
                 const positionIndex = overlappingEvents.findIndex(

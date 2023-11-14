@@ -31,6 +31,14 @@ const MonthButtons: React.FC<MonthButtonsProps> = ({
           <Button
             key={index}
             className={"Calendar-month-button"}
+
+            style={{
+
+              color: `${
+                currentMonth.getMonth() === index ? "#8496c7" : "#b6b5b5"
+              }`
+            }}
+
             onClick={() =>
               setCurrentMonth(new Date(currentMonth.setMonth(index)))
             }
