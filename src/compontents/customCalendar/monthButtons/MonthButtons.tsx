@@ -35,7 +35,7 @@ const MonthButtons: React.FC<MonthButtonsProps> = ({
             style={{
 
               color: `${
-                currentMonth.getMonth() === index ? "#8496c7" : "#b6b5b5"
+                currentMonth.getMonth() === index ? "#5977d7" : "#afaeae"
               }`
             }}
 

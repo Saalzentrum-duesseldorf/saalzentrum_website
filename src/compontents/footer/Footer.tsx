@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
 
     return (
+      <>
         <div className={'footer'}>
           <div className=" bg-light py-4">
             <div className="container text-center">
@@ -28,6 +29,10 @@ const Footer = () => {
             </div>
           </div>
         </div>
+        <div className={'footer-space'}>
+          
+        </div>
+      </>
     )
 }
 

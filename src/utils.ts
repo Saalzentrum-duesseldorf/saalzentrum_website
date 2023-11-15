@@ -28,9 +28,23 @@ export function isOverlapping(
   return false;
 }
 
-export const parseDateToReadableString = (date: Date) => {
-  return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-};
+export const parseDateToStringWithWrittenOutMonth = (date: Date): string => {
+  const months = [
+    "Januar",
+    "Februar",
+    "März",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
+  ];
+  return `${date.getDate()}. ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
 
 export function getOverlappingEvents(
   event: CustomCalendarEvent,

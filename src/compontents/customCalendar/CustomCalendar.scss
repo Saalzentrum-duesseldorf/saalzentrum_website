@@ -1,16 +1,26 @@
 .Calendar {
+
   top: 0;
   left: 0;
   width: 100%;
   margin: 0;
 
-  .Calendar-header {
-    font-size: 40px;
-    margin-bottom: 16px;
-    color: #8a8a8a;
+  .Calendar-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    align-content: center;
+
+    .Calendar-header {
+      font-size: 40px;
+      margin-bottom: 16px;
+      color: #8a8a8a;
+    }
   }
 
   .Calendar-button-container {
+    display: flex;
 
     .Calendar-button {
       background: #9da4bd;
@@ -22,7 +32,7 @@
       display: flex;
       align-items: center;
       position: relative;
-      top: 35px; // This will vertically center the button
+      top: 20px; // This will vertically center the button
       transform: translateY(-50%); // This is to ensure the centering is perfect
       z-index: 10; // This is to ensure the button is clickable and on top of other elements
 
@@ -41,20 +51,22 @@
     }
   }
 
-
   .Calendar-Grid-Container {
+    border: 6px solid #4b5782;
+    border-radius: 10px;
     margin-top: 10px;
-    padding-left: 12px;
+    padding: 0;
+    box-sizing: border-box; // Ensures padding and border are included in the element's total width and height
 
     .Calendar-day-names,
     .Calendar-days {
       display: flex;
       justify-content: space-around;
-      width: 950px;
+      width: 100%;
+      margin: 0; // Adjust margin if needed
     }
 
     .Calendar-week-day {
-
       color: #ffffff;
       width: 180px;
       height: 30px;
@@ -63,6 +75,10 @@
       align-items: center;
       border: 0 solid #ccc;
       background: #4c5883;
+
+      font-size: 18px;
+      padding: 16px;
+
     }
 
     .Calendar-day {
@@ -81,17 +97,16 @@
         &:hover {
           background-color: #f8f6f6;
         }
-
       }
 
       .Calendar-day-header {
         width: 100%;
         align-self: flex-start;
         background: rgb(206, 206, 206);
+        font-size: 18px;
       }
 
       .Calendar-day-body {
-        
         border-radius: 6px;
         align-items: center;
         justify-content: center;

@@ -1,16 +1,12 @@
 import "./CustomCalendar.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import {
-  areDatesEqual,
-  parseDateToReadableString,
-  truncateText,
-} from "../../utils.ts";
+import { areDatesEqual, truncateText } from "../../utils.ts";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
 
 export interface CustomCalendarEvent {
@@ -112,14 +108,55 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     );
   }
 
+  useEffect(() => {
+    const today = new Date();
+    setSelectedDate(today);
+    setSelectedDay(today.getDate());
+    setSelectedMonth(today.getMonth());
+
+    const todayEvents = props.events.filter((event) =>
+      areDatesEqual(event.date, today)
+    );
+    setSelectedDateDetails(todayEvents || null);
+  }, [props.events]);
+
   return (
     <div className={"Calendar"}>
       <Container>
-        <Row>
-          <h1 className="Calendar-header">
-            {currentMonth.toLocaleString("default", { month: "long" })}{" "}
-            {currentMonth.getFullYear()}
-          </h1>
+        <Row className={'Calendar-header-container'}>
+            <Col className={"Calendar-button-container"} md={1}>
+              <Button
+                className={"Calendar-button Calendar-button-left"}
+                onClick={() =>
+                  setCurrentMonth(
+                    new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
+                  )
+                }
+              >
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  style={{ fontSize: 25 }}
+                />
+              </Button>
+            </Col>
+          <Col md={3}>
+            <h1 className="Calendar-header">
+              {currentMonth.toLocaleString("default", { month: "long" })}{" "}
+              {currentMonth.getFullYear()}
+            </h1>
+          </Col>
+          <Col className={"Calendar-button-container"} md={1}>
+            <Button
+              className={"Calendar-button Calendar-button-right"}
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
+                )
+              }
+            >
+              <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: 25 }} />
+            </Button>
+          </Col>
         </Row>
 
         <Row>
@@ -130,33 +167,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         </Row>
 
         <Row>
-          <Col md={1} className={"Calendar-button-container"}>
-            <Row>
-              <Button
-                className={"Calendar-button Calendar-button-left"}
-                onClick={() =>
-                  setCurrentMonth(
-                    new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
-                  )
-                }
-              >
-                <FontAwesomeIcon icon={faChevronLeft} style={{fontSize: 25}}/>
-              </Button>
-
-              <Button
-                className={"Calendar-button Calendar-button-right"}
-                onClick={() =>
-                  setCurrentMonth(
-                    new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
-                  )
-                }
-              >
-                <FontAwesomeIcon icon={faChevronRight} style={{fontSize: 25}}/>
-              </Button>
-            </Row>
-          </Col>
-
-          <Col md={9} className={"Calendar-Grid-Container"}>
+          <Col md={10} className={"Calendar-Grid-Container"}>
             <div>
               <div className="Calendar-day-names">
                 <WeekDays />
@@ -178,9 +189,8 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             key={index}
                             className="Calendar-day"
                             style={{
-                            background:
-                              day.monthOffset == 0 ? "#ffffff"
-                                : "#f3f3f3",
+                              background:
+                                day.monthOffset == 0 ? "#ffffff" : "#f3f3f3",
                               borderColor:
                                 day.day === selectedDay &&
                                 currentMonth.getMonth() + day.monthOffset ===
@@ -201,10 +211,14 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             <Container className={"Calendar-day-container"}>
                               <Row>
                                 <Col>
-                                  <div className={"Calendar-day-header"}
-                                  style={{background: day.monthOffset
-                                    == 0 ? "#d7d7d7"
-                                    : "#e7e7e7"}}
+                                  <div
+                                    className={"Calendar-day-header"}
+                                    style={{
+                                      background:
+                                        day.monthOffset == 0
+                                          ? "#d7d7d7"
+                                          : "#e7e7e7",
+                                    }}
                                   >
                                     {day.day !== 0 ? day.day : ""}
                                   </div>
@@ -229,11 +243,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                                       )
                                     )}
                                   {dayEvents.length > 5 && (
-                                    <div
-                                      className={
-                                        "Calendar-day-body"
-                                      }
-                                    >
+                                    <div className={"Calendar-day-body"}>
                                       + {dayEvents.length - 5} more
                                     </div>
                                   )}
@@ -251,10 +261,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
           </Col>
 
           <Col md={2}>
-            <CalendarDetails
-              events={selectedDateDetails}
-              day={parseDateToReadableString(selectedDate)}
-            />
+            <CalendarDetails events={selectedDateDetails} day={selectedDate} />
           </Col>
         </Row>
       </Container>

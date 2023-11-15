@@ -1,6 +1,6 @@
 import "./CalendarDetails.scss";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
-import { getOverlappingEvents, Resources } from "../../../utils.ts";
+import { getOverlappingEvents, parseDateToStringWithWrittenOutMonth, Resources } from "../../../utils.ts";
 import {
   FormControl,
   InputLabel,
@@ -12,7 +12,7 @@ import { useState } from "react";
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
-  day: string;
+  day: Date;
 }
 
 const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
@@ -77,16 +77,16 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
 
   return (
     <div className="calendar-details">
-      <div className={"calendar-details-header"}>{day}</div>
+      <div className={"calendar-details-header"}>{parseDateToStringWithWrittenOutMonth(day)}</div>
 
-      <FormControl size="small" >
-        <InputLabel id="select-resource-lable">Raum wählen</InputLabel>
+      <FormControl size="small" style={{backgroundColor: "#4b5782", color: "white"}}>
+        <InputLabel id="select-resource-lable" style={{fontSize: 13}}>Raum wählen</InputLabel>
         <Select
           labelId="select-resource-lable"
           id="select-resource"
           label="Raum"
           onChange={handleSelectResource}
-          style={{height: 40, borderRadius: 0}}
+          style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff", color: "white"}}
         >
           <MenuItem value={""}>Kein Raum</MenuItem>
           <MenuItem value={"room1"}>Saal 1</MenuItem>
@@ -102,7 +102,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
 
       {/* All Day events section */}
       <div className="all-day-section">
-        <span>All Day: </span>
+        <span style={{fontSize: 18}}>Ganztags: </span>
         {events && containsAllDayEvent(events) ? (
           events
             .filter((e) => e.isAllDay)
@@ -116,7 +116,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
               </div>
             ))
         ) : (
-          <div className="no-events">No events</div>
+          <div className="no-events" >-</div>
         )}
       </div>
 
