@@ -140,7 +140,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               </Button>
             </Col>
           <Col md={3}>
-            <h1 className="Calendar-header">
+            <h1 className="Calendar-header-title">
               {currentMonth.toLocaleString("default", { month: "long" })}{" "}
               {currentMonth.getFullYear()}
             </h1>

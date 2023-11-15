@@ -4,6 +4,9 @@ import FlipCard from "../flipCard/FlipCard.tsx";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 
 function App() {
+
+
+
   return (
     <div className={"startPage"}>
       <Header />
