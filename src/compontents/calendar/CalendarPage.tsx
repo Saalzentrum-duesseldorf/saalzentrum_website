@@ -12,6 +12,7 @@ const CalendarPage = () => {
     let email = "";
     let color= "#8796c0";
     if (event.attendees != null) {
+      console.log(event.attendees[0].email)
       email = event.attendees[0].email;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

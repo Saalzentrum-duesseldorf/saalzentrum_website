@@ -14,11 +14,8 @@ import App from "./App.tsx";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const password = "secretPassWd";
-// if (prompt("Enter password:", "") === password) {
-  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-// }
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

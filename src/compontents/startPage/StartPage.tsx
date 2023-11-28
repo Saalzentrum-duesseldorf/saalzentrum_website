@@ -5,8 +5,6 @@ import BurgerMenu from "../menu/BurgerMenu.tsx";
 
 function App() {
 
-
-
   return (
     <div className={"startPage"}>
       <Header />

@@ -7,7 +7,10 @@ export function truncateText(text: string, maxLength: number): string {
   return text;
 }
 
-export function areDatesEqual(date1: Date, date2: Date) {
+export function areDatesEqual(date1?: Date, date2?: Date) {
+  if (!date1 || !date2) {
+    return false;
+  }
   return (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
@@ -67,22 +70,11 @@ export enum Resources {
   "room8" = "room8",
 }
 
-export enum ColorEmail {
-  "#00b5ff" = "jtatwcook@gmail.com",
-  "blue" = "room2",
-  "green" = "jt@wcook.de",
-  "yellow" = "room4",
-  "orange" = "room5",
-  "purple" = "room6",
-  "pink" = "room7",
-  "grey" = "room8",
-}
-
 export enum EmailColor {
   "jtatwcook@gmail.com" = "#96ac83",
   "room2" =   "#c6cbdd",
   "jt@wcook.de" = "#d8715c",
-  "room4" = "#8c7e77",
+  "saalzentrum.duesseldorf@gmail.com" = "#8c7e77",
   "room5" = "#667f7c",
   "room6" = "#6471a2",
   "room7" = "#d7d7d7",

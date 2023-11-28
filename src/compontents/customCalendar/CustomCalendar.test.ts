@@ -83,4 +83,7 @@ describe('isOverlapping', () => {
     expect(isOverlapping(event1, event2)).toBe(false);
   });
 
+
+
+
 });

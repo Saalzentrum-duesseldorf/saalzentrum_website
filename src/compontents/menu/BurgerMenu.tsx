@@ -19,9 +19,6 @@ function BurgerMenu() {
             <Link to="/calendar">
               <li>Kalender</li>
             </Link>
-            <Link to="/tickets">
-              <li>Tickets</li>
-            </Link>
           </ul>
         </div>
       </nav>
