@@ -3,6 +3,7 @@ import CustomCalendar, { CustomCalendarEvent } from "../customCalendar/CustomCal
 import { useEffect, useState } from "react";
 import { EmailColor } from "../../utils.ts";
 import "./CalendarPage.scss";
+
 const CalendarPage = () => {
 
   const [events, setEvents] = useState<CustomCalendarEvent[]>([]);
@@ -10,9 +11,9 @@ const CalendarPage = () => {
   // Define the parseEvent function
   const parseEvent = (event: any): CustomCalendarEvent | null => {
     let email = "";
-    let color= "#8796c0";
+    let color = "#8796c0";
     if (event.attendees != null) {
-      console.log(event.attendees[0].email)
+      console.log(event.attendees[0].email);
       email = event.attendees[0].email;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -28,7 +29,7 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email,
+        email: email
       };
     } else if (
       event.start &&
@@ -45,36 +46,42 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email,
+        email: email
       };
     }
     return null; // Return null if neither all-day nor timed event
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/getAllEvents")
-      .then((r) => r.json())
-      .then((data) => {
+    fetch("https://85.215.63.150:8445/getAllEvents")
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })      .then((data) => {
         const googleEvents: CustomCalendarEvent[] = data
           .map(parseEvent) // Use the parseEvent function here
           .filter(Boolean); // Remove null values from the array
 
         setEvents(googleEvents);
       })
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []); // Empty dependency array to run the code only once
+      .catch(error => {
+        console.error("Error fetching data:", error.message);
+      });
+  }, []);
 
   return (
     <div>
       <div className={"Calendar-header"}>
-        <img className={"Image"} src={"/calendarHeaderImage.png"} alt={'header image calendar page'}/>
+        <img className={"Image"} src={"/calendarHeaderImage.png"} alt={"header image calendar page"} />
       </div>
       <div className={"Header-space"}></div>
-      <BurgerMenu/>
-       <CustomCalendar events={events}  />
+      <BurgerMenu />
+      <CustomCalendar events={events} />
     </div>
   );
 
-}
+};
 
 export default CalendarPage;

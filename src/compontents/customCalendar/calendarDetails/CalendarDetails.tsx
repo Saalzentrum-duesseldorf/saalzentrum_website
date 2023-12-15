@@ -97,6 +97,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
           <MenuItem value={"room6"}>Nebenraum 3</MenuItem>
           <MenuItem value={"room7"}>Saal 4</MenuItem>
           <MenuItem value={"room8"}>Nebenraum 4</MenuItem>
+          <MenuItem value={"room9"}>Besprechungsraum 2OG</MenuItem>
         </Select>
       </FormControl>
 
