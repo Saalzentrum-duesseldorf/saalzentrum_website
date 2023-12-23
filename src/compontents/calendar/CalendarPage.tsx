@@ -53,7 +53,7 @@ const CalendarPage = () => {
   };
 
   useEffect(() => {
-    fetch("https://85.215.63.150:8445/getAllEvents")
+    fetch("https://saalzentrum-duesseldorf.de:8445/getAllEvents")
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
