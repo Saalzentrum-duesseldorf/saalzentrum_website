@@ -4,6 +4,7 @@ import { showCollectorDialog } from "../../utils.ts";
 
 function BurgerMenu() {
 
+
   return (
     <div className={'container center burgerMenu'}>
       <nav role="navigation">
@@ -21,7 +22,9 @@ function BurgerMenu() {
             <Link to="/calendar">
               <li>Kalender</li>
             </Link>
-            <Link to="" onClick={showCollectorDialog}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment*/}
+            {/* @ts-ignore*/}
+            <Link onClick={showCollectorDialog}>
               <li>Tickets</li>
             </Link>
           </ul>

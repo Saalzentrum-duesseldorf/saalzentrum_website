@@ -7,6 +7,7 @@ import Impressum from "./compontents/impressum/Impressum.tsx";
 import Datenschutz from "./compontents/datenschutz/Datenschutz.tsx";
 import "jquery";
 import CalendarPage from "./compontents/calendar/CalendarPage.tsx";
+import BurgerMenu from "./compontents/menu/BurgerMenu.tsx";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/datenschutz" element={<Datenschutz />} />
         </Routes>
         <Footer />
+        <BurgerMenu />
       </Router>
   );
 }

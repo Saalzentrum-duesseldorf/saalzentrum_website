@@ -1,4 +1,3 @@
-import BurgerMenu from "../menu/BurgerMenu.tsx";
 import CustomCalendar, { CustomCalendarEvent } from "../customCalendar/CustomCalendar.tsx";
 import { useEffect, useState } from "react";
 import { EmailColor } from "../../utils.ts";
@@ -77,7 +76,6 @@ const CalendarPage = () => {
         <img className={"Image"} src={"/calendarHeaderImage.png"} alt={"header image calendar page"} />
       </div>
       <div className={"Header-space"}></div>
-      <BurgerMenu />
       <CustomCalendar events={events} />
     </div>
   );
