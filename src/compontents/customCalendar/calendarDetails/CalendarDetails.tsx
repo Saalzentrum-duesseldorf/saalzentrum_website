@@ -86,7 +86,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
           id="select-resource"
           label="Raum"
           onChange={handleSelectResource}
-          style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff", color: "white"}}
+          style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff"}}
         >
           <MenuItem value={""}>Kein Raum</MenuItem>
           <MenuItem value={"room1"}>Saal 1</MenuItem>
@@ -98,6 +98,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
           <MenuItem value={"room7"}>Saal 4</MenuItem>
           <MenuItem value={"room8"}>Nebenraum 4</MenuItem>
           <MenuItem value={"room9"}>Besprechungsraum 2OG</MenuItem>
+          <MenuItem value={"other"}>Sonstiges</MenuItem>
         </Select>
       </FormControl>
 

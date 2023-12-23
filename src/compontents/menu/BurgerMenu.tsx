@@ -1,7 +1,9 @@
 import "./BurgerMenu.scss";
 import { Link } from 'react-router-dom';
+import { showCollectorDialog } from "../../utils.ts";
 
 function BurgerMenu() {
+
   return (
     <div className={'container center burgerMenu'}>
       <nav role="navigation">
@@ -19,10 +21,15 @@ function BurgerMenu() {
             <Link to="/calendar">
               <li>Kalender</li>
             </Link>
+            <Link to="" onClick={showCollectorDialog}>
+              <li>Tickets</li>
+            </Link>
           </ul>
         </div>
       </nav>
+
     </div>
+
   );
 }
 

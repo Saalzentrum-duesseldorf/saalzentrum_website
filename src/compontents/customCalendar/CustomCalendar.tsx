@@ -56,10 +56,11 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     0
   ).getDate();
 
-  let dayFromLastMonth = lastDayOfPrevMonth - firstDay + 1;
+  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+  let dayFromLastMonth = lastDayOfPrevMonth - adjustedFirstDay + 1;
 
   // Start the first week with empty days until the first day of the month
-  for (let i = 0; i < firstDay; i++) {
+  for (let i = 0; i < adjustedFirstDay; i++) {
     week.push({ day: dayFromLastMonth++, monthOffset: -1 });
   }
 
@@ -99,11 +100,25 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     setSelectedDateDetails(clickedDateDetails || null);
   };
 
-  function getEventsForDay(day: number): CustomCalendarEvent[] {
+  function getEventsForDay(day: { day: number; monthOffset: number }): CustomCalendarEvent[] {
+
+    if (day.monthOffset != 0) {
+      return props.events.filter((event) =>
+        areDatesEqual(
+          event.date,
+          new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth() + day.monthOffset,
+            day.day
+          )
+        )
+      );
+    }
+
     return props.events.filter((event) =>
       areDatesEqual(
         event.date,
-        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day)
+        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day.day)
       )
     );
   }
@@ -183,7 +198,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                         day: { day: number; monthOffset: number },
                         index: number
                       ) => {
-                        const dayEvents = getEventsForDay(day.day);
+                        const dayEvents = getEventsForDay(day);
                         return (
                           <div
                             key={index}
@@ -270,24 +285,24 @@ const CustomCalendar = (props: CustomCalendarProps) => {
 };
 const WeekDays = () => {
   const weekDays = [
-    "Sonntag",
     "Montag",
     "Dienstag",
     "Mittwoch",
     "Donnerstag",
     "Freitag",
     "Samstag",
+    "Sonntag",
   ];
   return (
     <>
       {weekDays.map((weekDay, index) => (
         <div key={index} className="Calendar-week-day">
-          {" "}
-          {weekDay}{" "}
+          {weekDay}
         </div>
       ))}
     </>
   );
 };
+
 
 export default CustomCalendar;
