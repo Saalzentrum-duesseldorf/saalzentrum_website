@@ -1,13 +1,3 @@
-declare global {
-  interface Window {
-    global: any;
-  }
-}
-
-if (typeof window.global === "undefined") {
-  window.global = window;
-}
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
@@ -16,14 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 //Add password
 
-const  password = "jw.org";
-
-const passwordInput = prompt("Please enter password");
-
-if (passwordInput === password) {
-  ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-}
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);

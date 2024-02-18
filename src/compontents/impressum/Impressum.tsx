@@ -9,7 +9,7 @@ const Impressum = () => {
         <div className={"starterTextHeader"}>Impressum</div>
         <div className={"starterText"}>
           <div className={"headline"}>Betreiber der Website:</div>
-          Dimitrios Kakoulis / Julian Hartz
+          Dimitrios Kakoulis
           <br/>
           <br/>
           <div className={"headline"}>Kontaktdaten:</div>
