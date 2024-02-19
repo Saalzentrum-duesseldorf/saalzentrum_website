@@ -1,5 +1,4 @@
 import "./App.scss";
-import Footer from "./compontents/footer/Footer.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import StartPage from "./compontents/startPage/StartPage.tsx";
@@ -8,6 +7,7 @@ import Datenschutz from "./compontents/datenschutz/Datenschutz.tsx";
 import "jquery";
 import CalendarPage from "./compontents/calendar/CalendarPage.tsx";
 import BurgerMenu from "./compontents/menu/BurgerMenu.tsx";
+import Footer from "./compontents/footer/Footer.tsx";
 
 function App() {
   return (
@@ -18,8 +18,8 @@ function App() {
           <Route path="/impressum" element={<Impressum />} />
           <Route path="/datenschutz" element={<Datenschutz />} />
         </Routes>
-        <Footer />
         <BurgerMenu />
+        <Footer />
       </Router>
   );
 }

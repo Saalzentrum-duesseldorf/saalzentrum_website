@@ -4,6 +4,12 @@ import "./Datenschutz.scss";
 const Datenschutz = () => {
   return (
     <div className={"privacyPolicy"}>
+
+      <div className={"Calendar-header"}>
+        <img className={"Image"} src={"/image_privacyPolicy.png"} alt={"header image calendar page"} />
+      </div>
+      <div className={"Header-space"}></div>
+
     <BurgerMenu />
       <div className={"starterTextBox"}>
         <div className={"starterTextHeader"}>

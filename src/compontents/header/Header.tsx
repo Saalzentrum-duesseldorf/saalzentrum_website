@@ -2,11 +2,13 @@ import './Header.scss';
 
 function Header(){
     return (
+      <>
         <div className="header">
           <span className={'title'}>Saalzentrum Düsseldorf</span>
-          <div className={'image-overlay'}></div>
-           <img className={"image-container"} src={"/saalBild.jpg"} alt={'header image'}/>
+           <img className={"image-container"} src={"/Saal_Comicstyle.jpg"} alt={'header image'}/>
         </div>
+        <div className={"header-space"}></div>
+      </>
     );
 }
 

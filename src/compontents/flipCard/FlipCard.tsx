@@ -16,7 +16,6 @@ function FlipCard() {
         rel="stylesheet"
       />
 
-      <div className={"col-6 cardLeft"}>
         <Link to="/calendar" className="card education">
           <div className="overlay"></div>
           <div className="circle">
@@ -24,17 +23,14 @@ function FlipCard() {
           </div>
           <p>Kalender</p>
         </Link>
-      </div>
-      <div className={"col-6 cardRight"}>
-        <Link className="card education" to={""} onClick={showCollectorDialog}>
 
+        <Link className="card education" to={""} onClick={showCollectorDialog}>
           <div className="overlay"> </div>
           <div className="circle">
             <img src={Pin} className={'svgItem'} alt="Tickets" />
           </div>
           <p>Tickets</p>
         </Link>
-      </div>
     </div>
   );
 }

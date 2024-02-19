@@ -4,6 +4,12 @@ import "./Impressum.scss";
 const Impressum = () => {
   return (
     <div className={"imprint"}>
+
+      <div className={"Calendar-header"}>
+        <img className={"Image"} src={"/image_impressum.png"} alt={"header image calendar page"} />
+      </div>
+      <div className={"Header-space"}></div>
+
       <BurgerMenu />
       <div className={"starterTextBox"}>
         <div className={"starterTextHeader"}>Impressum</div>

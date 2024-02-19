@@ -1,15 +1,41 @@
 .startPage {
   align-content: center;
+  display: flex;
+  flex-direction: column;
+
+
+  .burgerMenu-container {
+    position: absolute;
+    z-index: 1000;
+   margin-top: 96%;
+
+  }
 
   .startPageBody {
     width: 80%;
+    margin: 90vh 5% 200px 17%;
 
-    margin-top: 0;
-    margin-left: 17%;
-    margin-right: 5%;
 
-    .flipCards {
+    .scrollDownBtn {
+      position: fixed; // Or absolute, depending on your layout
+      bottom: 20px; // Distance from the bottom of the viewport
+      left: 50%; // Center the button horizontally
+      transform: translateX(-50%); // Adjust for exact centering
+      padding: 10px 20px;
+      border: none;
+      background-color: #cbd9fd; // Match your site's theme
+      color: #565454;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 1050; // Ensure it's above most other content
+
+      &:hover {
+        background-color: #b60909; // Hover effect
+      }
     }
+
+
 
     .starterTextBox {
       width: 83%;
