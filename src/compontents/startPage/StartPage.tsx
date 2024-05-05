@@ -2,55 +2,18 @@ import Header from "../header/Header.tsx";
 import "./StartPage.scss";
 import FlipCard from "../flipCard/FlipCard.tsx";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
-import { useEffect, useState } from "react";
 
 function StartPage() {
-  const [showScrollBtn, setShowScrollBtn] = useState(true);
-
-  const checkScroll = () => {
-    // Hide button if scrolled more than 50 pixels using window.scrollY for better compatibility
-    if (window.scrollY > 50) {
-      setShowScrollBtn(false);
-    } else {
-      setShowScrollBtn(true);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", checkScroll);
-
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("scroll", checkScroll);
-    };
-  }, []);
-
-  const scrollDown = () => {
-    window.scrollTo({
-      top: document.documentElement.clientHeight,
-      behavior: "smooth",
-    });
-  };
-
   return (
     <div className={"startPage"}>
       <Header />
-
 
       <div className={"burgerMenu-container"}>
         <BurgerMenu />
       </div>
 
-
       <div className={"startPageBody"}>
-
         <FlipCard />
-
-        {showScrollBtn && (
-          <button className="scrollDownBtn" onClick={scrollDown}>
-            ↓ Scroll Down
-          </button>
-        )}
 
         <div className={"starterTextBox"}>
           <div className={"starterTextHeader"}>

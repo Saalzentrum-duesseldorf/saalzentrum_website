@@ -19,7 +19,7 @@
   }
 
   .Header-space {
-    height: 24vh; // Same height as the header image
+    height: 70vh; // Same height as the header image
     width: 100%;
   }
 
@@ -28,6 +28,7 @@
     position: absolute;
     z-index: 1000;
     top: 30vh;
+    left: 0;
   }
 
   .Footer-space {

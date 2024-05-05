@@ -6,31 +6,13 @@
   .burgerMenu-container {
     position: absolute;
     z-index: 1000;
-    margin-top:50vh;
+    margin-top: 70vh;
   }
 
   .startPageBody {
     width: 80%;
-    margin: 55vh 5% 200px 17%;
+    margin: 75vh 5% 200px 17%;
 
-    .scrollDownBtn {
-      position: fixed; // Or absolute, depending on your layout
-      bottom: 20px; // Distance from the bottom of the viewport
-      left: 50%; // Center the button horizontally
-      transform: translateX(-50%); // Adjust for exact centering
-      padding: 10px 20px;
-      border: none;
-      background-color: #cbd9fd; // Match your site's theme
-      color: #565454;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-      z-index: 1050; // Ensure it's above most other content
-
-      &:hover {
-        background-color: #b60909; // Hover effect
-      }
-    }
 
     .starterTextBox {
       width: 83%;
