@@ -1,39 +1,56 @@
 .imprint {
   padding-left: 15%;
 
-  padding-bottom: 11%;
-
   .headline {
     font-weight: bold;
     color: #575757;
   }
 
-  .starterTextBox {
-    margin-top: 200px;
-    width: 83%;
-    background-color: #cddbff;
-    border-radius: 20px;
-    padding: 10px;
-
-
-
-    .starterTextHeader {
-      padding: 5px;
-      font-weight: bold;
-      color: #575757;
-    }
-
-    .starterText {
+  .Imprint-Body {
+    .starterTextBox {
+      margin-top: 200px;
+      width: 83%;
+      background-color: #cddbff;
+      border-radius: 20px;
       padding: 10px;
+
+      .starterTextHeader {
+        padding: 5px;
+        font-weight: bold;
+        color: #575757;
+      }
+
+      .starterText {
+        padding: 10px;
+      }
     }
   }
 
+  .burgerMenu-container {
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    top: 30vh;
+  }
+
+  .Calendar-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; // Ensure the container takes full width
+
+    .Image {
+      background-size: cover;
+      width: 100%;
+      height: 400px; // Example fixed height, or you can use something like '50vh'
+      object-fit: cover;
+      object-position: center; // Adjust as needed
+    }
+  }
 
   .Header-space {
-    height: 400px; // Example fixed height, or you can use something like '50vh'
+    height: 26vh; // Example fixed height, or you can use something like '50vh'
     width: 100%;
     margin-bottom: 20px;
   }
-
-
 }

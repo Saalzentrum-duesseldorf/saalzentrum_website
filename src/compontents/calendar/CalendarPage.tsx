@@ -1,10 +1,12 @@
-import CustomCalendar, { CustomCalendarEvent } from "../customCalendar/CustomCalendar.tsx";
+import CustomCalendar, {
+  CustomCalendarEvent,
+} from "../customCalendar/CustomCalendar.tsx";
 import { useEffect, useState } from "react";
 import { EmailColor } from "../../utils.ts";
 import "./CalendarPage.scss";
+import BurgerMenu from "../menu/BurgerMenu.tsx";
 
 const CalendarPage = () => {
-
   const [events, setEvents] = useState<CustomCalendarEvent[]>([]);
 
   // Define the parseEvent function
@@ -28,7 +30,7 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email
+        email: email,
       };
     } else if (
       event.start &&
@@ -45,7 +47,7 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email
+        email: email,
       };
     }
     return null; // Return null if neither all-day nor timed event
@@ -53,33 +55,41 @@ const CalendarPage = () => {
 
   useEffect(() => {
     fetch("https://saalzentrum-duesseldorf.de:8445/getAllEvents")
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
-      })      .then((data) => {
+      })
+      .then((data) => {
         const googleEvents: CustomCalendarEvent[] = data
           .map(parseEvent) // Use the parseEvent function here
           .filter(Boolean); // Remove null values from the array
 
         setEvents(googleEvents);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching data:", error.message);
       });
   }, []);
 
   return (
-    <div>
+    <div className={"Calendar-Page"}>
       <div className={"Calendar-header"}>
-        <img className={"Image"} src={"/calendarHeaderImage.png"} alt={"header image calendar page"} />
+        <img
+          className={"Image"}
+          src={"/calendarHeaderImage.png"}
+          alt={"header image calendar page"}
+        />
       </div>
       <div className={"Header-space"}></div>
-      <CustomCalendar events={events} />
+      <div className={"burgerMenu-container"}><BurgerMenu/></div>
+      <div className={"CustomCalendar-container"}>
+        <CustomCalendar events={events} />
+      </div>
+      <div className={"Footer-space"}></div>
     </div>
   );
-
 };
 
 export default CalendarPage;

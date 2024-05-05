@@ -21,8 +21,32 @@
     }
   }
 
+  .burgerMenu-container {
+    position: absolute;
+    z-index: 1000;
+    left: 0;
+    top: 30vh;
+  }
+
+  .Calendar-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; // Ensure the container takes full width
+
+    .Image {
+      background-size: cover;
+      width: 100%;
+      height: 400px; // Example fixed height, or you can use something like '50vh'
+      object-fit: cover;
+      object-position: center; // Adjust as needed
+    }
+  }
+
+
   .Header-space {
-    height: 400px; // Example fixed height, or you can use something like '50vh'
+    height: 340px; // Example fixed height, or you can use something like '50vh'
+    height: 340px; // Example fixed height, or you can use something like '50vh'
     width: 100%;
     margin-bottom: 20px;
   }

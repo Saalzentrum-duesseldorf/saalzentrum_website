@@ -1,18 +1,21 @@
-
+// Footer.scss
 .footer {
-  position: relative;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  flex-shrink: 0; // Prevent the footer from shrinking
 
-  text-align: center;
+  bottom: 0; // Align to the bottom
+  left: 0; // Stretch across the left
+  right: 0; // Stretch across the right
+  width: 100%; // Full width
+  text-align: center; // Center the text
+  background-color: #f8f9fa; // Matches bg-light class
+  z-index: 1000; // Ensure it's on top if overlapping issues occur
 
   a {
-    color: inherit;
+    color: inherit; // Link color inherits from parent
+    text-decoration: none; // No underline
+    &:hover {
+      text-decoration: underline; // Only underline on hover
+    }
   }
 }
 
-.footer-space {
-  height: 75px;
-  width: 100%;
-}

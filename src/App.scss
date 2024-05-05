@@ -1,5 +1,4 @@
 #root {
-  font-family: "Avenir Next", "Avenir", sans-serif;
   margin: 0 auto;
   text-align: center;
 
@@ -12,6 +11,20 @@
     background-color: #6464ce;
   }
 
+  .site-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; // Full viewport height
+  }
+
+  .content-wrap {
+    flex: 1 0 auto; // This will push the footer down
+  }
+
+}
+
+body {
+  display: inherit;
 }
 
 

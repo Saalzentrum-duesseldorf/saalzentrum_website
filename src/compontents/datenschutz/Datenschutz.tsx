@@ -10,7 +10,7 @@ const Datenschutz = () => {
       </div>
       <div className={"Header-space"}></div>
 
-    <BurgerMenu />
+      <div className={"burgerMenu-container"}><BurgerMenu /></div>
       <div className={"starterTextBox"}>
         <div className={"starterTextHeader"}>
           Datenschutzerklärung

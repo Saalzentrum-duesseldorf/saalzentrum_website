@@ -1,16 +1,20 @@
 .Calendar {
-  top: 0;
-  left: 0;
+
   width: 100%;
   margin: 0 0 50px;
   height: 100%;
+  position: relative;
+  top: 20px;
+  left: 0;
+
 
   .Calendar-header-container {
-    display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
     align-content: center;
+    flex: 0 0 auto; // This ensures the fixed top doesn't grow or shrink
+    // Add any styles for the fixed top part of the calendar
 
     .Calendar-header-title {
       font-size: 40px;
@@ -52,7 +56,6 @@
   }
 
   .Calendar-Grid-Container {
-
     border: 6px solid #4b5782;
     border-radius: 10px;
     margin-top: 10px;
