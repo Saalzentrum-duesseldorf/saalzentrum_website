@@ -1,13 +1,4 @@
 .Calendar {
-
-  width: 100%;
-  margin: 0 0 50px;
-  height: 100%;
-  position: relative;
-  top: 20px;
-  left: 0;
-
-
   .Calendar-header-container {
     align-items: center;
     justify-content: center;
@@ -20,6 +11,7 @@
       font-size: 40px;
       margin-bottom: 16px;
       color: #8a8a8a;
+      z-index: 100;
     }
   }
 
@@ -82,11 +74,9 @@
 
       font-size: 18px;
       padding: 16px;
-
     }
 
     .Calendar-day {
-
       width: 160px;
       height: 190px;
       display: flex;

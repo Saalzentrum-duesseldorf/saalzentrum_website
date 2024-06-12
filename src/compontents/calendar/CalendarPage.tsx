@@ -87,7 +87,6 @@ const CalendarPage = () => {
       <div className={"CustomCalendar-container"}>
         <CustomCalendar events={events} />
       </div>
-      <div className={"Footer-space"}></div>
     </div>
   );
 };
