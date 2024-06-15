@@ -1,0 +1,95 @@
+.mobile-calendar-details {
+
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  overflow-y: auto; // Enables vertical scrolling if needed
+  overflow-x: hidden; // Hides horizontal scrollbar
+
+  // Scrollbar styles
+  &::-webkit-scrollbar {
+
+    display: none; // Hides scrollbar
+
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    display: none; // Hides scrollbar
+
+    background: #f1f1f1;
+    border-radius: 10px;
+
+  }
+
+  &::-webkit-scrollbar-thumb {
+    display: none; // Hides scrollbar
+
+    background: #4b5782;
+    border-radius: 10px;
+
+    &:hover {
+      background: #a1a1a1;
+    }
+  }
+
+
+  .all-day-section {
+    
+    background-color: #4b5782;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    color: #ffffff;
+
+
+    .all-day-event {
+      border-radius: 6px;
+      border: 2px solid #4b5782;
+    }
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+
+    .hour-block {
+      display: flex; /* Add flex display to the hour block */
+      align-items: stretch;
+      height: 40px; /* Or however tall you want each hour block to be */
+      border-bottom: 1px solid #ccc;
+
+      &:hover {
+        background-color: #f8f6f6;
+      }
+
+      .hour-label {
+        flex: 0 0 45px; /* This will give a fixed width of 40px to the hour label */
+        display: flex;
+        align-items: center; /* Vertically center the hour text */
+        justify-content: center; /* Horizontally center the hour text */
+        border-right: 1px solid #cccccc;
+        
+      }
+
+      .time-slots {
+        position: relative;
+        left: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+
+        .event {
+          border-radius: 6px;
+          position: absolute;
+          left: 0;
+          right: 0;
+          height: 30px;
+          width: 50%;
+          background-color: red;
+          border: 1px solid rgb(255, 255, 255);
+
+        }
+      }
+    }
+  }
+}

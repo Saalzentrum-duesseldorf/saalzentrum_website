@@ -1,12 +1,4 @@
-import "./CalendarDetails.scss";
-import { CustomCalendarEvent } from "../CustomCalendar.tsx";
-import {
-  containsAllDayEvent,
-  findRoomByEmail, getEventHeight, getEventsForHour, getEventTopPosition,
-  getOverlappingEvents,
-  parseDateToStringWithWrittenOutMonth, prettifyRoomKey,
-  Resources
-} from "../../../utils.ts";
+import "./MobileCalendarDetails.scss";
 import {
   FormControl,
   InputLabel,
@@ -15,13 +7,22 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
+import {
+  containsAllDayEvent,
+  findRoomByEmail, getEventHeight, getEventsForHour, getEventTopPosition,
+  getOverlappingEvents,
+  prettifyRoomKey, Resources
+} from "../../../utils.ts";
+import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
   day: Date;
 }
 
-const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
+const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
+
+
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
     const resourceEmail = (Resources as never)[resource]; // Type assertion here
     const result = events?.filter((event) => event.email === resourceEmail);
@@ -38,14 +39,12 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-
   const handleSelectResource = (event: SelectChangeEvent) => {
     setResource(event.target.value as string);
   };
 
   return (
-    <div className="calendar-details">
-      <div className={"calendar-details-header"}>{parseDateToStringWithWrittenOutMonth(day)}</div>
+    <div className="mobile-calendar-details">
 
       <FormControl size="small" style={{backgroundColor: "#4b5782", color: "white"}}>
         <InputLabel id="select-resource-lable" style={{fontSize: 13}}>Raum wählen</InputLabel>
@@ -131,4 +130,4 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
   );
 };
 
-export default CalendarDetails;
+export default MobileCalendarDetails;

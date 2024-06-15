@@ -2,7 +2,6 @@ import "./CustomCalendar.scss";
 import { useEffect, useState } from "react";
 import { Col, Row, Container, Button } from "reactstrap";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
@@ -100,8 +99,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     setSelectedDateDetails(clickedDateDetails || null);
   };
 
-  function getEventsForDay(day: { day: number; monthOffset: number }): CustomCalendarEvent[] {
-
+  function getEventsForDay(day: {
+    day: number;
+    monthOffset: number;
+  }): CustomCalendarEvent[] {
     if (day.monthOffset != 0) {
       return props.events.filter((event) =>
         areDatesEqual(
@@ -138,22 +139,19 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   return (
     <div className={"Calendar"}>
       <Container>
-        <Row className={'Calendar-header-container'}>
-            <Col className={"Calendar-button-container"} md={1}>
-              <Button
-                className={"Calendar-button Calendar-button-left"}
-                onClick={() =>
-                  setCurrentMonth(
-                    new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
-                  )
-                }
-              >
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  style={{ fontSize: 25 }}
-                />
-              </Button>
-            </Col>
+        <Row className={"Calendar-header-container"}>
+          <Col className={"Calendar-button-container"} md={1}>
+            <Button
+              className={"Calendar-button Calendar-button-left"}
+              onClick={() =>
+                setCurrentMonth(
+                  new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
+                )
+              }
+            >
+              <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: 25 }} />
+            </Button>
+          </Col>
           <Col md={3}>
             <h1 className="Calendar-header-title">
               {currentMonth.toLocaleString("default", { month: "long" })}{" "}
@@ -303,6 +301,5 @@ const WeekDays = () => {
     </>
   );
 };
-
 
 export default CustomCalendar;

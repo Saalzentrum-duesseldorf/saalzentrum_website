@@ -1,41 +1,47 @@
 .Calendar-Page {
 
   .Calendar-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%; // Ensure the container takes full width
-
+    position: relative;
+    width: 100%; // Full width
     .Image {
       width: 100%;
-      height: 400px; // Example fixed height, or you can use something like '50vh'
+      height: 400px; // Fixed height, can adjust to '50vh' for half viewport height
       object-fit: cover;
-      object-position: center; // Adjust as needed
+      object-position: center;
     }
-  }
-
-  .Header-space {
-    height: 28vh; // Same height as the header image
-    width: 100%;
   }
 
   .burgerMenu-container {
     position: absolute;
     z-index: 1000;
-    top: 30vh;
-    left: 0;
+    top: 33vh;
   }
 
   .CustomCalendar-container {
-    margin-top: 120px; // Ensure the calendar starts below the header
-    flex-grow: 1; // Take available space
+    margin-top: 60px;
+    flex-grow: 1;
     margin-bottom: 8vh;
   }
 
+
 }
 
-body {
-  display: inherit !important;
+// Media query for mobile devices
+@media (max-width: 576px) {
+  .Calendar-Page {
+    display: none; // Hide the desktop calendar page on mobile devices
+  }
+
+  .Calendar-Page-Mobile {
+    display: block; // Only show this div on mobile devices
+    background-color: #f8f9fa; // Example background color
+    text-align: center; // Center the text
+  }
 }
 
-
+// Media query for devices wider than 576px
+@media (min-width: 577px) {
+  .Calendar-Page-Mobile {
+    display: none; // Hide the mobile test div on desktops and larger devices
+  }
+}

@@ -72,6 +72,24 @@ export enum Resources {
   "other" = "sonstiges@saalzentrum-duesseldorf.de"
 }
 
+
+// Function to find room key by email
+export function findRoomByEmail(email?: string): string {
+  for (const roomKey in Resources) {
+    if (Resources[roomKey as keyof typeof Resources] === email) {
+      return roomKey; // Returns 'room1', 'room2', ..., 'other'
+    }
+  }
+  return "Unknown"; // Fallback if no email matches
+}
+
+// Function to prettify the room key
+export function prettifyRoomKey(roomKey: string): string {
+  const numberMatch = roomKey.match(/\d+/); // Extracts the number part, if present
+  const roomNumber = numberMatch ? ` ${numberMatch[0]}` : '';
+  return `Room${roomNumber}`;
+}
+
 export enum EmailColor {
   "saal1@saalzentrum-duesseldorf.de" = "#96ac83",
   "nebensaal1b@saalzentrum-duesseldorf.de" =   "#c6cbdd",
@@ -84,6 +102,45 @@ export enum EmailColor {
   "besprechungsraum2og@saalzentrum-duesseldorf.de" = "#e29eea",
   "sonstiges@saalzentrum-duesseldorf.de" = "#4d7946"
 
+}
+
+export function getEventHeight(event: CustomCalendarEvent): number {
+  if (event.dateFrom && event.dateTo) {
+    const durationInHours =
+      (event.dateTo.getTime() - event.dateFrom.getTime()) / (1000 * 60 * 60);
+    return durationInHours * 40; // 40px ist die Höhe eines hour-blocks
+  }
+  return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
+}
+
+export function getEventTopPosition(event: CustomCalendarEvent): number {
+  if (event.dateFrom) {
+    return (event.dateFrom.getMinutes() / 60) * 40; // 40px ist die Höhe eines hour-blocks
+  }
+  return 0;
+}
+
+export function getEventsForHour(
+  hour: number,
+  events: CustomCalendarEvent[] | null
+): CustomCalendarEvent[] {
+  if (!events) return [];
+  return events.filter((event) => {
+    if (event.isAllDay) return false; // Exclude all-day events
+    const eventStartHour = event.dateFrom?.getHours();
+    return eventStartHour === hour;
+  });
+}
+
+export function containsAllDayEvent(events: CustomCalendarEvent[] | null): boolean {
+  if (events) {
+    for (const element of events) {
+      if (element.isAllDay) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export function showCollectorDialog() {

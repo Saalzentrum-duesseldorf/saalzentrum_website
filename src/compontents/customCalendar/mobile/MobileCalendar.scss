@@ -1,0 +1,116 @@
+
+.burgerMenu {
+  position: relative;
+  left: 0;
+  z-index: 1000;
+
+  #menuToggle {
+    display: block;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+
+    z-index: 1;
+
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.mobile-calendar-details-header {
+  font-size: 20px;
+  background: #4c5883;
+  color: #ffffff;
+  padding: 10px;
+}
+
+.calendar-toggle {
+  background: none;
+  border: none;
+  color: inherit; // Make the button blend into the header
+  cursor: pointer;
+  font-size: 18px; // Adjust to fit your design
+  padding: 0 10px; // Padding for clickable area
+}
+
+.calendar-toggle-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
+  font-size: 12px;
+}
+
+.calendar-toggle.open .calendar-toggle-icon {
+  transform: rotate(180deg); // Rotate icon when calendar is visible
+}
+
+.mobile-calendar-details-entering,
+.mobile-calendar-details-exiting {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  will-change: transform, opacity; /* Optimizing for transform and opacity changes */
+}
+
+.mobile-calendar-details-enter-from-left {
+  animation: slideInFromLeft 0.3s forwards;
+}
+
+.mobile-calendar-details-exit-to-right {
+  animation: slideOutToRight 0.3s forwards;
+}
+
+.mobile-calendar-details-enter-from-right {
+  animation: slideInFromRight 0.3s forwards;
+}
+
+.mobile-calendar-details-exit-to-left {
+  animation: slideOutToLeft 0.3s forwards;
+}

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { EmailColor } from "../../utils.ts";
 import "./CalendarPage.scss";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
+import MobileCalendar from "../customCalendar/mobile/MobileCalendar.tsx";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<CustomCalendarEvent[]>([]);
@@ -74,20 +75,27 @@ const CalendarPage = () => {
   }, []);
 
   return (
-    <div className={"Calendar-Page"}>
-      <div className={"Calendar-header"}>
-        <img
-          className={"Image"}
-          src={"/calendarHeaderImage.png"}
-          alt={"header image calendar page"}
-        />
+    <>
+      <div className={"Calendar-Page"}>
+        <div className={"Calendar-header"}>
+          <img
+            className={"Image"}
+            src={"/calendarHeaderImage.png"}
+            alt={"header image calendar page"}
+          />
+        </div>
+        <div className={"burgerMenu-container"}>
+          <BurgerMenu />
+        </div>
+        <div className={"CustomCalendar-container"}>
+          <CustomCalendar events={events} />
+        </div>
       </div>
-      <div className={"Header-space"}></div>
-      <div className={"burgerMenu-container"}><BurgerMenu/></div>
-      <div className={"CustomCalendar-container"}>
-        <CustomCalendar events={events} />
+
+      <div className={"Calendar-Page-Mobile"}>
+        <MobileCalendar events={events}/>
       </div>
-    </div>
+    </>
   );
 };
 
