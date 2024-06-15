@@ -7,12 +7,22 @@
     position: absolute;
     z-index: 1000;
     margin-top: 50vh;
+
+    @media (max-width: 577px) {
+      margin-top: 30vh;
+    }
   }
 
   .startPageBody {
     width: 80%;
-    margin: 55vh 5% 200px 17%;
 
+    @media (min-width: 577px) {
+      margin: 55vh 5% 200px 17%;
+    }
+
+    @media (max-width: 577px) {
+      margin: 35vh 5% 200px 17%;
+    }
 
     .starterTextBox {
       width: 83%;
@@ -20,6 +30,7 @@
       background-color: #cddbff;
       border-radius: 20px;
       padding: 10px;
+
 
       .starterTextHeader {
         padding: 5px;

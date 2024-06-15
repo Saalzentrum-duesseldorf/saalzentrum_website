@@ -33,6 +33,7 @@ const MobileCalendar = (props: CustomCalendarProps) => {
     preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
+
   const updateEventsForDay = (day: Date) => {
     const eventsForDay = props.events.filter((event) =>
       areDatesEqual(event.date, day)
@@ -41,8 +42,11 @@ const MobileCalendar = (props: CustomCalendarProps) => {
   };
 
   useEffect(() => {
-    updateEventsForDay(new Date()); // Initially call with today's date
-  }, [props.events]);
+    if (props.events.length > 0) {
+      updateEventsForDay(currentDay); // Only call on significant changes
+    }
+  }, [props.events, currentDay]); // Ensure dependencies are correctly listed
+
 
   const updateDay = (offset: number) => {
     requestAnimationFrame(() => {
@@ -65,7 +69,7 @@ const MobileCalendar = (props: CustomCalendarProps) => {
 
 
   return (
-    <div {...swipeHandlers} className="Mobile-Calendar">
+    <div {...swipeHandlers} className="mobile-calendar">
 
       <div className={transitionClass} onTransitionEnd={() => setTransitionClass("")}>
         <div className="mobile-calendar-details-header">

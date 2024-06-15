@@ -6,9 +6,14 @@
   left: 0; // Stretch across the left
   right: 0; // Stretch across the right
   width: 100%; // Full width
-  text-align: center; // Center the text
   background-color: #f8f9fa; // Matches bg-light class
   z-index: 1000; // Ensure it's on top if overlapping issues occur
+
+  @media (max-width: 577px) {
+    li {
+      margin-top: 10px;
+   }
+  }
 
   a {
     color: inherit; // Link color inherits from parent

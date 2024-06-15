@@ -2,11 +2,13 @@ import Header from "../header/Header.tsx";
 import "./StartPage.scss";
 import FlipCard from "../flipCard/FlipCard.tsx";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
+import MobileHeader from "../header/MobileHeader.tsx";
 
 function StartPage() {
   return (
     <div className={"startPage"}>
       <Header />
+      <MobileHeader />
 
       <div className={"burgerMenu-container"}>
         <BurgerMenu />

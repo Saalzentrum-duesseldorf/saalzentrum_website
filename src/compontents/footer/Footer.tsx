@@ -8,7 +8,7 @@ const Footer = () => {
         <div className=" bg-light py-4">
           <div className="container text-center">
             <div className={"footer-row row text-center"}>
-              <div className={" col-md-6 text-muted"}>
+              <div className={"col-md-6 text-muted"}>
                 <Link to="/impressum">
                   <li>Impressum</li>
                 </Link>
