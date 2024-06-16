@@ -103,26 +103,17 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     day: number;
     monthOffset: number;
   }): CustomCalendarEvent[] {
-    if (day.monthOffset != 0) {
-      return props.events.filter((event) =>
-        areDatesEqual(
-          event.date,
-          new Date(
-            currentMonth.getFullYear(),
-            currentMonth.getMonth() + day.monthOffset,
-            day.day
-          )
-        )
-      );
-    }
-
-    return props.events.filter((event) =>
-      areDatesEqual(
-        event.date,
-        new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day.day)
-      )
+    const dateToCompare = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth() + day.monthOffset,
+      day.day
     );
+
+    return props.events.filter(event =>
+      areDatesEqual(event.date, dateToCompare)
+    ).sort((a, b) => a.name.localeCompare(b.name)); // Sort events alphabetically by name
   }
+
 
   useEffect(() => {
     const today = new Date();

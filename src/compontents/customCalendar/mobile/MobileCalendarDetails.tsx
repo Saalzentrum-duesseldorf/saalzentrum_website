@@ -113,7 +113,7 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
 
             <div className="time-slots">
               {getEventsForHour(hour, events).map((event) => {
-                const overlappingEvents = getOverlappingEvents(event, events);
+                const overlappingEvents = getOverlappingEvents(event, events).sort((a, b) => a.name.localeCompare(b.name));
 
                 const eventWidthPercentage = 100 / overlappingEvents.length;
                 const positionIndex = overlappingEvents.findIndex(
