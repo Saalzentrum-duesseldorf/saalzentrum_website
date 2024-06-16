@@ -96,6 +96,7 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
                 className={"all-day-event"}
                 key={event.name}
                 style={{ background: event.color }}
+                onClick={(e) => handleEventClick(e, event)}
               >
                 {event.name}
               </div>
