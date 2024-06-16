@@ -3,31 +3,40 @@ import 'react-calendar/dist/Calendar.css'; // default styles
 import './DropdownCalendar.scss';
 import { useSwipeable } from 'react-swipeable';
 
-const DropdownCalendar = ({ onSelectDate, visible, value  }) => {
+interface DropdownCalendarProps {
+  onSelectDate: any;
+  visible: boolean;
+  value: Date;
+}
+
+const DropdownCalendar = (props: DropdownCalendarProps) => {
+
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (visible) { // Only react to swipes if the calendar is visible
-        const nextMonth = new Date(value.getFullYear(), value.getMonth() + 1);
-        onSelectDate(nextMonth);
+      if (props.visible) { // Only react to swipes if the calendar is visible
+        const nextMonth = new Date(props.value.getFullYear(), props.value.getMonth() + 1);
+        props.onSelectDate(nextMonth);
       }
     },
     onSwipedRight: () => {
-      if (visible) {
-        const prevMonth = new Date(value.getFullYear(), value.getMonth() - 1);
-        onSelectDate(prevMonth);
+      if (props.visible) {
+        const prevMonth = new Date(props.value.getFullYear(), props.value.getMonth() - 1);
+        props.onSelectDate(prevMonth);
       }
     },
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: true
+    trackTouch: true,
+    trackMouse: true,
+    // @ts-ignore
+    preventDefaultTouch: true  // This might be the correct replacement
   });
 
   return (
     <div className="dropdown-calendar-container" {...handlers}>
-      {visible && (
+      {props.visible && (
         <Calendar
-          onChange={onSelectDate}
-          value={value}
+          onChange={props.onSelectDate}
+          value={props.value}
           maxDetail="month"
           className="react-calendar"
         />

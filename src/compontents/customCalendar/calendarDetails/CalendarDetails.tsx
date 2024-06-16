@@ -2,9 +2,9 @@ import "./CalendarDetails.scss";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 import {
   containsAllDayEvent,
-  findRoomByEmail, getEventHeight, getEventsForHour, getEventTopPosition,
+   getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
-  parseDateToStringWithWrittenOutMonth, prettifyRoomKey,
+  parseDateToStringWithWrittenOutMonth,
   Resources
 } from "../../../utils.ts";
 import {
@@ -14,7 +14,9 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
+import EventPopover from "./EventPopover.tsx";
+
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
@@ -22,6 +24,9 @@ export interface CalendarDetailsProps {
 }
 
 const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
+
+  const [currentResource, setResource] = useState<string>("");
+
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
     const resourceEmail = (Resources as never)[resource]; // Type assertion here
     const result = events?.filter((event) => event.email === resourceEmail);
@@ -32,11 +37,25 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
     return events;
   };
 
-  const [currentResource, setResource] = useState<string>("");
 
   events = filterEvents(currentResource);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<CustomCalendarEvent | null>(null);
+
+  const handleEventClick = (event: React.MouseEvent<HTMLElement>, eventData: CustomCalendarEvent) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedEvent(eventData);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedEvent(null);
+  };
+
+  const open = Boolean(anchorEl);
 
 
   const handleSelectResource = (event: SelectChangeEvent) => {
@@ -81,6 +100,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
                 className={"all-day-event"}
                 key={event.name}
                 style={{ background: event.color }}
+                onClick={(e) => handleEventClick(e, event)}
               >
                 {event.name}
               </div>
@@ -93,9 +113,9 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
       <div className="timeline">
         {hours.map((hour) => (
           <div className="hour-block" key={hour}>
-            <div className="hour-label">{hour}:00</div>
+            <div className="hour-label">{hour} </div>
 
-            <div className="time-slots">
+            <div className="time-slots"  >
               {getEventsForHour(hour, events).map((event) => {
                 const overlappingEvents = getOverlappingEvents(event, events);
 
@@ -105,6 +125,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
                 );
 
                 return (
+                  <>
                   <div
                     className="event"
                     key={event.name}
@@ -114,19 +135,27 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
                       height: `${getEventHeight(event)}px`,
                       width: `${eventWidthPercentage}%`,
                       left: `${eventWidthPercentage * positionIndex}%`,
+                      whiteSpace: 'nowrap',  // Fügt hinzu, dass der Text nicht umbrechen soll
+                      overflow: 'hidden',    // Versteckt Text, der über den Container hinausgeht
+                      textOverflow: 'ellipsis' // Fügt "..." am Ende des Textes ein, falls er abgeschnitten wird
                     }}
+                    onClick={(e) => handleEventClick(e, event)}
                   >
                     {event.name}
-                    <br/>
-                    {prettifyRoomKey(findRoomByEmail(event.email))}
+                    {/*<br/>*/}
+                    {/*{prettifyRoomKey(findRoomByEmail(event.email))}*/}
 
                   </div>
+                  </>
                 );
               })}
             </div>
           </div>
         ))}
       </div>
+
+      <EventPopover event={selectedEvent} anchorEl={anchorEl} open={open} onClose={handleClose} />
+
     </div>
   );
 };

@@ -63,12 +63,14 @@
       }
 
       .hour-label {
-        flex: 0 0 45px; /* This will give a fixed width of 40px to the hour label */
+        flex: 0 0 30px; /* This will give a fixed width of 40px to the hour label */
         display: flex;
-        align-items: center; /* Vertically center the hour text */
-        justify-content: center; /* Horizontally center the hour text */
+        align-content: start; /* Vertically center the hour text */
+        justify-content: start; /* Horizontally center the hour text */
         border-right: 1px solid #cccccc;
-        
+        padding-left: 5px;
+        font-size: 14px;
+        color: rgb(138, 138, 138);
       }
 
       .time-slots {

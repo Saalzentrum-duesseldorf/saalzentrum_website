@@ -6,14 +6,15 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   containsAllDayEvent,
-  findRoomByEmail, getEventHeight, getEventsForHour, getEventTopPosition,
+   getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
-  prettifyRoomKey, Resources
+   Resources
 } from "../../../utils.ts";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
+import EventPopover from "../calendarDetails/EventPopover.tsx";
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
@@ -42,6 +43,21 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
   const handleSelectResource = (event: SelectChangeEvent) => {
     setResource(event.target.value as string);
   };
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<CustomCalendarEvent | null>(null);
+
+  const handleEventClick = (event: React.MouseEvent<HTMLElement>, eventData: CustomCalendarEvent) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedEvent(eventData);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setSelectedEvent(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
     <div className="mobile-calendar-details">
@@ -92,7 +108,7 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
       <div className="timeline">
         {hours.map((hour) => (
           <div className="hour-block" key={hour}>
-            <div className="hour-label">{hour}:00</div>
+            <div className="hour-label">{hour}</div>
 
             <div className="time-slots">
               {getEventsForHour(hour, events).map((event) => {
@@ -113,11 +129,15 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
                       height: `${getEventHeight(event)}px`,
                       width: `${eventWidthPercentage}%`,
                       left: `${eventWidthPercentage * positionIndex}%`,
+                      whiteSpace: 'nowrap',  // Fügt hinzu, dass der Text nicht umbrechen soll
+                      overflow: 'hidden',    // Versteckt Text, der über den Container hinausgeht
+                      textOverflow: 'ellipsis' // Fügt "..." am Ende des Textes ein, falls er abgeschnitten wird
                     }}
+                    onClick={(e) => handleEventClick(e, event)}
                   >
                     {event.name}
-                    <br/>
-                    {prettifyRoomKey(findRoomByEmail(event.email))}
+                    {/*<br/>*/}
+                    {/*{prettifyRoomKey(findRoomByEmail(event.email))}*/}
 
                   </div>
                 );
@@ -126,6 +146,8 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
           </div>
         ))}
       </div>
+      <EventPopover event={selectedEvent} anchorEl={anchorEl} open={open} onClose={handleClose} />
+
     </div>
   );
 };

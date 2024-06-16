@@ -61,13 +61,13 @@ export function getOverlappingEvents(
 
 export enum Resources {
   "room1" = "saal1@saalzentrum-duesseldorf.de",
-  "room2" = "nebensaal1b@saalzentrum-duesseldorf.de",
+  "room2" = "nebensaal1@saalzentrum-duesseldorf.de",
   "room3" = "saal2@saalzentrum-duesseldorf.de",
-  "room4" = "nebensaal2b@saalzentrum-duesseldorf.de",
+  "room4" = "nebensaal2@saalzentrum-duesseldorf.de",
   "room5" = "saal3@saalzentrum-duesseldorf.de",
-  "room6" = "nebensaal3b@saalzentrum-duesseldorf.de",
+  "room6" = "nebensaal3@saalzentrum-duesseldorf.de",
   "room7" = "saal4@saalzentrum-duesseldorf.de",
-  "room8" = "nebensaal4b@saalzentrum-duesseldorf.de",
+  "room8" = "nebensaal4@saalzentrum-duesseldorf.de",
   "room9" = "besprechungsraum2og@saalzentrum-duesseldorf.de",
   "other" = "sonstiges@saalzentrum-duesseldorf.de"
 }
@@ -87,18 +87,18 @@ export function findRoomByEmail(email?: string): string {
 export function prettifyRoomKey(roomKey: string): string {
   const numberMatch = roomKey.match(/\d+/); // Extracts the number part, if present
   const roomNumber = numberMatch ? ` ${numberMatch[0]}` : '';
-  return `Room${roomNumber}`;
+  return `Raum${roomNumber}`;
 }
 
 export enum EmailColor {
   "saal1@saalzentrum-duesseldorf.de" = "#96ac83",
-  "nebensaal1b@saalzentrum-duesseldorf.de" =   "#c6cbdd",
+  "nebensaal1@saalzentrum-duesseldorf.de" =   "#c6cbdd",
   "saal2@saalzentrum-duesseldorf.de" = "#d8715c",
-  "nebensaal2b@saalzentrum-duesseldorf.de" = "#8c7e77",
+  "nebensaal2@saalzentrum-duesseldorf.de" = "#8c7e77",
   "saal3@saalzentrum-duesseldorf.de" = "#667f7c",
-  "nebensaal3b@saalzentrum-duesseldorf.de" = "#6471a2",
+  "nebensaal3@saalzentrum-duesseldorf.de" = "#6471a2",
   "saal4@saalzentrum-duesseldorf.de" = "#d7d7d7",
-  "nebensaal4b@saalzentrum-duesseldorf.de" = "#eabd9e",
+  "nebensaal4@saalzentrum-duesseldorf.de" = "#eabd9e",
   "besprechungsraum2og@saalzentrum-duesseldorf.de" = "#e29eea",
   "sonstiges@saalzentrum-duesseldorf.de" = "#4d7946"
 

@@ -27,6 +27,7 @@ const MobileCalendar = (props: CustomCalendarProps) => {
         updateDay(-1);
       }
     },
+    // @ts-ignore
     onTransitionEnd: () => {
       setTransitionClass("");
     },

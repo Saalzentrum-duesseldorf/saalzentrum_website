@@ -1,16 +1,16 @@
 .calendar-details {
   
-  border: 6px solid #4b5782;
+  border: 8px solid #4b5782;
 
   display: flex;
   flex-direction: column;
   overflow: scroll;
   overflow-y: auto; // Enables vertical scrolling if needed
   overflow-x: hidden; // Hides horizontal scrollbar
-  height: 990px;
+  height: 1004px;
   width: 180%;
   margin-top: 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-left: 8px;
 
   // Scrollbar styles
@@ -44,7 +44,8 @@
     font-size: 20px;
     background: #4c5883;
     color: #ffffff;
-    padding: 10px;
+    padding: 5px;
+    border: 1px solid #4c5883;
   }
 
   .all-day-section {
@@ -58,6 +59,11 @@
     .all-day-event {
       border-radius: 6px;
       border: 2px solid #4b5782;
+      &:hover {
+        background-color: #ff6868; /* Lighten the red on hover */
+        transform: scale(1.05); /* Slightly increase size to draw attention */
+        cursor: pointer; /* Change cursor to indicate clickable */
+      }
     }
   }
 
@@ -76,12 +82,14 @@
       }
 
       .hour-label {
-        flex: 0 0 45px; /* This will give a fixed width of 40px to the hour label */
+        flex: 0 0 30px; /* This will give a fixed width of 40px to the hour label */
         display: flex;
-        align-items: center; /* Vertically center the hour text */
-        justify-content: center; /* Horizontally center the hour text */
+        align-content: start; /* Vertically center the hour text */
+        justify-content: start; /* Horizontally center the hour text */
         border-right: 1px solid #cccccc;
-        
+        padding-left: 5px;
+        font-size: 14px;
+        color: rgb(138, 138, 138);
       }
 
       .time-slots {
@@ -100,7 +108,14 @@
           width: 50%;
           background-color: red;
           border: 1px solid rgb(255, 255, 255);
+          z-index: 1000;
 
+          &:hover {
+            background-color: #ff6868; /* Lighten the red on hover */
+            border-color: #ffffff; /* Optional: change the border color on hover */
+            transform: scale(1.05); /* Slightly increase size to draw attention */
+            cursor: pointer; /* Change cursor to indicate clickable */
+          }
         }
       }
     }
