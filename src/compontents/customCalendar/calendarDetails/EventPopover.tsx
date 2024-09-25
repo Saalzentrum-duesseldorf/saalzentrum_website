@@ -29,6 +29,7 @@ const EventPopover = (props: EventPopoverProps) => {
           {props.event.dateFrom?.toLocaleTimeString()} - {props.event.dateTo?.toLocaleTimeString()}
 
           <Typography variant="body2">{props.event.email}</Typography>
+          <Typography variant="body2">{props.event.location}</Typography>
           <Typography variant="body2">{props.event.description}</Typography>
 
         </Typography>

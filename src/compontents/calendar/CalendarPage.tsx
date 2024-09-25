@@ -2,7 +2,7 @@ import CustomCalendar, {
   CustomCalendarEvent,
 } from "../customCalendar/CustomCalendar.tsx";
 import { useEffect, useState } from "react";
-import { EmailColor } from "../../utils.ts";
+import { Resources, RoomColor, roomPatterns } from "../../utils.ts";
 import "./CalendarPage.scss";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 import MobileCalendar from "../customCalendar/mobile/MobileCalendar.tsx";
@@ -10,17 +10,40 @@ import MobileCalendar from "../customCalendar/mobile/MobileCalendar.tsx";
 const CalendarPage = () => {
   const [events, setEvents] = useState<CustomCalendarEvent[]>([]);
 
+
+  const parseLocation = (event: any): string | undefined => {
+    const location = event.location as string;
+
+    if (!location) {
+      return Resources.andere;
+    }
+
+    const rooms = location.split(', ');
+
+    for (const room of rooms) {
+      for (const pattern in roomPatterns) {
+        if (room.startsWith(pattern)) {
+          return roomPatterns[pattern];
+        }
+      }
+    }
+
+    return Resources.andere;
+  };
+
   // Define the parseEvent function
   const parseEvent = (event: any): CustomCalendarEvent | null => {
-    let email = "";
+
+    const location = parseLocation(event);
+
     let color = "#8796c0";
     if (event.attendees != null) {
       console.log(event.attendees[0].email);
-      email = event.attendees[0].email;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      color = EmailColor[email];
+      color = RoomColor[location];
     }
+
 
     if (event.start && event.start.date && event.start.date.value) {
       // All-day event
@@ -31,7 +54,7 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email,
+        location: location,
       };
     } else if (
       event.start &&
@@ -48,7 +71,7 @@ const CalendarPage = () => {
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
         color: color,
-        email: email,
+        location: location,
       };
     }
     return null; // Return null if neither all-day nor timed event
@@ -56,6 +79,7 @@ const CalendarPage = () => {
 
   useEffect(() => {
     fetch("https://saalzentrum-duesseldorf.de:8445/getAllEvents")
+    // fetch("http://localhost:8080/getAllEvents")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

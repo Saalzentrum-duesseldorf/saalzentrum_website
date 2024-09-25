@@ -18,6 +18,7 @@ export interface CustomCalendarEvent {
   description: string;
   color: string;
   email?: string;
+  location?: string;
 }
 
 export interface CustomCalendarProps {

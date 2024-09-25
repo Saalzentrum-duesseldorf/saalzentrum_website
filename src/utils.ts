@@ -59,19 +59,30 @@ export function getOverlappingEvents(
   return events.filter((e) => isOverlapping(e, event));
 }
 
-export enum Resources {
-  "room1" = "saal1@saalzentrum-duesseldorf.de",
-  "room2" = "nebensaal1@saalzentrum-duesseldorf.de",
-  "room3" = "saal2@saalzentrum-duesseldorf.de",
-  "room4" = "nebensaal2@saalzentrum-duesseldorf.de",
-  "room5" = "saal3@saalzentrum-duesseldorf.de",
-  "room6" = "nebensaal3@saalzentrum-duesseldorf.de",
-  "room7" = "saal4@saalzentrum-duesseldorf.de",
-  "room8" = "nebensaal4@saalzentrum-duesseldorf.de",
-  "room9" = "besprechungsraum2og@saalzentrum-duesseldorf.de",
-  "other" = "sonstiges@saalzentrum-duesseldorf.de"
-}
+export const roomPatterns: { [key: string]: string } = {
+  "Saalzentrum-3-0-Saal 1": "Saal 1",
+  "Saalzentrum-3-Nebenraum 1B": "Nebenraum 1B",
+  "Saalzentrum-3-Saal 2": "Saal 2",
+  "Saalzentrum-3-Nebenraum 2B": "Nebenraum 2B",
+  "Saalzentrum-3-Saal 3": "Saal 3",
+  "Saalzentrum-3-Nebenraum 3B": "Nebenraum 3B",
+  "Saalzentrum-3-Saal 4": "Saal 4",
+  "Saalzentrum-3-Nebenraum 4B": "Nebenraum 4B",
+  "Saalzentrum-3-Besprechungsraum": "Besprechungsraum",
+};
 
+export enum Resources {
+  "Saal 1" = "Saalzentrum-3-0-Saal 1",
+  "Nebenraum 1B" = "Saalzentrum-3-Nebenraum 1B",
+  "Saal 2" = "Saalzentrum-3-Saal 2",
+  "Nebenraum 2B" = "Saalzentrum-3-Nebenraum 2B",
+  "Saal 3" = "Saalzentrum-3-0-Saal 3",
+  "Nebenraum 3B" = "Saalzentrum-3-Nebenraum 3B",
+  "Saal 4" = "Saalzentrum-3-Saal 4",
+  "Nebenraum 4B" = "Saalzentrum-3-Nebenraum 4B",
+  "Besprechungsraum" = "Saalzentrum-3-Besprechungsraum",
+  "andere" = "andere"
+}
 
 // Function to find room key by email
 export function findRoomByEmail(email?: string): string {
@@ -90,19 +101,19 @@ export function prettifyRoomKey(roomKey: string): string {
   return `Raum${roomNumber}`;
 }
 
-export enum EmailColor {
-  "saal1@saalzentrum-duesseldorf.de" = "#96ac83",
-  "nebensaal1@saalzentrum-duesseldorf.de" =   "#c6cbdd",
-  "saal2@saalzentrum-duesseldorf.de" = "#d8715c",
-  "nebensaal2@saalzentrum-duesseldorf.de" = "#8c7e77",
-  "saal3@saalzentrum-duesseldorf.de" = "#667f7c",
-  "nebensaal3@saalzentrum-duesseldorf.de" = "#6471a2",
-  "saal4@saalzentrum-duesseldorf.de" = "#d7d7d7",
-  "nebensaal4@saalzentrum-duesseldorf.de" = "#eabd9e",
-  "besprechungsraum2og@saalzentrum-duesseldorf.de" = "#e29eea",
-  "sonstiges@saalzentrum-duesseldorf.de" = "#4d7946"
-
+export enum RoomColor {
+  "Saal 1" = "#96ac83",
+  "Nebenraum 1B" = "#c6cbdd",
+  "Saal 2" = "#d8715c",
+  "Nebenraum 2B" = "#8c7e77",
+  "Saal 3" = "#667f7c",
+  "Nebenraum 3B" = "#6471a2",
+  "Saal 4" = "#d7d7d7",
+  "Nebenraum 4B" = "#eabd9e",
+  "Besprechungsraum" = "#e29eea",
+  "andere" = "#4d7946"
 }
+
 
 export function getEventHeight(event: CustomCalendarEvent): number {
   if (event.dateFrom && event.dateTo) {
