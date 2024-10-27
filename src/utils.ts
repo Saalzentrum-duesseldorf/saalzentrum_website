@@ -47,7 +47,7 @@ export const parseDateToStringWithWrittenOutMonth = (date: Date): string => {
     "Dezember",
   ];
   return `${date.getDate()}. ${months[date.getMonth()]} ${date.getFullYear()}`;
-}
+};
 
 export function getOverlappingEvents(
   event: CustomCalendarEvent,
@@ -81,7 +81,7 @@ export enum Resources {
   "Saal 4" = "Saalzentrum-3-Saal 4",
   "Nebenraum 4B" = "Saalzentrum-3-Nebenraum 4B",
   "Besprechungsraum" = "Saalzentrum-3-Besprechungsraum",
-  "andere" = "andere"
+  "andere" = "andere",
 }
 
 // Function to find room key by email
@@ -97,7 +97,7 @@ export function findRoomByEmail(email?: string): string {
 // Function to prettify the room key
 export function prettifyRoomKey(roomKey: string): string {
   const numberMatch = roomKey.match(/\d+/); // Extracts the number part, if present
-  const roomNumber = numberMatch ? ` ${numberMatch[0]}` : '';
+  const roomNumber = numberMatch ? ` ${numberMatch[0]}` : "";
   return `Raum${roomNumber}`;
 }
 
@@ -111,9 +111,17 @@ export enum RoomColor {
   "Saal 4" = "#d7d7d7",
   "Nebenraum 4B" = "#eabd9e",
   "Besprechungsraum" = "#e29eea",
-  "andere" = "#4d7946"
+  "andere" = "#4d7946",
 }
 
+export enum ColorIdToColor {
+  "11" = "#dc4328",
+  "3" = "#9847a1",
+  "4" = "#d8715c",
+  "8" = "#8c7e77",
+  "10" = "#4d7946",
+  "undefined" = "#c6cbdd",
+}
 
 export function getEventHeight(event: CustomCalendarEvent): number {
   if (event.dateFrom && event.dateTo) {
@@ -143,7 +151,9 @@ export function getEventsForHour(
   });
 }
 
-export function containsAllDayEvent(events: CustomCalendarEvent[] | null): boolean {
+export function containsAllDayEvent(
+  events: CustomCalendarEvent[] | null
+): boolean {
   if (events) {
     for (const element of events) {
       if (element.isAllDay) {
@@ -155,19 +165,20 @@ export function containsAllDayEvent(events: CustomCalendarEvent[] | null): boole
 }
 
 export function showCollectorDialog() {
-  const scriptUrl = "https://saalzentrum-duesseldorf.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-3o5b4z/b/4/b0105d975e9e59f24a3230a22972a71a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-GB&collectorId=54badd66";
+  const scriptUrl =
+    "https://saalzentrum-duesseldorf.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-3o5b4z/b/4/b0105d975e9e59f24a3230a22972a71a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-GB&collectorId=54badd66";
 
-  const script = document.createElement('script');
+  const script = document.createElement("script");
   script.src = scriptUrl;
   script.async = true;
   script.onload = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     window.ATL_JQ_PAGE_PROPS = {
-      "triggerFunction": function(showCollectorDialog: any) {
+      triggerFunction: function (showCollectorDialog: any) {
         // Requires that jQuery is available!
         showCollectorDialog();
-      }
+      },
     };
   };
 
@@ -178,5 +189,3 @@ export function showCollectorDialog() {
     document.body.removeChild(script);
   };
 }
-
-

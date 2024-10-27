@@ -2,7 +2,7 @@ import CustomCalendar, {
   CustomCalendarEvent,
 } from "../customCalendar/CustomCalendar.tsx";
 import { useEffect, useState } from "react";
-import { Resources, RoomColor, roomPatterns } from "../../utils.ts";
+import { ColorIdToColor, Resources, roomPatterns } from "../../utils.ts";
 import "./CalendarPage.scss";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 import MobileCalendar from "../customCalendar/mobile/MobileCalendar.tsx";
@@ -36,16 +36,11 @@ const CalendarPage = () => {
 
     const location = parseLocation(event);
 
-    let color = "#8796c0";
-    if (event.attendees != null) {
-      console.log(event.attendees[0].email);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      color = RoomColor[location];
-    }
-
+    if (event.colorId != 3 && event.colorId != 4 && event.colorId != 8 && event.colorId != 11 && event.colorId) console.log(event.colorId)
 
     if (event.start && event.start.date && event.start.date.value) {
+
+      console.log("TESTCOLOR: " + event.colorId)
       // All-day event
       return {
         eventId: event.id,
@@ -53,8 +48,9 @@ const CalendarPage = () => {
         isAllDay: true,
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
-        color: color,
+        color: ColorIdToColor[event.colorId],
         location: location,
+
       };
     } else if (
       event.start &&
@@ -70,7 +66,7 @@ const CalendarPage = () => {
         isAllDay: false,
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
-        color: color,
+        color: ColorIdToColor[event.colorId],
         location: location,
       };
     }

@@ -11,7 +11,6 @@ import {
   containsAllDayEvent,
    getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
-   Resources
 } from "../../../utils.ts";
 import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 import EventPopover from "../calendarDetails/EventPopover.tsx";
@@ -25,8 +24,7 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
 
 
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
-    const resourceEmail = (Resources as never)[resource]; // Type assertion here
-    const result = events?.filter((event) => event.email === resourceEmail);
+    const result = events?.filter((event) => event.location === resource);
 
     if (resource != "" && result) {
       return result;
@@ -72,16 +70,16 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
           style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff"}}
         >
           <MenuItem value={""}>Kein Raum</MenuItem>
-          <MenuItem value={"room1"}>Saal 1</MenuItem>
-          <MenuItem value={"room2"}>Nebenraum 1</MenuItem>
-          <MenuItem value={"room3"}>Saal 2</MenuItem>
-          <MenuItem value={"room4"}>Nebenraum 2</MenuItem>
-          <MenuItem value={"room5"}>Saal 3</MenuItem>
-          <MenuItem value={"room6"}>Nebenraum 3</MenuItem>
-          <MenuItem value={"room7"}>Saal 4</MenuItem>
-          <MenuItem value={"room8"}>Nebenraum 4</MenuItem>
-          <MenuItem value={"room9"}>Besprechungsraum 2OG</MenuItem>
-          <MenuItem value={"other"}>Sonstiges</MenuItem>
+          <MenuItem value={"Saal 1"}>Saal 1</MenuItem>
+          <MenuItem value={"Nebenraum 1B"}>Nebenraum 1B</MenuItem>
+          <MenuItem value={"Saal 2"}>Saal 2</MenuItem>
+          <MenuItem value={"Nebenraum 2B"}>Nebenraum 2B</MenuItem>
+          <MenuItem value={"Saal 3"}>Saal 3</MenuItem>
+          <MenuItem value={"Nebenraum 3B"}>Nebenraum 3B</MenuItem>
+          <MenuItem value={"Saal 4"}>Saal 4</MenuItem>
+          <MenuItem value={"Nebenraum 4B"}>Nebenraum 4B</MenuItem>
+          <MenuItem value={"Besprechungsraum"}>Besprechungsraum 2OG</MenuItem>
+          <MenuItem value={"andere"}>Sonstiges</MenuItem>
         </Select>
       </FormControl>
 
