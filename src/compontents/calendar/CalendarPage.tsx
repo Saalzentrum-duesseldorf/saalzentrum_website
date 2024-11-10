@@ -32,50 +32,39 @@ const CalendarPage = () => {
   };
 
   // Define the parseEvent function
+// Adjusted parseEvent function
   const parseEvent = (event: any): CustomCalendarEvent | null => {
-
+    // Parse location if available
     const location = parseLocation(event);
 
-    if (event.colorId != 3 && event.colorId != 4 && event.colorId != 8 && event.colorId != 11 && event.colorId) console.log(event.colorId)
+    // Check for startDate and endDate fields
+    if (event.startDate && event.endDate) {
+      // Convert startDate and endDate to Date objects
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
 
-    if (event.start && event.start.date && event.start.date.value) {
+      // Determine if it's an all-day event
+      const isAllDay = startDate.getHours() === 0 && endDate.getHours() === 0;
 
-      console.log("TESTCOLOR: " + event.colorId)
-      // All-day event
       return {
-        eventId: event.id,
-        date: new Date(event.start.date.value),
-        isAllDay: true,
+        eventId: event.eventId,
+        date: startDate, // For all-day events
+        dateFrom: isAllDay ? undefined : startDate,
+        dateTo: isAllDay ? undefined : endDate,
+        isAllDay: isAllDay,
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
-        color: ColorIdToColor[event.colorId],
-        location: location,
-
-      };
-    } else if (
-      event.start &&
-      event.start.dateTime &&
-      event.start.dateTime.value
-    ) {
-      // Timed event
-      return {
-        eventId: event.id,
-        date: new Date(event.start.dateTime.value),
-        dateFrom: new Date(event.start.dateTime.value),
-        dateTo: new Date(event.end.dateTime.value),
-        isAllDay: false,
-        name: event.summary || "", // Fallback if `summary` is missing
-        description: event.description || "", // Fallback if `description` is missing
-        color: ColorIdToColor[event.colorId],
+        color: event.colorId ? ColorIdToColor[event.colorId] : ColorIdToColor["undefined"], // Default color if colorId is null
         location: location,
       };
     }
-    return null; // Return null if neither all-day nor timed event
+
+    return null; // Return null if data is incomplete
   };
+
 
   useEffect(() => {
     fetch("https://saalzentrum-duesseldorf.de:8445/getAllEvents")
-    // fetch("http://localhost:8080/getAllEvents")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
