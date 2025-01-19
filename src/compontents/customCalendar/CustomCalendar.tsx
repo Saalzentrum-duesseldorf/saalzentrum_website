@@ -1,10 +1,9 @@
 import "./CustomCalendar.scss";
 import { useEffect, useState } from "react";
-import { Col, Row, Container, Button } from "reactstrap";
+import { Button, Col, Container, Row } from "reactstrap";
 import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { areDatesEqual, truncateText } from "../../utils.ts";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
 
@@ -100,21 +99,24 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     setSelectedDateDetails(clickedDateDetails || null);
   };
 
-  function getEventsForDay(day: {
-    day: number;
-    monthOffset: number;
-  }): CustomCalendarEvent[] {
+  function getEventsForDay(day: { day: number; monthOffset: number }): CustomCalendarEvent[] {
     const dateToCompare = new Date(
       currentMonth.getFullYear(),
       currentMonth.getMonth() + day.monthOffset,
       day.day
     );
 
-    return props.events.filter(event =>
-      areDatesEqual(event.date, dateToCompare)
-    ).sort((a, b) => a.name.localeCompare(b.name)); // Sort events alphabetically by name
+    return props.events
+      .filter(event => areDatesEqual(event.date, dateToCompare))
+      .sort((a, b) => {
+        // Zuerst nach "All Day" sortieren: true (1) sollte nach oben, false (-1) nach unten
+        if (a.isAllDay !== b.isAllDay) {
+          return a.isAllDay ? -1 : 1;
+        }
+        // Danach alphabetisch nach dem Namen sortieren
+        return a.name.localeCompare(b.name);
+      });
   }
-
 
   useEffect(() => {
     const today = new Date();
@@ -199,15 +201,15 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                               borderColor:
                                 day.day === selectedDay &&
                                 currentMonth.getMonth() + day.monthOffset ===
-                                  selectedMonth
+                                selectedMonth
                                   ? "#9da4bd"
                                   : "#d7d7d7",
                               borderWidth:
                                 day.day === selectedDay &&
                                 currentMonth.getMonth() + day.monthOffset ===
-                                  selectedMonth
+                                selectedMonth
                                   ? 3
-                                  : 1,
+                                  : 1
                             }}
                             onClick={() =>
                               handleDateClick(day.day, day.monthOffset)
@@ -222,7 +224,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                                       background:
                                         day.monthOffset == 0
                                           ? "#d7d7d7"
-                                          : "#e7e7e7",
+                                          : "#e7e7e7"
                                     }}
                                   >
                                     {day.day !== 0 ? day.day : ""}
@@ -281,7 +283,7 @@ const WeekDays = () => {
     "Donnerstag",
     "Freitag",
     "Samstag",
-    "Sonntag",
+    "Sonntag"
   ];
   return (
     <>

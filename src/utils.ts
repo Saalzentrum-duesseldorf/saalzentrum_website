@@ -115,12 +115,22 @@ export enum RoomColor {
 }
 
 export enum ColorIdToColor {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   "11" = "#dc4328",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   "3" = "#9847a1",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   "4" = "#d8715c",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   "8" = "#8c7e77",
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   "10" = "#4d7946",
-  "undefined" = "#c6cbdd",
+  "undefined" = "#757DC4",
 }
 
 export function getEventHeight(event: CustomCalendarEvent): number {

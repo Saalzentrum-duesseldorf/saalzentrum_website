@@ -43,18 +43,17 @@ const CalendarPage = () => {
       const startDate = new Date(event.startDate);
       const endDate = new Date(event.endDate);
 
-      // Determine if it's an all-day event
-      const isAllDay = startDate.getHours() === 0 && endDate.getHours() === 0;
-
       return {
         eventId: event.eventId,
         date: startDate, // For all-day events
-        dateFrom: isAllDay ? undefined : startDate,
-        dateTo: isAllDay ? undefined : endDate,
-        isAllDay: isAllDay,
+        dateFrom: event.allDay ? undefined : startDate,
+        dateTo: event.allDay ? undefined : endDate,
+        isAllDay: event.allDay,
         name: event.summary || "", // Fallback if `summary` is missing
         description: event.description || "", // Fallback if `description` is missing
-        color: event.colorId ? ColorIdToColor[event.colorId] : ColorIdToColor["undefined"], // Default color if colorId is null
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        color: event.colorId ? ColorIdToColor[ event.colorId] : ColorIdToColor["undefined"], // Default color if colorId is null
         location: location,
       };
     }
@@ -65,6 +64,7 @@ const CalendarPage = () => {
 
   useEffect(() => {
     fetch("https://saalzentrum-duesseldorf.de:8445/getAllEvents")
+     //fetch("http://localhost:8080/getAllEvents")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
