@@ -250,8 +250,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                                       )
                                     )}
                                   {dayEvents.length > 5 && (
-                                    <div className={"Calendar-day-body"}>
-                                      + {dayEvents.length - 5} more
+                                    <div className={"Calendar-day-body"}
+                                         style={{ background: "rgba(155,155,155,0.58)" }}
+                                    >
+                                      + {dayEvents.length - 5} mehr
                                     </div>
                                   )}
                                 </Col>
