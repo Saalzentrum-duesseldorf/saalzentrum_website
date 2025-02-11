@@ -110,6 +110,8 @@
           border: 1px solid rgb(255, 255, 255);
           z-index: 1000;
           color: white;
+          font-size: 12px;
+          text-overflow: ellipsis;
 
           &:hover {
             background-color: #ff6868; /* Lighten the red on hover */
