@@ -1,11 +1,4 @@
 import "./MobileCalendarDetails.scss";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
 import React, { useState } from "react";
 import {
   containsAllDayEvent,
@@ -18,9 +11,10 @@ import EventPopover from "../calendarDetails/EventPopover.tsx";
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
   day: Date;
+  room: string;
 }
 
-const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
+const MobileCalendarDetails = ({ events, room }: CalendarDetailsProps) => {
 
 
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
@@ -32,15 +26,10 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
     return events;
   };
 
-  const [currentResource, setResource] = useState<string>("");
-
-  events = filterEvents(currentResource);
+  events = filterEvents(room);
 
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  const handleSelectResource = (event: SelectChangeEvent) => {
-    setResource(event.target.value as string);
-  };
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<CustomCalendarEvent | null>(null);
@@ -58,30 +47,7 @@ const MobileCalendarDetails = ({ events }: CalendarDetailsProps) => {
   const open = Boolean(anchorEl);
 
   return (
-    <div className="mobile-calendar-details">
-
-      <FormControl size="small" style={{backgroundColor: "#4b5782", color: "white"}}>
-        <InputLabel id="select-resource-lable" style={{fontSize: 13}}>Raum wählen</InputLabel>
-        <Select
-          labelId="select-resource-lable"
-          id="select-resource"
-          label="Raum"
-          onChange={handleSelectResource}
-          style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff"}}
-        >
-          <MenuItem value={""}>Kein Raum</MenuItem>
-          <MenuItem value={"Saal 1"}>Saal 1</MenuItem>
-          <MenuItem value={"Nebenraum 1B"}>Nebenraum 1B</MenuItem>
-          <MenuItem value={"Saal 2"}>Saal 2</MenuItem>
-          <MenuItem value={"Nebenraum 2B"}>Nebenraum 2B</MenuItem>
-          <MenuItem value={"Saal 3"}>Saal 3</MenuItem>
-          <MenuItem value={"Nebenraum 3B"}>Nebenraum 3B</MenuItem>
-          <MenuItem value={"Saal 4"}>Saal 4</MenuItem>
-          <MenuItem value={"Nebenraum 4B"}>Nebenraum 4B</MenuItem>
-          <MenuItem value={"Besprechungsraum"}>Besprechungsraum 2OG</MenuItem>
-          <MenuItem value={"andere"}>Sonstiges</MenuItem>
-        </Select>
-      </FormControl>
+    <div className="mobile-calendar-details"> 
 
       {/* All Day events section */}
       <div className="all-day-section">

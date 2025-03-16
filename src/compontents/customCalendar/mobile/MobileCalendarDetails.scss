@@ -1,30 +1,45 @@
 .mobile-calendar-details {
-
   display: flex;
   flex-direction: column;
   overflow: scroll;
   overflow-y: auto; // Enables vertical scrolling if needed
   overflow-x: hidden; // Hides horizontal scrollbar
+  will-change: transform; // Optimiert für Animationen
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94); // Smooth easing
+  touch-action: pan-y; // Erlaubt vertikales Scrollen, aber horizontales Swipen
+  
+  // Animation classes für Swipe-Effekte
+  &.swiping {
+    transition: none; // Während des Swipens keine Transition
+  }
+  
+  &.swipe-left {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  
+  &.swipe-right {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  &.swipe-enter {
+    animation: slideIn 0.3s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
 
-  // Scrollbar styles
   &::-webkit-scrollbar {
-
     display: none; // Hides scrollbar
-
     width: 5px;
   }
 
   &::-webkit-scrollbar-track {
     display: none; // Hides scrollbar
-
     background: #f1f1f1;
     border-radius: 10px;
-
   }
 
   &::-webkit-scrollbar-thumb {
     display: none; // Hides scrollbar
-
     background: #4b5782;
     border-radius: 10px;
 
@@ -33,14 +48,11 @@
     }
   }
 
-
   .all-day-section {
-    
     background-color: #4b5782;
     padding: 10px;
     border-bottom: 1px solid #ccc;
     color: #ffffff;
-
 
     .all-day-event {
       border-radius: 6px;
@@ -90,8 +102,70 @@
           background-color: red;
           border: 1px solid rgb(255, 255, 255);
           color: white;
+          transition: transform 0.2s ease; // Smooth hover effect
+          
+          &:active {
+            transform: scale(0.98); // Leichter Druck-Effekt
+          }
         }
       }
     }
   }
+}
+
+// Keyframes für die Slide-In Animation
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// Swipe-Indikatoren (optional)
+.swipe-indicator {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  background: rgba(75, 87, 130, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  
+  &.left {
+    left: 10px;
+  }
+  
+  &.right {
+    right: 10px;
+  }
+  
+  &:before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #4b5782;
+    border-right: 2px solid #4b5782;
+  }
+  
+  &.left:before {
+    transform: rotate(-135deg);
+  }
+  
+  &.right:before {
+    transform: rotate(45deg);
+  }
+}
+
+.calendar-details-container:active .swipe-indicator {
+  opacity: 1;
 }

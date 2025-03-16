@@ -1,0 +1,217 @@
+.MobileCalendar {
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+  background-color: #fff;
+    
+  .calendar-details-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    
+    .preload-container {
+      display: flex;
+      width: 300%; // Platz für vorherigen, aktuellen und nächsten Tag
+      transform: translateX(-33.333%); // Zentriert den aktuellen Tag
+      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform; // Optimiert für Animationen
+      
+      &.swiping-left {
+        transform: translateX(-66.666%); // Bewegt zum nächsten Tag
+      }
+      
+      &.swiping-right {
+        transform: translateX(0); // Bewegt zum vorherigen Tag
+      }
+      
+      .day-container {
+        width: 33.333%;
+        flex-shrink: 0;
+        opacity: 1;
+        transition: opacity 0.2s ease;
+        
+        &.inactive {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+  
+
+  // Header styling
+  .MobileCalendar-header {
+    background-color: #4c5883;
+    color: white;
+    padding: 15px 0;
+    padding-left: 10px;
+    align-items: center;
+        
+    .menu-icon {
+      text-align: center;
+            
+      .hamburger-icon {
+        display: inline-block;
+        cursor: pointer;
+                
+        .bar {
+          width: 25px;
+          height: 3px;
+          background-color: white;
+          margin: 5px 0;
+          border-radius: 1px;
+        }
+      }
+      
+      // Enhanced back button styling
+      .nav-button {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+        padding: 0;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateX(-3px);
+        }
+        
+        &:active {
+          background: rgba(255, 255, 255, 0.4);
+          transform: translateX(-3px) scale(0.95);
+        }
+        
+        &:focus {
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+          outline: none;
+        }
+      }
+    }
+        
+    .month-navigation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+            
+      .nav-button {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0 15px;
+                
+        &:focus {
+          box-shadow: none;
+        }
+      }
+            
+      .month-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin: 0 10px;
+      }
+    }
+        
+    .favorites-icon {
+      text-align: center;
+      font-size: 1.5rem;
+    }
+  }
+    
+  // Room selection dropdown
+  .room-selection {
+    padding: 10px;
+        
+    .room-dropdown {
+      width: 100%;
+            
+      .room-dropdown-toggle {
+        width: 100%;
+        background-color: #f0f0f0;
+        color: #333;
+        border: 1px solid #ddd;
+        text-align: left;
+        font-weight: normal;
+                
+        &::after {
+          float: right;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+    
+  // Weekday headers
+  .calendar-weekdays {
+    background-color: #4c5883;
+    color: white;
+    text-align: center;
+        
+    .weekday-cell {
+      padding: 10px 0;
+      font-weight: bold;
+      border-right: 1px solid #3a4366;
+            
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+    
+  // Calendar grid
+  .calendar-week {
+    border-bottom: 1px solid #ddd;
+        
+    .calendar-day {
+      height: 100px;
+      border-right: 1px solid #ddd;
+      padding: 5px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      
+      &:hover {
+        background-color: #f0f4ff;
+      }
+            
+      &:last-child {
+        border-right: none;
+      }
+            
+      &.other-month {
+        background-color: #f5f5f5;
+        color: #aaa;
+        
+        &:hover {
+          background-color: #eaeaea;
+        }
+      }
+            
+      .day-number {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 5px;
+        font-size: 1rem;
+      }
+            
+      .day-events {
+        .event-item {
+          margin-bottom: 2px;
+          padding: 2px 4px;
+          border-radius: 3px;
+          font-size: 0.7rem;
+          color: white;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+  }
+}

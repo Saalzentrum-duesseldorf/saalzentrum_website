@@ -3,6 +3,7 @@ import "./StartPage.scss";
 import FlipCard from "../flipCard/FlipCard.tsx";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
 import MobileHeader from "../header/MobileHeader.tsx";
+import Footer from "../footer/Footer.tsx";
 
 function StartPage() {
   return (
@@ -32,6 +33,7 @@ function StartPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
