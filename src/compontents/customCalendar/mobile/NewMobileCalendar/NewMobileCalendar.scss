@@ -1,26 +1,31 @@
 .MobileCalendar {
-  font-family: Arial, sans-serif;
+ font-family: Arial, sans-serif;
   max-width: 100%;
   background-color: #fff;
+  height: 100vh; // Set full viewport height
+  display: flex;
+  flex-direction: column;
     
   .calendar-details-container {
     position: relative;
-    overflow: hidden;
+    overflow: hidden; // Keep horizontal overflow hidden
     width: 100%;
+    flex: 1; // Take remaining space
     
     .preload-container {
       display: flex;
-      width: 300%; // Platz für vorherigen, aktuellen und nächsten Tag
-      transform: translateX(-33.333%); // Zentriert den aktuellen Tag
+      width: 300%; // Space for previous, current, and next day
+      transform: translateX(-33.333%); // Center the current day
       transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform; // Optimiert für Animationen
+      will-change: transform; // Optimize for animations
+      height: 100%;
       
       &.swiping-left {
-        transform: translateX(-66.666%); // Bewegt zum nächsten Tag
+        transform: translateX(-66.666%); // Move to next day
       }
       
       &.swiping-right {
-        transform: translateX(0); // Bewegt zum vorherigen Tag
+        transform: translateX(0); // Move to previous day
       }
       
       .day-container {
@@ -28,6 +33,8 @@
         flex-shrink: 0;
         opacity: 1;
         transition: opacity 0.2s ease;
+        height: 100%;
+        overflow-y: auto; // Enable vertical scrolling for each day container
         
         &.inactive {
           opacity: 0.5;

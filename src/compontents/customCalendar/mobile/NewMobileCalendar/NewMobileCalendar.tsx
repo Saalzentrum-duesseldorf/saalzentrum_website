@@ -6,11 +6,14 @@ import { faChevronLeft, faChevronRight, faArrowLeft } from "@fortawesome/free-so
 import { areDatesEqual } from "../../../../utils";
 import MobileCalendarDetails from "../MobileCalendarDetails";
 import SelectRoomDropDown from "../../selectRoom/SelectRoomDropDown";
+import { CustomCalendarEvent } from "../../CustomCalendar.tsx";
+
 
 export interface MobileCalendarEvent {
   eventId: string;
-  date: Date;
-  isAllDay?: boolean;
+  date: Date;           // Startzeit des Termins
+  endTime?: Date;       // Endzeit des Termins (optional)
+  isAllDay?: boolean;   // Ganztägiger Termin
   name: string;
   description: string;
   color: string;
@@ -24,10 +27,11 @@ export interface MobileCalendarProps {
 
 const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedRoom, setSelectedRoom] = useState("Raum wählen");
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
+  const [selectedDateDetails, setSelectedDateDetails] = useState<MobileCalendarEvent[]>([]);
   
   // For swipe functionality
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -58,8 +62,7 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
 
-  const getPreviousDay = (date: Date | null) => {
-    if (!date) return new Date();
+  const getPreviousDay = (date: Date) => {
     const previousDay = new Date(date);
     previousDay.setDate(previousDay.getDate() - 1);
     return previousDay;
@@ -132,11 +135,22 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
         events: []
       });
     }
+
+    const filterEvents = (resource: string): MobileCalendarEvent[] => {
+
+      const result = props.events?.filter((event) => event.location === resource);
+  
+      if (resource != "" && result) {
+        return result;
+      }
+      return props.events;
+    };
+  
     
     // Add days of current month
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-      const dayEvents = props.events.filter(event => areDatesEqual(event.date, date));
+      const dayEvents = filterEvents(selectedRoom).filter(event => areDatesEqual(event.date, date));
       
       week.push({
         day,
@@ -198,11 +212,20 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
 
   const handleDayClick = (day: Date) => {
     setSelectedDay(day);
+    setSelectedRoom("");
   };
 
   const handleBackClick = () => {
     setSelectedDay(null);
   };
+
+  // Load events for the selected day
+  useEffect(() => {
+    if (selectedDay) {
+      const events = props.events.filter(event => areDatesEqual(event.date, selectedDay));
+      setSelectedDateDetails(events);
+    }
+  }, [selectedDay, props.events]);
 
   // Format date to display in header (e.g., "Mo, 16. März")
   const formatDateForHeader = (date: Date) => {
@@ -212,7 +235,6 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     return `${dayOfWeek}, ${day}. ${month}`;
   };
 
-  const selectedDateDetails = selectedDay ? props.events.filter(event => areDatesEqual(event.date, selectedDay)) : [];
 
   return (
     <div className="MobileCalendar"> 
