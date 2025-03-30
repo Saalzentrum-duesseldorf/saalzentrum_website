@@ -6,7 +6,7 @@ import { faChevronLeft, faChevronRight, faArrowLeft } from "@fortawesome/free-so
 import { areDatesEqual } from "../../../../utils";
 import MobileCalendarDetails from "../MobileCalendarDetails";
 import SelectRoomDropDown from "../../selectRoom/SelectRoomDropDown";
-import { CustomCalendarEvent } from "../../CustomCalendar.tsx";
+import { CustomCalendarEvent } from "../../CustomCalendar.tsx"
 
 
 export interface MobileCalendarEvent {
@@ -27,7 +27,7 @@ export interface MobileCalendarProps {
 
 const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedRoom, setSelectedRoom] = useState("Raum wählen");
+  const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
@@ -39,6 +39,7 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
+
 
   const daysInMonth: number = new Date(
     currentMonth.getFullYear(),
@@ -218,13 +219,13 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   const handleBackClick = () => {
     setSelectedDay(null);
   };
-
+  
   // Load events for the selected day
   useEffect(() => {
     if (selectedDay) {
       const events = props.events.filter(event => areDatesEqual(event.date, selectedDay));
       setSelectedDateDetails(events);
-    }
+    } 
   }, [selectedDay, props.events]);
 
   // Format date to display in header (e.g., "Mo, 16. März")
@@ -234,6 +235,12 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     const month = date.toLocaleString("de-DE", { month: "long" });
     return `${dayOfWeek}, ${day}. ${month}`;
   };
+
+  const goToToday = () => {
+    const today = new Date();
+    setSelectedDay(today);
+    setCurrentMonth(new Date(today.getFullYear(), today.getMonth(), 1));
+  };  
 
 
   return (
@@ -265,6 +272,9 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
                 </span>
                 <Button className="nav-button" onClick={goToNextDay}>
                   <FontAwesomeIcon icon={faChevronRight} />
+                </Button>
+                <Button className="today-Button" onClick={goToToday}>
+                  Heute
                 </Button>
               </div>
             ) : (

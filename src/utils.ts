@@ -133,18 +133,18 @@ export enum ColorIdToColor {
   "undefined" = "#757DC4",
 }
 
-export function getEventHeight(event: CustomCalendarEvent): number {
+export function getEventHeight(event: CustomCalendarEvent, hourBlockHight = 40): number {
   if (event.dateFrom && event.dateTo) {
     const durationInHours =
       (event.dateTo.getTime() - event.dateFrom.getTime()) / (1000 * 60 * 60);
-    return durationInHours * 40; // 40px ist die Höhe eines hour-blocks
+    return durationInHours * hourBlockHight; // hourBlockHight ist die Höhe eines hour-blocks
   }
   return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
 }
 
-export function getEventTopPosition(event: CustomCalendarEvent): number {
+export function getEventTopPosition(event: CustomCalendarEvent, hourBlockHight = 40): number {
   if (event.dateFrom) {
-    return (event.dateFrom.getMinutes() / 60) * 40; // 40px ist die Höhe eines hour-blocks
+    return (event.dateFrom.getMinutes() / 60) * hourBlockHight; // hourBlockHight ist die Höhe eines hour-blocks
   }
   return 0;
 }
