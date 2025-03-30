@@ -1,5 +1,5 @@
 import "./NewMobileCalendar.scss";
-import { useState, useEffect, TouchEvent } from "react";
+import { useState, useEffect, TouchEvent, useRef } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -40,6 +40,29 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+ // Scroll to 8:00 when a day is selected
+ const scrollTo8AM = () => {
+  if (scrollContainerRef.current) {
+    // Find all hour blocks
+    const hourBlocks = scrollContainerRef.current.querySelectorAll(".hour-block");
+
+    // Locate the "8:00" block
+    const targetBlock = Array.from(hourBlocks).find((block) =>
+      block.querySelector(".hour-label")?.textContent?.trim() === "7:00"
+    );
+
+    if (targetBlock) {
+      // Scroll to the "8:00" block
+      targetBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      console.warn("8:00 block not found");
+    }
+  }
+};
+  
+  
 
   const daysInMonth: number = new Date(
     currentMonth.getFullYear(),
@@ -219,6 +242,13 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   const handleBackClick = () => {
     setSelectedDay(null);
   };
+
+  useEffect(() => {
+    if (selectedDay) {
+      setTimeout(scrollTo8AM, 100); // Delay to ensure DOM is rendered
+    }
+  }, [selectedDay]);
+  
   
   // Load events for the selected day
   useEffect(() => {
@@ -247,55 +277,60 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     <div className="MobileCalendar"> 
       <Container fluid style={{paddingLeft: 0, paddingRight: 0}}>
         {/* Header with back button, day/month navigation */}
-        <Row className="MobileCalendar-header">
-          <Col xs="2" className="menu-icon">
-            {selectedDay ? (
-              <Button className="nav-button back-button" onClick={handleBackClick}>
-                <FontAwesomeIcon icon={faArrowLeft} />
-              </Button>
-            ) : (
-              <div className="hamburger-icon">
-                <div className="bar"></div>
-                <div className="bar"></div>
-                <div className="bar"></div>
-              </div>
-            )}
-          </Col>
-          <Col xs="8" className="month-navigation">
-            {selectedDay ? (
-              <div className="day-navigation">
-                <Button className="nav-button" onClick={goToPreviousDay}>
-                  <FontAwesomeIcon icon={faChevronLeft} />
+        <div className="sticky-header">
+          <Row className="MobileCalendar-header">
+            <Col xs="2" className="menu-icon">
+              {selectedDay ? (
+                <Button className="nav-button back-button" onClick={handleBackClick}>
+                  <FontAwesomeIcon icon={faArrowLeft} />
                 </Button>
-                <span className="day-title">
-                  {formatDateForHeader(selectedDay)}
-                </span>
-                <Button className="nav-button" onClick={goToNextDay}>
-                  <FontAwesomeIcon icon={faChevronRight} />
-                </Button>
-                <Button className="today-Button" onClick={goToToday}>
-                  Heute
-                </Button>
-              </div>
-            ) : (
-              <>
-                <Button className="nav-button" onClick={goToPreviousMonth}>
-                  <FontAwesomeIcon icon={faChevronLeft} />
-                </Button>
-                <span className="month-title">
-                  {currentMonth.toLocaleString("de-DE", { month: "long" })}
-                </span>
-                <Button className="nav-button" onClick={goToNextMonth}>
-                  <FontAwesomeIcon icon={faChevronRight} />
-                </Button>
-              </>
-            )}
-          </Col>
-        </Row>
-
-        {/* Room selection dropdown */}
-        <SelectRoomDropDown onRoomChange={setSelectedRoom} initialRoom={selectedRoom} />
-
+              ) : (
+                <div className="hamburger-icon">
+                  <div className="bar"></div>
+                  <div className="bar"></div>
+                  <div className="bar"></div>
+                </div>
+              )}
+            </Col>
+            <Col xs="8" className="month-navigation">
+              {selectedDay ? (
+                <div className="day-navigation">
+                  <Button className="nav-button" onClick={goToPreviousDay}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                  </Button>
+                  <span className="day-title">
+                    {formatDateForHeader(selectedDay)}
+                  </span>
+                  <Button className="nav-button" onClick={goToNextDay}>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </Button>
+                  <Button className="today-Button" onClick={goToToday}>
+                    Heute
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button className="nav-button" onClick={goToPreviousMonth}>
+                    <FontAwesomeIcon icon={faChevronLeft} />
+                  </Button>
+                  <span className="month-title">
+                    {currentMonth.toLocaleString("de-DE", { month: "long" })}
+                  </span>
+                  <Button className="nav-button" onClick={goToNextMonth}>
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </Button>
+                </>
+              )}
+            </Col>
+          
+            <Col>
+              {/* Room selection dropdown */}
+              <SelectRoomDropDown onRoomChange={setSelectedRoom} initialRoom={selectedRoom} />
+            </Col>
+          </Row>
+        </div>
+        {/* Scrollable Timeline */}
+        <div className="scrollable-body" ref={scrollContainerRef}>
         {selectedDay ? (
             <div 
               className="calendar-details-container"
@@ -374,6 +409,7 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
             </div>
           </>
         )}
+        </div>
       </Container>
     </div>
   );
