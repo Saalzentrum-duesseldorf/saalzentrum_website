@@ -133,7 +133,10 @@ export enum ColorIdToColor {
   "undefined" = "#757DC4",
 }
 
-export function getEventHeight(event: CustomCalendarEvent, hourBlockHight = 40): number {
+export function getEventHeight(
+  event: CustomCalendarEvent,
+  hourBlockHight = 40
+): number {
   if (event.dateFrom && event.dateTo) {
     const durationInHours =
       (event.dateTo.getTime() - event.dateFrom.getTime()) / (1000 * 60 * 60);
@@ -142,7 +145,10 @@ export function getEventHeight(event: CustomCalendarEvent, hourBlockHight = 40):
   return 40; // Standardhöhe, falls dateFrom oder dateTo nicht definiert sind
 }
 
-export function getEventTopPosition(event: CustomCalendarEvent, hourBlockHight = 40): number {
+export function getEventTopPosition(
+  event: CustomCalendarEvent,
+  hourBlockHight = 40
+): number {
   if (event.dateFrom) {
     return (event.dateFrom.getMinutes() / 60) * hourBlockHight; // hourBlockHight ist die Höhe eines hour-blocks
   }
@@ -174,6 +180,74 @@ export function containsAllDayEvent(
   return false;
 }
 
+export const getPreviousDay = (date: Date) => {
+  const previousDay = new Date(date);
+  previousDay.setDate(previousDay.getDate() - 1);
+  return previousDay;
+};
+
+export const getNextDay = (date: Date) => {
+  const nextDay = new Date(date);
+  nextDay.setDate(nextDay.getDate() + 1);
+  return nextDay;
+};
+
+export const getPreviousDayEvents = (
+  events: MobileCalendarEvent[],
+  selectedDay: Date
+) => {
+  if (!selectedDay) return [];
+  return events.filter((event) =>
+    areDatesEqual(event.date, getPreviousDay(selectedDay))
+  );
+};
+
+export const getNextDayEvents = (
+  events: MobileCalendarEvent[],
+  selectedDay: Date
+) => {
+  if (!selectedDay) return [];
+  return events.filter((event) =>
+    areDatesEqual(event.date, getNextDay(selectedDay))
+  );
+};
+
+export interface MobileCalendarEvent {
+  eventId: string;
+  date: Date; // Startzeit des Termins
+  endTime?: Date; // Endzeit des Termins (optional)
+  isAllDay?: boolean; // Ganztägiger Termin
+  name: string;
+  description: string;
+  color: string;
+  location?: string;
+  categoryNumber?: string;
+}
+
+export interface MobileCalendarProps {
+  events: MobileCalendarEvent[];
+}
+
+// Format date to display in header (e.g., "Mo, 16. März")
+export const formatDateForHeader = (date: Date) => {
+  const dayOfWeek = date.toLocaleString("de-DE", { weekday: "short" });
+  const day = date.getDate();
+  const month = date.toLocaleString("de-DE", { month: "long" });
+  return `${dayOfWeek}, ${day}. ${month}`;
+};
+
+export const filterEventsByRoom = (
+  resource: string,
+  events: MobileCalendarEvent[]
+): MobileCalendarEvent[] => {
+  const result = events?.filter((event) => event.location === resource);
+
+  if (resource != "" && result) {
+    return result;
+  }
+  return events;
+};
+
 export function showCollectorDialog() {
   const scriptUrl =
     "https://saalzentrum-duesseldorf.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-3o5b4z/b/4/b0105d975e9e59f24a3230a22972a71a/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector-embededjs.js?locale=en-GB&collectorId=54badd66";
@@ -199,3 +273,111 @@ export function showCollectorDialog() {
     document.body.removeChild(script);
   };
 }
+
+// Generate calendar weeks array
+export const generateCalendarDays = (
+  currentMonth: Date,
+  selectedRoom: string,
+  events: MobileCalendarEvent[]
+) => {
+  const weeks = [];
+  let week = [];
+
+  const daysInMonth: number = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() + 1,
+    0
+  ).getDate();
+
+  const firstDay: number = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    1
+  ).getDay();
+
+  // Get the first day of the month (0 = Sunday, 1 = Monday, etc.)
+  const firstDayOfWeek = firstDay === 0 ? 6 : firstDay - 1; // Adjust for Monday as first day
+
+  // Add days from previous month
+  const lastDayOfPrevMonth = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
+    0
+  ).getDate();
+
+  for (let i = 0; i < firstDayOfWeek; i++) {
+    week.push({
+      day: lastDayOfPrevMonth - firstDayOfWeek + i + 1,
+      monthOffset: -1,
+      events: [],
+    });
+  }
+
+  // Add days of current month
+  for (let day = 1; day <= daysInMonth; day++) {
+    const date = new Date(
+      currentMonth.getFullYear(),
+      currentMonth.getMonth(),
+      day
+    );
+
+    const dayEvents = filterEventsByRoom(selectedRoom, events).filter((event) =>
+      areDatesEqual(event.date, date)
+    );
+
+    week.push({
+      day,
+      monthOffset: 0,
+      events: dayEvents,
+      date: new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day),
+    });
+
+    if (week.length === 7) {
+      weeks.push([...week]);
+      week = [];
+    }
+  }
+
+  // Add days from next month
+  let nextMonthDay = 1;
+  while (week.length < 7 && week.length > 0) {
+    week.push({
+      day: nextMonthDay++,
+      monthOffset: 1,
+      events: [],
+      date: new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth() + 1,
+        nextMonthDay - 1
+      ),
+    });
+  }
+
+  if (week.length > 0) {
+    weeks.push(week);
+  }
+
+  return weeks;
+};
+
+ // Scroll to 8:00 when a day is selected
+  export const scrollTo8AM = (scrollContainerRef: React.RefObject<HTMLElement>) => {
+    if (scrollContainerRef.current) {
+      // Find all hour blocks
+      const hourBlocks =
+        scrollContainerRef.current.querySelectorAll(".hour-block");
+
+      // Locate the "8:00" block
+      const targetBlock = Array.from(hourBlocks).find(
+        (block) =>
+          block.querySelector(".hour-label")?.textContent?.trim() === "8:00"
+      );
+
+      if (targetBlock) {
+        // Scroll to the "8:00" block
+        targetBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        console.warn("8:00 block not found");
+      }
+    }
+  };

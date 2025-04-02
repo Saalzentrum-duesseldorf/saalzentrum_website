@@ -1,63 +1,75 @@
 .MobileCalendar {
- font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
   max-width: 100%;
   background-color: #fff;
   height: 100vh; // Set full viewport height
   display: flex;
   flex-direction: column;
-    
+
   .calendar-details-container {
     position: relative;
     overflow: hidden; // Keep horizontal overflow hidden
     width: 100%;
     flex: 1; // Take remaining space
-    
+
     .preload-container {
       display: flex;
-      width: 300%; // Space for previous, current, and next day
-      transform: translateX(-33.333%); // Center the current day
+      width: 300%; // Platz für vorherigen, aktuellen und nächsten Tag
+      transform: translateX(-33.333%); // Zentriert den aktuellen Tag
       transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform; // Optimize for animations
+      will-change: transform;
       height: 100%;
-      
+      overflow: hidden; // Wichtig: Verhindert, dass benachbarte Tage sichtbar werden
+
       &.swiping-left {
-        transform: translateX(-66.666%); // Move to next day
+        transform: translateX(-66.666%);
       }
-      
+
       &.swiping-right {
-        transform: translateX(0); // Move to previous day
+        transform: translateX(0);
       }
-      
+
       .day-container {
         width: 33.333%;
         flex-shrink: 0;
         opacity: 1;
         transition: opacity 0.2s ease;
         height: 100%;
-        overflow-y: auto; // Enable vertical scrolling for each day container
-        
-        &.inactive {
-          opacity: 0.5;
+        overflow-y: auto;
+
+        // Verstecke den übernächsten Tag während der Animation
+        &:first-child,
+        &:last-child {
+          opacity: 0;
+          transition: opacity 0.1s ease;
+        }
+
+        // Zeige nur den Ziel-Tag während der Animation
+        .swiping-left &:last-child,
+        .swiping-right &:first-child {
+          opacity: 1;
         }
       }
     }
   }
-  
-  /* Sticky Header */
-.sticky-header {
-  position: sticky;
-  top: 0; /* Sticks to the top of the viewport */
-  z-index: 10; /* Ensures it stays above other content */
-  background-color: #fff; /* Background color to avoid transparency issues */
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
-}
 
-/* Scrollable Body */
-.scrollable-body {
-  overflow-y: auto; /* Enables vertical scrolling */
-  height: calc(100vh - var(--header-height)); /* Adjust height dynamically based on header size */
-  -webkit-overflow-scrolling: touch; /* Für besseres Scrolling auf iOS */
-}
+  /* Sticky Header */
+  .sticky-header {
+    position: sticky;
+    top: 0; /* Sticks to the top of the viewport */
+    z-index: 10; /* Ensures it stays above other content */
+    background-color: #fff; /* Background color to avoid transparency issues */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
+  }
+
+  /* Scrollable Body */
+  .scrollable-body {
+    overflow-y: auto; /* Enables vertical scrolling */
+    height: calc(
+      100vh - var(--header-height)
+    ); /* Adjust height dynamically based on header size */
+    -webkit-overflow-scrolling: touch; /* Für besseres Scrolling auf iOS */
+  }
 
   // Header styling
   .MobileCalendar-header {
@@ -69,14 +81,14 @@
     position: relative;
     top: 0;
     margin-right: auto;
-        
+
     .menu-icon {
       text-align: center;
-            
+
       .hamburger-icon {
         display: inline-block;
         cursor: pointer;
-                
+
         .bar {
           width: 25px;
           height: 3px;
@@ -85,7 +97,7 @@
           border-radius: 1px;
         }
       }
-      
+
       // Enhanced back button styling
       .nav-button {
         background: rgba(255, 255, 255, 0.2);
@@ -100,41 +112,41 @@
         align-items: center;
         transition: all 0.3s ease;
         padding: 0;
-        
+
         &:hover {
           background: rgba(255, 255, 255, 0.3);
           transform: translateX(-3px);
         }
-        
+
         &:active {
           background: rgba(255, 255, 255, 0.4);
           transform: translateX(-3px) scale(0.95);
         }
-        
+
         &:focus {
           box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
           outline: none;
         }
       }
     }
-        
+
     .month-navigation {
       display: flex;
       justify-content: center;
       align-items: center;
-            
+
       .nav-button {
         background: transparent;
         border: none;
         color: white;
         font-size: 1.2rem;
         padding: 0 15px;
-                
+
         &:focus {
           box-shadow: none;
         }
       }
-            
+
       .month-title {
         font-size: 1.3rem;
         font-weight: bold;
@@ -145,7 +157,7 @@
         display: flex;
         align-items: center;
         justify-content: flex-end; /* Elemente gleichmäßig verteilen */
-      
+
         .today-Button {
           margin-left: auto; /* Rechtsbündig */
           background-color: #4c5883; /* Gleiche Hintergrundfarbe wie der Header */
@@ -157,15 +169,15 @@
           font-weight: bold; /* Fettschrift */
           cursor: pointer; /* Zeiger-Cursor */
           transition: background-color 0.3s ease, transform 0.2s ease;
-        
+
           &:hover {
             background-color: #3a4366; /* Dunklere Farbe beim Hover */
           }
-        
+
           &:active {
             transform: scale(0.95); /* Leichtes Schrumpfen beim Klicken */
           }
-        
+
           &:focus {
             outline: none; /* Entfernt den Standard-Fokusrahmen */
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3); /* Fokus-Schatten */
@@ -173,20 +185,20 @@
         }
       }
     }
-        
+
     .favorites-icon {
       text-align: center;
       font-size: 1.5rem;
     }
   }
-    
+
   // Room selection dropdown
   .room-selection {
     padding: 10px;
-        
+
     .room-dropdown {
       width: 100%;
-            
+
       .room-dropdown-toggle {
         width: 100%;
         background-color: #f0f0f0;
@@ -194,7 +206,7 @@
         border: 1px solid #ddd;
         text-align: left;
         font-weight: normal;
-                
+
         &::after {
           float: right;
           margin-top: 10px;
@@ -202,28 +214,28 @@
       }
     }
   }
-    
+
   // Weekday headers
   .calendar-weekdays {
     background-color: #4c5883;
     color: white;
     text-align: center;
-        
+
     .weekday-cell {
       padding: 10px 0;
       font-weight: bold;
       border-right: 1px solid #3a4366;
-            
+
       &:last-child {
         border-right: none;
       }
     }
   }
-    
+
   // Calendar grid
   .calendar-week {
     border-bottom: 1px solid #ddd;
-        
+
     .calendar-day {
       height: 100px;
       border-right: 1px solid #ddd;
@@ -232,31 +244,31 @@
       overflow: hidden;
       cursor: pointer;
       transition: background-color 0.2s ease;
-      
+
       &:hover {
         background-color: #f0f4ff;
       }
-            
+
       &:last-child {
         border-right: none;
       }
-            
+
       &.other-month {
         background-color: #f5f5f5;
         color: #aaa;
-        
+
         &:hover {
           background-color: #eaeaea;
         }
       }
-            
+
       .day-number {
         font-weight: bold;
         text-align: center;
         margin-bottom: 5px;
         font-size: 1rem;
       }
-            
+
       .day-events {
         .event-item {
           margin-bottom: 2px;
