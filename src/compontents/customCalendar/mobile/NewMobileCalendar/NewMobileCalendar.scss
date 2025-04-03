@@ -12,46 +12,23 @@
     width: 100%;
     flex: 1; // Take remaining space
 
-    .preload-container {
-      display: flex;
-      width: 300%; // Platz für vorherigen, aktuellen und nächsten Tag
-      transform: translateX(-33.333%); // Zentriert den aktuellen Tag
-      transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      will-change: transform;
-      height: 100%;
-      overflow: hidden; // Wichtig: Verhindert, dass benachbarte Tage sichtbar werden
+  }
 
-      &.swiping-left {
-        transform: translateX(-66.666%);
-      }
-
-      &.swiping-right {
-        transform: translateX(0);
-      }
-
-      .day-container {
-        width: 33.333%;
-        flex-shrink: 0;
-        opacity: 1;
-        transition: opacity 0.2s ease;
-        height: 100%;
-        overflow-y: auto;
-
-        // Verstecke den übernächsten Tag während der Animation
-        &:first-child,
-        &:last-child {
-          opacity: 0;
-          transition: opacity 0.1s ease;
-        }
-
-        // Zeige nur den Ziel-Tag während der Animation
-        .swiping-left &:last-child,
-        .swiping-right &:first-child {
-          opacity: 1;
-        }
-      }
+  .day-content {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.25s ease;
+    
+    &.fade-out {
+      opacity: 0;
+    }
+    
+    &.fade-in {
+      opacity: 1;
     }
   }
+  
+  
 
   /* Sticky Header */
   .sticky-header {

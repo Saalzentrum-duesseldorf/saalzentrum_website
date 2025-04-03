@@ -12,15 +12,14 @@ import {
   formatDateForHeader,
   generateCalendarDays,
   getNextDay,
-  getNextDayEvents,
   getPreviousDay,
-  getPreviousDayEvents,
   MobileCalendarEvent,
   MobileCalendarProps,
   scrollTo8AM,
 } from "../../../../utils";
 import MobileCalendarDetails from "../MobileCalendarDetails";
 import SelectRoomDropDown from "../../selectRoom/SelectRoomDropDown";
+import CalendarSkeleton from "./CalendarSkeleton";
 
 const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -28,8 +27,34 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [isSwipingLeft, setIsSwipingLeft] = useState(false);
   const [isSwipingRight, setIsSwipingRight] = useState(false);
-  const [selectedDateDetails, setSelectedDateDetails] = useState<MobileCalendarEvent[]>([]);
+  const [selectedDateDetails, setSelectedDateDetails] = useState<
+    MobileCalendarEvent[]
+  >([]);
+
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [displayDays, setDisplayDays] = useState<Date[]>([]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    if (selectedDay) {
+      setTimeout(() => scrollTo8AM(scrollContainerRef), 10); // Delay to ensure DOM is rendered
+      const prevDay = getPreviousDay(selectedDay);
+      const nextDay = getNextDay(selectedDay);
+      setDisplayDays([prevDay, selectedDay, nextDay]);
+    }
+  }, [selectedDay]);
+
+  // Load events for the selected day
+  useEffect(() => {
+    if (selectedDay) {
+      const events = props.events.filter((event) =>
+        areDatesEqual(event.date, selectedDay)
+      );
+      setSelectedDateDetails(events);
+    }
+  }, [selectedDay, props.events]);
 
   // For swipe functionality
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -51,37 +76,27 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd || isAnimating) return;
-
+  
     const distance = touchStart - touchEnd;
     const isSwipeLeft = distance > minSwipeDistance;
     const isSwipeRight = distance < -minSwipeDistance;
-
+  
     if (isSwipeLeft || isSwipeRight) {
       setIsAnimating(true);
-
-      if (isSwipeLeft) {
-        setIsSwipingLeft(true);
-      } else {
-        setIsSwipingRight(true);
-      }
-
-      // Wait for the animation to complete before updating the day
+      setIsLoading(true);
+  
       setTimeout(() => {
-        if (isSwipeLeft) {
-          goToNextDay();
-        } else {
-          goToPreviousDay();
-        }
-
-        // Reset swipe states after the day is updated
-        setTimeout(() => {
-          setIsSwipingLeft(false);
-          setIsSwipingRight(false);
-          setIsAnimating(false);
-        }, 300); // Match this duration to your CSS animation duration
-      }, 300); // Match this duration to your CSS animation duration
+        const newSelectedDay = isSwipeLeft
+          ? getNextDay(selectedDay!)
+          : getPreviousDay(selectedDay!);
+  
+        setSelectedDay(newSelectedDay);
+        setIsAnimating(false);
+        setIsLoading(false);
+      }, 500);
     }
   };
+  
 
   const goToPreviousMonth = () => {
     setCurrentMonth(
@@ -104,32 +119,18 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     selectedDay &&
     setSelectedDay(new Date(selectedDay.setDate(selectedDay.getDate() + 1)));
 
-    const handleDayClick = (day: Date | null) => {
-      day && setSelectedDay(new Date(day));
-      setSelectedRoom("");
-    };
+  const handleDayClick = (day: Date | null) => {
+    day && setSelectedDay(new Date(day));
+    setSelectedRoom("");
+  };
 
   const handleBackClick = () => setSelectedDay(null);
 
-  useEffect(() => {
-    if (selectedDay) {
-      setTimeout(()=> scrollTo8AM(scrollContainerRef), 100); // Delay to ensure DOM is rendered
-    }
-  }, [selectedDay]);
-
-  // Load events for the selected day
-  useEffect(() => {
-    if (selectedDay) {
-      const events = props.events.filter((event) =>
-        areDatesEqual(event.date, selectedDay)
-      );
-      setSelectedDateDetails(events);
-    }
-  }, [selectedDay, props.events]);
-
   const goToToday = () => {
     setSelectedDay(new Date());
-    setCurrentMonth(new Date(new Date().getFullYear(), new Date().getMonth(), 1));
+    setCurrentMonth(
+      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
+    );
   };
 
   const calendarWeeks = generateCalendarDays(
@@ -204,44 +205,22 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
         <div className="scrollable-body" ref={scrollContainerRef}>
           {selectedDay ? (
             <div
-              className="calendar-details-container"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              <div
-                className={`preload-container ${
-                  isSwipingLeft ? "swiping-left" : ""
-                } ${isSwipingRight ? "swiping-right" : ""}`}
-              >
-                {/* Vorheriger Tag */}
-                <div className="day-container">
-                  <MobileCalendarDetails
-                    events={getPreviousDayEvents(props.events, selectedDay)}
-                    day={getPreviousDay(selectedDay)}
-                    room={selectedRoom}
-                  />
-                </div>
-
-                {/* Aktueller Tag */}
-                <div className="day-container">
-                  <MobileCalendarDetails
-                    events={selectedDateDetails}
-                    day={selectedDay}
-                    room={selectedRoom}
-                  />
-                </div>
-
-                {/* Nächster Tag */}
-                <div className="day-container">
-                  <MobileCalendarDetails
-                    events={getNextDayEvents(props.events, selectedDay)}
-                    day={getNextDay(selectedDay)}
-                    room={selectedRoom}
-                  />
-                </div>
-              </div>
-            </div>
+            className="calendar-details-container"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {isLoading ? (
+             <CalendarSkeleton />
+            ) : (
+              <MobileCalendarDetails
+                events={selectedDateDetails}
+                day={selectedDay!}
+                room={selectedRoom}
+              />
+            )}
+          </div>
+        
           ) : (
             <>
               {/* Calendar days of week header */}

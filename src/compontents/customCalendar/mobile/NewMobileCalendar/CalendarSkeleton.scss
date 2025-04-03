@@ -1,0 +1,21 @@
+.calendar-skeleton {
+    .skeleton-hour {
+      display: flex;
+      margin-bottom: 10px;
+      height: 80px;
+  
+      .skeleton-time {
+        width: 50px;
+        height: 20px;
+        background-color: #e0e0e0;
+        margin-right: 10px;
+      }
+  
+      .skeleton-event {
+        flex-grow: 1;
+        height: 20px;
+        background-color: #f0f0f0;
+      }
+    }
+  }
+  
