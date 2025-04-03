@@ -108,7 +108,7 @@ const MobileCalendar = (props: CustomCalendarProps) => {
           <DropdownCalendar onSelectDate={handleDateChange} visible={visible} value={currentDay} />
 
         </div>
-        <MobileCalendarDetails events={selectedDateDetails} day={currentDay}/>
+        <MobileCalendarDetails events={selectedDateDetails} day={currentDay} room=""/>
 
 
       </div>
