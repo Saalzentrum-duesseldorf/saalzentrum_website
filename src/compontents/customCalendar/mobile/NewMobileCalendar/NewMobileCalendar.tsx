@@ -25,8 +25,6 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedRoom, setSelectedRoom] = useState("");
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
-  const [isSwipingLeft, setIsSwipingLeft] = useState(false);
-  const [isSwipingRight, setIsSwipingRight] = useState(false);
   const [selectedDateDetails, setSelectedDateDetails] = useState<
     MobileCalendarEvent[]
   >([]);
@@ -34,15 +32,9 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [displayDays, setDisplayDays] = useState<Date[]>([]);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
   useEffect(() => {
     if (selectedDay) {
       setTimeout(() => scrollTo8AM(scrollContainerRef), 10); // Delay to ensure DOM is rendered
-      const prevDay = getPreviousDay(selectedDay);
-      const nextDay = getNextDay(selectedDay);
-      setDisplayDays([prevDay, selectedDay, nextDay]);
     }
   }, [selectedDay]);
 
