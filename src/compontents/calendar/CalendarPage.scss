@@ -25,22 +25,22 @@
 
 }
 
-// Media query for mobile devices
-@media (max-width: 576px) {
+// Media query for mobile devices (Portrait and Landscape) and tablets
+@media (max-width: 1024px), (max-height: 768px) {
   .Calendar-Page {
-    display: none; // Hide the desktop calendar page on mobile devices
+    display: none; // Hide the desktop calendar page on mobile devices and tablets
   }
 
   .Calendar-Page-Mobile {
-    display: block; // Only show this div on mobile devices
+    display: block; // Show the mobile view on mobile devices and tablets
     background-color: #f8f9fa; // Example background color
     text-align: center; // Center the text
   }
 }
 
-// Media query for devices wider than 576px
-@media (min-width: 577px) {
+// Media query for devices wider than 768px (Desktop and larger devices)
+@media (min-width: 1025px) and (min-height: 769px) {
   .Calendar-Page-Mobile {
-    display: none; // Hide the mobile test div on desktops and larger devices
+    display: none; // Hide the mobile view on desktops and larger devices
   }
 }

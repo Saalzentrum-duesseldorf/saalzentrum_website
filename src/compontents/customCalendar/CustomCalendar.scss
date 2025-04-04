@@ -98,7 +98,7 @@
         width: 100%;
         align-self: flex-start;
         background: rgb(206, 206, 206);
-        font-size: 18px;
+        font-size: 14px;
       }
 
       .Calendar-day-body {
@@ -111,7 +111,9 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
-        color: white
+        color: white;
+        text-align: start;
+        padding-left: 8px;
       }
     }
   }

@@ -59,6 +59,8 @@
     .all-day-event {
       border-radius: 6px;
       border: 2px solid #4b5782;
+      text-align: start;
+      padding-left: 8px;
       &:hover {
         background-color: #ff6868; /* Lighten the red on hover */
         transform: scale(1.05); /* Slightly increase size to draw attention */
@@ -112,6 +114,11 @@
           color: white;
           font-size: 12px;
           text-overflow: ellipsis;
+          //text to start
+          text-align: start;
+          padding-left: 8px;
+          padding-top: 2px;
+          padding-bottom: 18px;
 
           &:hover {
             background-color: #ff6868; /* Lighten the red on hover */

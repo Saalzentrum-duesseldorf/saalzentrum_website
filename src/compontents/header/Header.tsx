@@ -1,6 +1,6 @@
 import './Header.scss';
 
-function Header(){
+function Header() {
     return (
       <>
         <div className="header">

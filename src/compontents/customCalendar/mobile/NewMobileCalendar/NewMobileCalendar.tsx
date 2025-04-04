@@ -68,27 +68,26 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd || isAnimating) return;
-  
+
     const distance = touchStart - touchEnd;
     const isSwipeLeft = distance > minSwipeDistance;
     const isSwipeRight = distance < -minSwipeDistance;
-  
+
     if (isSwipeLeft || isSwipeRight) {
       setIsAnimating(true);
       setIsLoading(true);
-  
+
       setTimeout(() => {
         const newSelectedDay = isSwipeLeft
           ? getNextDay(selectedDay!)
           : getPreviousDay(selectedDay!);
-  
+
         setSelectedDay(newSelectedDay);
         setIsAnimating(false);
         setIsLoading(false);
       }, 500);
     }
   };
-  
 
   const goToPreviousMonth = () => {
     setCurrentMonth(
@@ -146,11 +145,14 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
                   <FontAwesomeIcon icon={faArrowLeft} />
                 </Button>
               ) : (
-                <div className="hamburger-icon">
-                  <div className="bar"></div>
-                  <div className="bar"></div>
-                  <div className="bar"></div>
-                </div>
+                <Button
+                  className="nav-button back-button"
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                </Button>
               )}
             </Col>
             <Col xs="8" className="month-navigation">
@@ -197,22 +199,21 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
         <div className="scrollable-body" ref={scrollContainerRef}>
           {selectedDay ? (
             <div
-            className="calendar-details-container"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {isLoading ? (
-             <CalendarSkeleton />
-            ) : (
-              <MobileCalendarDetails
-                events={selectedDateDetails}
-                day={selectedDay!}
-                room={selectedRoom}
-              />
-            )}
-          </div>
-        
+              className="calendar-details-container"
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {isLoading ? (
+                <CalendarSkeleton />
+              ) : (
+                <MobileCalendarDetails
+                  events={selectedDateDetails}
+                  day={selectedDay!}
+                  room={selectedRoom}
+                />
+              )}
+            </div>
           ) : (
             <>
               {/* Calendar days of week header */}
