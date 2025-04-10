@@ -9,7 +9,7 @@ interface SelectRoomDropDownProps {
 
 const SelectRoomDropDown: React.FC<SelectRoomDropDownProps> = ({ 
   onRoomChange, 
-  initialRoom = "Raum wählen" 
+  initialRoom = "" 
 }) => {
   const [selectedRoom, setSelectedRoom] = useState<string>(initialRoom);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -23,12 +23,12 @@ const SelectRoomDropDown: React.FC<SelectRoomDropDownProps> = ({
 
   return (
     <div className="select-room-dropdown">
-      <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} className="room-dropdown">
+      <Dropdown isOpen={dropdownOpen} toggle={toggleDropdown} direction="down">
         <DropdownToggle caret className="room-dropdown-toggle">
-          {selectedRoom === "" ? "Raum wählen" : selectedRoom}
+          {selectedRoom === "" ? "Raum" : selectedRoom}
         </DropdownToggle>
-        <DropdownMenu className="room-dropdown-menu">
-          <DropdownItem onClick={() => handleRoomSelect("")}>Raum wählen</DropdownItem>
+        <DropdownMenu container="body" className="room-dropdown-menu">
+          <DropdownItem onClick={() => handleRoomSelect("")}>Alle Räume</DropdownItem>
           <DropdownItem onClick={() => handleRoomSelect("Saal 1")}>Saal 1</DropdownItem>
           <DropdownItem onClick={() => handleRoomSelect("Nebenraum 1B")}>Nebenraum 1B</DropdownItem>
           <DropdownItem onClick={() => handleRoomSelect("Saal 2")}>Saal 2</DropdownItem>

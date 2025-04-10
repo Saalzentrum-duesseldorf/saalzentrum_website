@@ -21,16 +21,20 @@ import MobileCalendarDetails from "../MobileCalendarDetails";
 import SelectRoomDropDown from "../../selectRoom/SelectRoomDropDown";
 import CalendarSkeleton from "./CalendarSkeleton";
 
+// Definiere ViewType als Union Type
+type ViewType = "day" | "week" | "month";
+
 const NewMobileCalendar = (props: MobileCalendarProps) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedRoom, setSelectedRoom] = useState("");
+  const [viewType, setViewType] = useState<ViewType>("month");
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [selectedRoom, setSelectedRoom] = useState<string>("");
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [selectedDateDetails, setSelectedDateDetails] = useState<
     MobileCalendarEvent[]
   >([]);
 
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedDay) {
@@ -78,57 +82,279 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
       setIsLoading(true);
 
       setTimeout(() => {
-        const newSelectedDay = isSwipeLeft
-          ? getNextDay(selectedDay!)
-          : getPreviousDay(selectedDay!);
-
-        setSelectedDay(newSelectedDay);
+        if (viewType === "day" && selectedDay) {
+          const newSelectedDay = isSwipeLeft
+            ? getNextDay(selectedDay)
+            : getPreviousDay(selectedDay);
+          setSelectedDay(newSelectedDay);
+        } else if (viewType === "week") {
+          const newDate = new Date(currentDate);
+          newDate.setDate(newDate.getDate() + (isSwipeLeft ? 7 : -7));
+          setCurrentDate(newDate);
+        }
         setIsAnimating(false);
         setIsLoading(false);
       }, 500);
     }
   };
 
+  // Navigation functions
   const goToPreviousMonth = () => {
-    setCurrentMonth(
-      new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
   };
 
   const goToNextMonth = () => {
-    setCurrentMonth(
-      new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
     );
   };
 
-  // New day navigation functions
-  const goToPreviousDay = () =>
-    selectedDay &&
-    setSelectedDay(new Date(selectedDay.setDate(selectedDay.getDate() - 1)));
+  const goToPreviousWeek = () => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() - 7);
+    setCurrentDate(newDate);
+  };
 
-  const goToNextDay = () =>
-    selectedDay &&
-    setSelectedDay(new Date(selectedDay.setDate(selectedDay.getDate() + 1)));
+  const goToNextWeek = () => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + 7);
+    setCurrentDate(newDate);
+  };
+
+  const goToPreviousDay = () => {
+    if (selectedDay) {
+      setSelectedDay(new Date(selectedDay.setDate(selectedDay.getDate() - 1)));
+    }
+  };
+
+  const goToNextDay = () => {
+    if (selectedDay) {
+      setSelectedDay(new Date(selectedDay.setDate(selectedDay.getDate() + 1)));
+    }
+  };
 
   const handleDayClick = (day: Date | null) => {
-    day && setSelectedDay(new Date(day));
-    setSelectedRoom("");
+    if (day) {
+      setSelectedDay(new Date(day));
+      setViewType("day");
+    }
   };
 
-  const handleBackClick = () => setSelectedDay(null);
+  const handleBackClick = () => {
+    setSelectedDay(null);
+    setViewType("month");
+  };
 
   const goToToday = () => {
-    setSelectedDay(new Date());
-    setCurrentMonth(
-      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    );
+    const today = new Date();
+    setCurrentDate(today);
+    if (viewType === "day") {
+      setSelectedDay(today);
+    }
+  };
+
+  // Hilfsfunktion für die Wochenansicht
+  const getWeekStartDate = (date: Date): Date => {
+    const day = date.getDay();
+    // In JavaScript ist Sonntag 0, wir wollen aber Montag als ersten Tag
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(new Date(date).setDate(diff));
   };
 
   const calendarWeeks = generateCalendarDays(
-    currentMonth,
+    currentDate,
     selectedRoom,
     props.events
   );
+
+  // Komponente für die Wochenansicht
+  const WeekView = () => {
+    const weekStart = getWeekStartDate(new Date(currentDate));
+    const weekDays = Array(7)
+      .fill(0)
+      .map((_, i) => {
+        const day = new Date(weekStart);
+        day.setDate(weekStart.getDate() + i);
+        return day;
+      });
+
+    // Zeitslots von 0 bis 23 Uhr
+    const timeSlots = Array(24)
+      .fill(0)
+      .map((_, i) => i);
+
+    return (
+      <div
+        className="week-view"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Wochentage-Header */}
+        <div className="week-header">
+          {weekDays.map((day, index) => (
+            <div key={`weekday-${index}`} className="week-day-header">
+              <div className="weekday-name">
+                {day.toLocaleString("de-DE", { weekday: "short" })}
+              </div>
+              <div className="weekday-date">{day.getDate()}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Zeitraster mit Ereignissen */}
+        <div className="week-grid">
+          <div className="time-column">
+            {timeSlots.map((hour) => (
+              <div key={`time-${hour}`} className="time-slot">
+                {hour}:00
+              </div>
+            ))}
+          </div>
+
+          <div className="days-container">
+            {weekDays.map((day, dayIndex) => (
+              <div key={`day-column-${dayIndex}`} className="day-column">
+                {timeSlots.map((hour) => {
+                  // Filtere Ereignisse für diesen Tag und diese Stunde
+                  const dayEvents = props.events.filter((event) => {
+                    const eventDate = new Date(event.date);
+                    const eventStartHour = new Date(event.startTime).getHours();
+                    const eventEndHour = new Date(event.endTime).getHours();
+
+                    // Überprüfen, ob das Ereignis am aktuellen Tag stattfindet
+                    const isSameDay = areDatesEqual(eventDate, day);
+
+                    // Überprüfen, ob die Stunde innerhalb des Ereigniszeitraums liegt
+                    const isWithinHour =
+                      hour >= eventStartHour && hour < eventEndHour;
+
+                    return isSameDay && isWithinHour;
+                  });
+
+                  return (
+                    <div
+                      key={`slot-${dayIndex}-${hour}`}
+                      className="week-time-slot"
+                    >
+                      {dayEvents.map((event) => (
+                        <div
+                          key={`event-${event.eventId}`}
+                          className="week-event"
+                          style={{
+                            backgroundColor: event.color,
+                            height: `${
+                              ((new Date(event.endTime).getTime() -
+                                new Date(event.startTime).getTime()) /
+                                (1000 * 60)) *
+                              1
+                            }px`,
+                          }}
+                        >
+                          {event.categoryNumber && `#${event.categoryNumber} `}
+                          {event.name}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ViewTypeTabs = () => {
+    return (
+      <div className="view-type-tabs">
+        <div 
+          className={`view-tab ${viewType === "day" ? "active" : ""}`}
+          onClick={() => setViewType("day")}
+        >
+          Tag
+        </div>
+        <div 
+          className={`view-tab ${viewType === "week" ? "active" : ""}`}
+          onClick={() => setViewType("week")}
+        >
+          Woche
+        </div>
+        <div 
+          className={`view-tab ${viewType === "month" ? "active" : ""}`}
+          onClick={() => setViewType("month")}
+        >
+          Monat
+        </div>
+      </div>
+    );
+  };
+
+  // Render-Funktion für die Navigation basierend auf dem viewType
+  const renderNavigation = () => {
+    if (viewType === "day" || selectedDay) {
+      return (
+        <div className="day-navigation">
+          <Button className="nav-button" onClick={goToPreviousDay}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </Button>
+          <span className="day-title">
+            {formatDateForHeader(selectedDay || currentDate)}
+          </span>
+          <Button className="nav-button" onClick={goToNextDay}>
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Button>
+          <Button className="today-Button" onClick={goToToday}>
+            Heute
+          </Button>
+        </div>
+      );
+    } else if (viewType === "week") {
+      const weekStart = getWeekStartDate(new Date(currentDate));
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekStart.getDate() + 6);
+
+      return (
+        <div className="week-navigation">
+          <Button className="nav-button" onClick={goToPreviousWeek}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </Button>
+          <span className="week-title">
+            {`${weekStart.getDate()}. - ${weekEnd.getDate()}. ${weekEnd.toLocaleString(
+              "de-DE",
+              { month: "long" }
+            )}`}
+          </span>
+          <Button className="nav-button" onClick={goToNextWeek}>
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Button>
+          <Button className="today-Button" onClick={goToToday}>
+            Heute
+          </Button>
+        </div>
+      );
+    } else {
+      return (
+        <div className="month-navigation-container">
+          <Button className="nav-button" onClick={goToPreviousMonth}>
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </Button>
+          <span className="month-title">
+            {currentDate.toLocaleString("de-DE", { month: "long" })}
+          </span>
+          <Button className="nav-button" onClick={goToNextMonth}>
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Button>
+          <Button className="today-Button" onClick={goToToday}>
+            Heute
+          </Button>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="MobileCalendar">
@@ -137,7 +363,7 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
         <div className="sticky-header">
           <Row className="MobileCalendar-header">
             <Col xs="2" className="menu-icon">
-              {selectedDay ? (
+              {selectedDay || viewType === "week" ? (
                 <Button
                   className="nav-button back-button"
                   onClick={handleBackClick}
@@ -155,49 +381,25 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
                 </Button>
               )}
             </Col>
-            <Col xs="8" className="month-navigation">
-              {selectedDay ? (
-                <div className="day-navigation">
-                  <Button className="nav-button" onClick={goToPreviousDay}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                  </Button>
-                  <span className="day-title">
-                    {formatDateForHeader(selectedDay)}
-                  </span>
-                  <Button className="nav-button" onClick={goToNextDay}>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                  </Button>
-                  <Button className="today-Button" onClick={goToToday}>
-                    Heute
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <Button className="nav-button" onClick={goToPreviousMonth}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                  </Button>
-                  <span className="month-title">
-                    {currentMonth.toLocaleString("de-DE", { month: "long" })}
-                  </span>
-                  <Button className="nav-button" onClick={goToNextMonth}>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                  </Button>
-                </>
-              )}
+            <Col xs="8" className="month-navigation text-center">
+              {renderNavigation()}
             </Col>
-
-            <Col>
+            <Col xs="2" className="room-selection p-0">
               {/* Room selection dropdown */}
               <SelectRoomDropDown
                 onRoomChange={setSelectedRoom}
-                initialRoom={selectedRoom}
+                initialRoom=""
               />
             </Col>
           </Row>
+
+          {/* View type selector */}
+          <ViewTypeTabs />
         </div>
-        {/* Scrollable Timeline */}
+
+        {/* Scrollable Content */}
         <div className="scrollable-body" ref={scrollContainerRef}>
-          {selectedDay ? (
+          {viewType === "day" || selectedDay ? (
             <div
               className="calendar-details-container"
               onTouchStart={handleTouchStart}
@@ -209,11 +411,13 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
               ) : (
                 <MobileCalendarDetails
                   events={selectedDateDetails}
-                  day={selectedDay!}
+                  day={selectedDay || currentDate}
                   room={selectedRoom}
                 />
               )}
             </div>
+          ) : viewType === "week" ? (
+            <WeekView />
           ) : (
             <>
               {/* Calendar days of week header */}

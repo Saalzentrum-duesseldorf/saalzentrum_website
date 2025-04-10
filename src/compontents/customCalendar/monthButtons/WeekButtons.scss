@@ -1,0 +1,18 @@
+.Calendar-week-button-Container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .Calendar-week-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  
+    &:hover {
+      color: #5977d7;
+    }
+  }

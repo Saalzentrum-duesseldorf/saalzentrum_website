@@ -6,37 +6,181 @@
   display: flex;
   flex-direction: column;
 
+  // Ersetze den view-type-dropdown mit einer Tab-Navigation
+  .view-type-tabs {
+    display: flex;
+    background-color: #4c5883;
+    padding: 0 10px 8px;
+    gap: 8px;
+    margin: 0;
+    
+    .view-tab {
+      flex: 1;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 8px 0;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
+
+      &.active {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+
+      &:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  // Wochenansicht
+  .week-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-top: 0;
+    padding-top: 0;
+
+    .week-header {
+      display: flex;
+      background-color: #4c5883;
+      color: white;
+      margin: 0;
+      padding: 0;
+
+      .week-day-header {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        border-right: 1px solid #3a4366;
+
+        &:last-child {
+          border-right: none;
+        }
+
+        .weekday-name {
+          font-weight: bold;
+          font-size: 13px;
+          opacity: 0.9;
+        }
+
+        .weekday-date {
+          font-size: 1.2rem;
+          margin-top: 3px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .week-grid {
+      display: flex;
+      flex: 1;
+      overflow-y: auto;
+
+      .time-column {
+        width: 50px;
+        border-right: 1px solid #ddd;
+
+        .time-slot {
+          height: 60px;
+          padding: 5px;
+          text-align: right;
+          color: #666;
+          font-size: 12px;
+          border-bottom: 1px solid #eee;
+        }
+      }
+
+      .days-container {
+        display: flex;
+        flex: 1;
+
+        .day-column {
+          flex: 1;
+          border-right: 1px solid #ddd;
+
+          &:last-child {
+            border-right: none;
+          }
+
+          .week-time-slot {
+            height: 60px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+
+            .week-event {
+              position: absolute;
+              left: 2px;
+              right: 2px;
+              padding: 2px 4px;
+              border-radius: 3px;
+              font-size: 0.7rem;
+              color: white;
+              overflow: hidden;
+              z-index: 1;
+            }
+          }
+        }
+      }
+    }
+
+    // Navigation für Wochenansicht
+    .week-navigation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .week-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
   .calendar-details-container {
     position: relative;
     overflow: hidden; // Keep horizontal overflow hidden
     width: 100%;
     flex: 1; // Take remaining space
-
   }
 
   .day-content {
     width: 100%;
     height: 100%;
     transition: opacity 0.25s ease;
-    
+
     &.fade-out {
       opacity: 0;
     }
-    
+
     &.fade-in {
       opacity: 1;
     }
   }
-  
-  
 
-  /* Sticky Header */
   .sticky-header {
     position: sticky;
-    top: 0; /* Sticks to the top of the viewport */
-    z-index: 10; /* Ensures it stays above other content */
-    background-color: #fff; /* Background color to avoid transparency issues */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for visual separation */
+    top: 0;
+    z-index: 10;
+    background-color: #4c5883;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 0;
   }
 
   /* Scrollable Body */
@@ -46,150 +190,146 @@
       100vh - var(--header-height)
     ); /* Adjust height dynamically based on header size */
     -webkit-overflow-scrolling: touch; /* Für besseres Scrolling auf iOS */
+    margin-top: 0;
+    padding-top: 0;
   }
 
-  // Header styling
+  // Modernisierung des Headers
   .MobileCalendar-header {
     background-color: #4c5883;
     color: white;
-    padding: 15px 0;
-    padding-left: 10px;
+    padding: 12px 12px 8px;
     display: flex;
-    position: relative;
-    top: 0;
-    margin-right: auto;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
     .menu-icon {
-      text-align: center;
-
-      .hamburger-icon {
-        display: inline-block;
-        cursor: pointer;
-
-        .bar {
-          width: 25px;
-          height: 3px;
-          background-color: white;
-          margin: 5px 0;
-          border-radius: 1px;
-        }
-      }
-
-      // Enhanced back button styling
-      .nav-button {
-        background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      .back-button {
+        background: transparent;
         border: none;
         color: white;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
-        width: 38px;
-        height: 38px;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: all 0.3s ease;
+        transition: background-color 0.2s ease;
         padding: 0;
+        margin: 0;
 
-        &:hover {
-          background: rgba(255, 255, 255, 0.3);
-          transform: translateX(-3px);
+        &:hover,
+        &:focus {
+          background-color: rgba(255, 255, 255, 0.15);
+          box-shadow: none;
         }
 
         &:active {
-          background: rgba(255, 255, 255, 0.4);
-          transform: translateX(-3px) scale(0.95);
-        }
-
-        &:focus {
-          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-          outline: none;
+          background-color: rgba(255, 255, 255, 0.25);
         }
       }
     }
 
     .month-navigation {
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      overflow: hidden;
+
+      .month-navigation-container,
+      .day-navigation,
+      .week-navigation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .month-title,
+      .week-title,
+      .day-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        text-align: center;
+      }
 
       .nav-button {
         background: transparent;
         border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
         color: white;
-        font-size: 1.2rem;
-        padding: 0 15px;
+        flex-shrink: 0;
 
+        &:hover,
         &:focus {
+          background-color: rgba(255, 255, 255, 0.15);
           box-shadow: none;
+        }
+
+        &:active {
+          background-color: rgba(255, 255, 255, 0.25);
         }
       }
 
-      .month-title {
-        font-size: 1.3rem;
-        font-weight: bold;
-        margin: 0 10px;
-      }
+      .today-Button {
+        margin-left: 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        padding: 6px 12px;
+        font-size: 13px;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+        flex-shrink: 0;
 
-      .day-navigation {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end; /* Elemente gleichmäßig verteilen */
+        &:hover,
+        &:focus {
+          background-color: rgba(255, 255, 255, 0.3);
+          box-shadow: none;
+        }
 
-        .today-Button {
-          margin-left: auto; /* Rechtsbündig */
-          background-color: #4c5883; /* Gleiche Hintergrundfarbe wie der Header */
-          color: white; /* Weißer Text */
-          border: 1px solid #3a4366; /* Leichter Rahmen */
-          border-radius: 4px; /* Abgerundete Ecken */
-          padding: 6px 12px; /* Innenabstand */
-          font-size: 14px; /* Schriftgröße */
-          font-weight: bold; /* Fettschrift */
-          cursor: pointer; /* Zeiger-Cursor */
-          transition: background-color 0.3s ease, transform 0.2s ease;
-
-          &:hover {
-            background-color: #3a4366; /* Dunklere Farbe beim Hover */
-          }
-
-          &:active {
-            transform: scale(0.95); /* Leichtes Schrumpfen beim Klicken */
-          }
-
-          &:focus {
-            outline: none; /* Entfernt den Standard-Fokusrahmen */
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3); /* Fokus-Schatten */
-          }
+        &:active {
+          background-color: rgba(255, 255, 255, 0.4);
+          transform: scale(0.97);
         }
       }
     }
 
-    .favorites-icon {
-      text-align: center;
-      font-size: 1.5rem;
+    .room-selection {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 0;
     }
   }
 
-  // Room selection dropdown
+  /* Globale Dropdown-Styles um Konflikte zu vermeiden */
+  .dropdown-menu {
+    z-index: 9999 !important;
+  }
+  
+  /* Styling für die Raumauswahl im Header */
   .room-selection {
-    padding: 10px;
-
-    .room-dropdown {
-      width: 100%;
-
-      .room-dropdown-toggle {
-        width: 100%;
-        background-color: #f0f0f0;
-        color: #333;
-        border: 1px solid #ddd;
-        text-align: left;
-        font-weight: normal;
-
-        &::after {
-          float: right;
-          margin-top: 10px;
-        }
-      }
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   // Weekday headers
@@ -197,11 +337,14 @@
     background-color: #4c5883;
     color: white;
     text-align: center;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 
     .weekday-cell {
       padding: 10px 0;
       font-weight: bold;
       border-right: 1px solid #3a4366;
+      font-size: 13px;
 
       &:last-child {
         border-right: none;
@@ -210,8 +353,19 @@
   }
 
   // Calendar grid
+  .calendar-grid {
+    margin-top: 0;
+    padding-top: 0;
+    
+    .calendar-weekdays {
+      margin: 0;
+      padding: 0;
+    }
+  }
+  
   .calendar-week {
     border-bottom: 1px solid #ddd;
+    margin: 0;
 
     .calendar-day {
       height: 100px;

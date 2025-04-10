@@ -117,4 +117,105 @@
       }
     }
   }
+  
+  // Ansichtstyp-Dropdown
+  .Calendar-view-selector {
+    margin-top: 20px;
+    
+    .view-type-dropdown {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background-color: white;
+      font-size: 14px;
+    }
+  }
+
+  // Wochenansicht
+  .Calendar-week-view {
+    display: flex;
+    flex-direction: column;
+    height: 800px; // Anpassen nach Bedarf
+    
+    .Calendar-week-header {
+      display: flex;
+      background-color: #4c5883;
+      color: white;
+      
+      .Calendar-week-day-header {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        border-right: 1px solid #3a4366;
+        
+        &:last-child {
+          border-right: none;
+        }
+        
+        .weekday-name {
+          font-weight: bold;
+        }
+        
+        .weekday-date {
+          font-size: 1.2rem;
+          margin-top: 5px;
+        }
+      }
+    }
+    
+    .Calendar-week-grid {
+      display: flex;
+      flex: 1;
+      overflow-y: auto;
+      
+      .time-column {
+        width: 50px;
+        border-right: 1px solid #ddd;
+        
+        .time-slot {
+          height: 60px;
+          padding: 5px;
+          text-align: right;
+          color: #666;
+          font-size: 12px;
+          border-bottom: 1px solid #eee;
+        }
+      }
+      
+      .days-container {
+        display: flex;
+        flex: 1;
+        
+        .day-column {
+          flex: 1;
+          border-right: 1px solid #ddd;
+          
+          &:last-child {
+            border-right: none;
+          }
+          
+          .week-time-slot {
+            height: 60px;
+            border-bottom: 1px solid #eee;  
+            position: relative;
+            
+            .week-event {
+              position: absolute;
+              left: 2px;
+              right: 2px;
+              padding: 2px 4px;
+              background-color: #4c5883;
+              border-radius: 3px;
+              font-size: 0.7rem;
+              color: white;
+              overflow: hidden;
+              z-index: 1;
+              text-align: start;
+            }
+          }
+        }
+      }
+    }
+  }
 }
