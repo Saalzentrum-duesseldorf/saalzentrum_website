@@ -1,6 +1,6 @@
 // src/__tests__/utils.test.js
 
-import { isOverlapping } from '../../utils.ts';
+import { isOverlapping } from '../../../../utils';
 import {expect} from '@jest/globals';
 import { CustomCalendarEvent } from "./CustomCalendar.tsx";
 

@@ -4,8 +4,8 @@ import {
   containsAllDayEvent,
   getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
-} from "../../../utils.ts";
-import { CustomCalendarEvent } from "../CustomCalendar.tsx";
+} from "../../../../utils";
+import { CustomCalendarEvent } from "../desktop/CustomCalendar.tsx";
 import EventPopover from "../calendarDetails/EventPopover.tsx";
 
 export interface CalendarDetailsProps {

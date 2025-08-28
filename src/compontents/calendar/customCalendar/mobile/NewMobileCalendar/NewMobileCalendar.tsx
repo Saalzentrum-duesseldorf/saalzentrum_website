@@ -16,9 +16,9 @@ import {
   MobileCalendarEvent,
   MobileCalendarProps,
   scrollTo8AM,
-} from "../../../../utils";
+} from "../../../../../utils";
 import MobileCalendarDetails from "../MobileCalendarDetails";
-import SelectRoomDropDown from "../../selectRoom/SelectRoomDropDown";
+import SelectRoomDropDown from "../selectRoom/SelectRoomDropDown";
 import CalendarSkeleton from "./CalendarSkeleton";
 
 const NewMobileCalendar = (props: MobileCalendarProps) => {
@@ -123,6 +123,12 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
     setCurrentMonth(
       new Date(new Date().getFullYear(), new Date().getMonth(), 1)
     );
+  };
+
+  // Helper function to check if a date is today
+  const isToday = (date: Date): boolean => {
+    const today = new Date();
+    return areDatesEqual(date, today);
   };
 
   const calendarWeeks = generateCalendarDays(
@@ -235,10 +241,12 @@ const NewMobileCalendar = (props: MobileCalendarProps) => {
                         key={`day-${weekIndex}-${dayIndex}`}
                         className={`calendar-day ${
                           day.monthOffset !== 0 ? "other-month" : ""
-                        }`}
+                        }
+                        ${day.date && isToday(day.date) ? "today" : ""}
+                        `}
                         onClick={() => handleDayClick(day.date ?? null)}
                       >
-                        <div className="day-number">{day.day}</div>
+                        <div className={`day-number`}>{day.day}</div>
                         <div className="day-events">
                           {day.events.map((event) => (
                             <div

@@ -1,10 +1,10 @@
 import "./CustomCalendar.scss";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
-import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
+import CalendarDetails from "../calendarDetails/CalendarDetails.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { areDatesEqual, truncateText } from "../../utils.ts";
+import { areDatesEqual, truncateText } from "../../../../utils";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
 
 export interface CustomCalendarEvent {
