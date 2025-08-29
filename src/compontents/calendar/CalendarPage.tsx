@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { ColorIdToColor, Resources, roomPatterns } from "../../utils.ts";
 import "./CalendarPage.scss";
 import BurgerMenu from "../menu/BurgerMenu.tsx";
-import NewMobileCalendar from "./customCalendar/mobile/NewMobileCalendar/NewMobileCalendar.tsx";
+import NewMobileCalendar from "./customCalendar/mobile/MobileCalendar.tsx";
 
 const CalendarPage = () => {
   const [events, setEvents] = useState<CustomCalendarEvent[]>([]);

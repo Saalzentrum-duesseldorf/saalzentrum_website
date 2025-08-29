@@ -1,0 +1,433 @@
+/* Week Calendar Component Styles */
+.WeekCalendar {
+  font-family: Arial, sans-serif;
+  max-width: 100%;
+  background-color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  /* Container for full fluid layout */
+  .week-calendar-container {
+    padding: 0;
+    height: 100%;
+  }
+
+  /* Day view container with swipe support */
+  .day-view-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Week view container */
+  .week-view-container {
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== SCROLLABLE CONTENT ===== */
+  .scrollable-body {
+    overflow-y: auto;
+    height: 100vh;
+    -webkit-overflow-scrolling: touch; // Smooth scrolling on iOS
+  }
+
+  /* ===== DAY VIEW HEADER ===== */
+  .day-view-header {
+    background-color: #4c5883;
+    color: white;
+    padding: 15px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+    .back-button {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+      padding: 0;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        outline: none;
+      }
+    }
+
+    .day-navigation {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: center;
+
+      .nav-button {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0 15px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+
+      .day-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0 15px;
+        text-align: center;
+      }
+    }
+
+    .today-button {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+      }
+    }
+  }
+
+  /* ===== WEEK VIEW HEADER ===== */
+  .week-header {
+    background-color: #4c5883;
+    color: white;
+    padding: 15px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+
+    .week-navigation {
+      display: flex;
+      align-items: center;
+      flex: 1;
+
+      .nav-button {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 0 15px;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+
+      .week-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin: 0 15px;
+        text-align: center;
+      }
+    }
+
+    .room-selection {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  /* ===== WEEK GRID ===== */
+  .week-grid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+   
+  }
+
+  /* Weekday headers with date numbers */
+  .weekday-headers {
+    display: flex;
+    background-color: #4c5883;
+    color: white;
+    border-bottom: 2px solid #3a4366;
+
+    .weekday-header {
+      flex: 1;
+      padding: 10px 5px;
+      text-align: center;
+      border-right: 1px solid #3a4366;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      .weekday-name {
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin-bottom: 2px;
+      }
+
+      .weekday-date {
+        font-size: 1.1rem;
+        font-weight: normal;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  /* Week days container */
+  .week-days {
+    display: flex;
+    flex: 1;
+    min-height: 0; // Allow flex shrinking
+  }
+
+  /* Individual day column */
+  .week-day {
+    flex: 1;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+    width: 10px;
+
+    &:hover {
+      background-color: #f0f4ff;
+    }
+
+    &:last-child {
+      border-right: none;
+    }
+
+    /* Today highlight */
+    &.today {
+      background-color: #f0f8ff;
+      
+      .day-events {
+        border-top: 3px solid #4c5883;
+      }
+    }
+
+    /* Events within each day */
+    .day-events {
+      padding: 8px 4px;
+      flex: 1;
+      overflow-y: auto;
+
+      .no-events {
+        color: #aaa;
+        font-style: italic;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.9rem;
+      }
+
+      .event-item {
+        margin-bottom: 4px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        color: white;
+        border-left: 3px solid rgba(255, 255, 255, 0.3);
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-name {
+          line-height: 1.2;
+          word-wrap: break-word;
+        }
+      }
+    }
+  }
+
+  /* ===== VIEW SWITCH BUTTON ===== */
+  .view-switch {
+    padding: 15px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-top: 1px solid #ddd;
+
+    .month-view-button {
+      background-color: #4c5883;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      width: 100%;
+      max-width: 300px;
+
+      &:hover {
+        background-color: #3a4366;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(76, 88, 131, 0.3);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 88, 131, 0.3);
+      }
+    }
+  }
+
+  /* ===== DAY CONTENT ===== */
+  .day-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Small smartphones (portrait) */
+@media (max-width: 576px) {
+  .WeekCalendar {
+    .week-days {
+      .week-day {
+        min-height: 300px;
+        
+        .day-events {
+          padding: 4px 2px;
+          
+          .event-item {
+            font-size: 0.65rem;
+            padding: 2px 4px;
+          }
+        }
+      }
+    }
+
+    .weekday-headers {
+      .weekday-header {
+        padding: 8px 2px;
+        
+        .weekday-name {
+          font-size: 0.8rem;
+        }
+        
+        .weekday-date {
+          font-size: 0.9rem;
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+
+    .week-header {
+      flex-direction: column;
+      gap: 10px;
+      
+      .week-navigation {
+        .week-title {
+          font-size: 1rem;
+          margin: 0 10px;
+        }
+      }
+    }
+
+    .day-view-header {
+      flex-direction: column;
+      gap: 10px;
+      
+      .day-navigation {
+        .day-title {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+/* Medium devices (tablets, small laptops) */
+@media (min-width: 577px) and (max-width: 1024px) {
+  .WeekCalendar {
+    .week-days {
+      .week-day {
+        min-height: 500px;
+      }
+    }
+
+    .weekday-headers {
+      .weekday-header {
+        .weekday-date {
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+  }
+}
+
+/* Large devices (desktops) */
+@media (min-width: 1025px) {
+  .WeekCalendar {
+    .week-days {
+      .week-day {
+        min-height: 600px;
+      }
+    }
+  }
+}

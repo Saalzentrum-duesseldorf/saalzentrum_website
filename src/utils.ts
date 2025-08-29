@@ -236,6 +236,7 @@ export const formatDateForHeader = (date: Date) => {
   return `${dayOfWeek}, ${day}. ${month}`;
 };
 
+
 export const filterEventsByRoom = (
   resource: string,
   events: MobileCalendarEvent[]

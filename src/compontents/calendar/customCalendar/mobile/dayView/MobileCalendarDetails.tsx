@@ -4,9 +4,10 @@ import {
   containsAllDayEvent,
   getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
-} from "../../../../utils";
-import { CustomCalendarEvent } from "../desktop/CustomCalendar.tsx";
-import EventPopover from "../calendarDetails/EventPopover.tsx";
+  filterEventsByRoom,
+} from "../../../../../utils.ts";
+import { CustomCalendarEvent } from "../../desktop/CustomCalendar.tsx";
+import EventPopover from "../../calendarDetails/EventPopover.tsx";
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;
@@ -17,16 +18,7 @@ export interface CalendarDetailsProps {
 const MobileCalendarDetails = ({ events, room }: CalendarDetailsProps) => {
   const timelineRef = useRef<HTMLDivElement>(null);
 
-  const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
-    const result = events?.filter((event) => event.location === resource);
-
-    if (resource != "" && result) {
-      return result;
-    }
-    return events;
-  };
-
-  events = filterEvents(room);
+  events = filterEventsByRoom(room, events??[]);
 
   // Volle 24 Stunden anzeigen
   const hours = Array.from({ length: 24 }, (_, i) => i);
@@ -133,3 +125,4 @@ const MobileCalendarDetails = ({ events, room }: CalendarDetailsProps) => {
 };
 
 export default MobileCalendarDetails;
+
