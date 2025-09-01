@@ -1,11 +1,13 @@
 import "./CustomCalendar.scss";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
-import CalendarDetails from "../calendarDetails/CalendarDetails.tsx";
+import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { areDatesEqual, truncateText } from "../../../../utils";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
+import { Switch } from "@mui/material";
+import WeekView from "./weekView/WeekView.tsx";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -28,11 +30,9 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<number>();
-  const [selectedDateDetails, setSelectedDateDetails] = useState<
-    CustomCalendarEvent[] | null
-  >(null);
-
+  const [selectedDateDetails, setSelectedDateDetails] = useState<CustomCalendarEvent[] | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<number>();
+  const [isWeekView, setWeekView] = useState(false);
 
   const daysInMonth: number = new Date(
     currentMonth.getFullYear(),
@@ -58,12 +58,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
   let dayFromLastMonth = lastDayOfPrevMonth - adjustedFirstDay + 1;
 
-  // Start the first week with empty days until the first day of the month
+  // Start mit den Tagen aus dem Vormonat
   for (let i = 0; i < adjustedFirstDay; i++) {
     week.push({ day: dayFromLastMonth++, monthOffset: -1 });
   }
 
-  // Add the days of the month
+  // Tage des aktuellen Monats
   for (let day = 1; day <= daysInMonth; day++) {
     week.push({ day, monthOffset: 0 });
     if (week.length === 7) {
@@ -72,6 +72,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     }
   }
 
+  // Tage aus dem nächsten Monat
   let dayFromNextMonth = 1;
   while (week.length < 7) {
     week.push({ day: dayFromNextMonth++, monthOffset: 1 });
@@ -109,14 +110,23 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     return props.events
       .filter(event => areDatesEqual(event.date, dateToCompare))
       .sort((a, b) => {
-        // Zuerst nach "All Day" sortieren: true (1) sollte nach oben, false (-1) nach unten
         if (a.isAllDay !== b.isAllDay) {
           return a.isAllDay ? -1 : 1;
         }
-        // Danach alphabetisch nach dem Namen sortieren
         return a.name.localeCompare(b.name);
       });
   }
+
+  const MonthWeekSwitch = () => {
+    return (
+      <Switch
+        checked={isWeekView}
+        onChange={() => setWeekView(!isWeekView)}
+        color="primary"
+        inputProps={{ 'aria-label': 'controlled' }}
+      />
+    );
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -131,12 +141,12 @@ const CustomCalendar = (props: CustomCalendarProps) => {
   }, [props.events]);
 
   return (
-    <div className={"Calendar"}>
-      <Container>
-        <Row className={"Calendar-header-container"}>
-          <Col className={"Calendar-button-container"} md={1}>
+    <div className="Calendar">
+      <Container style={{ maxWidth: "80%" }}>
+        <Row className="Calendar-header-container">
+          <Col className="Calendar-button-container" md={1}>
             <Button
-              className={"Calendar-button Calendar-button-left"}
+              className="Calendar-button Calendar-button-left"
               onClick={() =>
                 setCurrentMonth(
                   new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
@@ -152,9 +162,9 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               {currentMonth.getFullYear()}
             </h1>
           </Col>
-          <Col className={"Calendar-button-container"} md={1}>
+          <Col className="Calendar-button-container" md={1}>
             <Button
-              className={"Calendar-button Calendar-button-right"}
+              className="Calendar-button Calendar-button-right"
               onClick={() =>
                 setCurrentMonth(
                   new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
@@ -164,6 +174,7 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: 25 }} />
             </Button>
           </Col>
+          <MonthWeekSwitch />
         </Row>
 
         <Row>
@@ -174,57 +185,45 @@ const CustomCalendar = (props: CustomCalendarProps) => {
         </Row>
 
         <Row>
-          <Col md={10} className={"Calendar-Grid-Container"}>
-            <div>
-              <div className="Calendar-day-names">
-                <WeekDays />
-              </div>
-              {weeks.map(
-                (
-                  week: { day: number; monthOffset: number }[],
-                  index: number
-                ) => (
-                  <div className="Calendar-days" key={index}>
-                    {week.map(
-                      (
-                        day: { day: number; monthOffset: number },
-                        index: number
-                      ) => {
+          {isWeekView ? (
+            <WeekView events={props.events} />
+          ) : (
+            <>
+              <Col md={10} className="Calendar-Grid-Container">
+                <div>
+                  <div className="Calendar-day-names">
+                    <WeekDays />
+                  </div>
+                  {weeks.map((week, index) => (
+                    <div className="Calendar-days" key={index}>
+                      {week.map((day, index) => {
                         const dayEvents = getEventsForDay(day);
                         return (
                           <div
                             key={index}
                             className="Calendar-day"
                             style={{
-                              background:
-                                day.monthOffset == 0 ? "#ffffff" : "#f3f3f3",
+                              background: day.monthOffset === 0 ? "#ffffff" : "#f3f3f3",
                               borderColor:
                                 day.day === selectedDay &&
-                                currentMonth.getMonth() + day.monthOffset ===
-                                selectedMonth
+                                currentMonth.getMonth() + day.monthOffset === selectedMonth
                                   ? "#9da4bd"
                                   : "#d7d7d7",
                               borderWidth:
                                 day.day === selectedDay &&
-                                currentMonth.getMonth() + day.monthOffset ===
-                                selectedMonth
+                                currentMonth.getMonth() + day.monthOffset === selectedMonth
                                   ? 3
                                   : 1
                             }}
-                            onClick={() =>
-                              handleDateClick(day.day, day.monthOffset)
-                            }
+                            onClick={() => handleDateClick(day.day, day.monthOffset)}
                           >
-                            <Container className={"Calendar-day-container"}>
+                            <Container className="Calendar-day-container">
                               <Row>
                                 <Col>
                                   <div
-                                    className={"Calendar-day-header"}
+                                    className="Calendar-day-header"
                                     style={{
-                                      background:
-                                        day.monthOffset == 0
-                                          ? "#d7d7d7"
-                                          : "#e7e7e7"
+                                      background: day.monthOffset === 0 ? "#d7d7d7" : "#e7e7e7"
                                     }}
                                   >
                                     {day.day !== 0 ? day.day : ""}
@@ -233,25 +232,19 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                               </Row>
                               <Row>
                                 <Col>
-                                  {dayEvents
-                                    .slice(0, 5)
-                                    .map(
-                                      (
-                                        _event: CustomCalendarEvent,
-                                        index: number
-                                      ) => (
-                                        <div
-                                          className={"Calendar-day-body"}
-                                          key={index}
-                                          style={{ background: _event.color }}
-                                        >
-                                          {truncateText(_event.name, 15)}
-                                        </div>
-                                      )
-                                    )}
+                                  {dayEvents.slice(0, 5).map((_event, index) => (
+                                    <div
+                                      className="Calendar-day-body"
+                                      key={index}
+                                      style={{ background: _event.color }}
+                                    >
+                                      {truncateText(_event.name, 15)}
+                                    </div>
+                                  ))}
                                   {dayEvents.length > 5 && (
-                                    <div className={"Calendar-day-body"}
-                                         style={{ background: "rgba(155,155,155,0.58)" }}
+                                    <div
+                                      className="Calendar-day-body"
+                                      style={{ background: "rgba(155,155,155,0.58)" }}
                                     >
                                       + {dayEvents.length - 5} mehr
                                     </div>
@@ -261,22 +254,23 @@ const CustomCalendar = (props: CustomCalendarProps) => {
                             </Container>
                           </div>
                         );
-                      }
-                    )}
-                  </div>
-                )
-              )}
-            </div>
-          </Col>
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </Col>
 
-          <Col md={2}>
-            <CalendarDetails events={selectedDateDetails} day={selectedDate} />
-          </Col>
+              <Col md={2}>
+                <CalendarDetails events={selectedDateDetails} day={selectedDate} />
+              </Col>
+            </>
+          )}
         </Row>
       </Container>
     </div>
   );
 };
+
 const WeekDays = () => {
   const weekDays = [
     "Montag",

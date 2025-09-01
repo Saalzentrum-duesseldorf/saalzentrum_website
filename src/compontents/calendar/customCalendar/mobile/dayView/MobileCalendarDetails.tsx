@@ -7,7 +7,7 @@ import {
   filterEventsByRoom,
 } from "../../../../../utils.ts";
 import { CustomCalendarEvent } from "../../desktop/CustomCalendar.tsx";
-import EventPopover from "../../calendarDetails/EventPopover.tsx";
+import EventPopover from "../../desktop/calendarDetails/EventPopover.tsx";
 
 export interface CalendarDetailsProps {
   events: CustomCalendarEvent[] | null;

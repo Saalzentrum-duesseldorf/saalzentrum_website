@@ -1,5 +1,5 @@
 import { Popover, Typography, Box } from "@mui/material";
-import { CustomCalendarEvent } from "../desktop/CustomCalendar.tsx";
+import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 
 interface EventPopoverProps {
   event: CustomCalendarEvent | null;

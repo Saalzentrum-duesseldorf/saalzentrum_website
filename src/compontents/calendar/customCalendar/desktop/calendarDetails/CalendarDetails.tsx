@@ -1,11 +1,11 @@
 import "./CalendarDetails.scss";
-import { CustomCalendarEvent } from "../desktop/CustomCalendar.tsx";
+import { CustomCalendarEvent } from "../CustomCalendar.tsx";
 import {
   containsAllDayEvent,
    getEventHeight, getEventsForHour, getEventTopPosition,
   getOverlappingEvents,
   parseDateToStringWithWrittenOutMonth,
-} from "../../../../utils";
+} from "../../../../../utils.ts";
 import {
   FormControl,
   InputLabel,
