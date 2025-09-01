@@ -1,10 +1,10 @@
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import StartPage from "./compontents/startPage/StartPage.tsx";
-import Impressum from "./compontents/impressum/Impressum.tsx";
-import Datenschutz from "./compontents/datenschutz/Datenschutz.tsx";
-import CalendarPage from "./compontents/calendar/CalendarPage.tsx";
+import StartPage from "./components/startPage/StartPage.tsx";
+import Impressum from "./components/impressum/Impressum.tsx";
+import Datenschutz from "./components/datenschutz/Datenschutz.tsx";
+import CalendarPage from "./components/calendar/CalendarPage.tsx";
 
 function App() {
   return (

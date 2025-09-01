@@ -1,4 +1,4 @@
-import { CustomCalendarEvent } from "./compontents/customCalendar/CustomCalendar.tsx";
+import { CustomCalendarEvent } from "./components/calendar/customCalendar/desktop/CustomCalendar";
 
 export function truncateText(text: string, maxLength: number): string {
   if (text.length > maxLength) {

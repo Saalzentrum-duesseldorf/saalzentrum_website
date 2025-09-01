@@ -1,9 +1,9 @@
 import "./MonthView.scss";
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { CustomCalendarProps, CustomCalendarEvent } from "../CustomCalendar";
+import { CustomCalendarProps, CustomCalendarEvent } from "../CustomCalendar.tsx";
 import CalendarDetails from "../calendarDetails/CalendarDetails.tsx";
 import { Col, Container, Row } from "reactstrap";
-import { areDatesEqual, truncateText } from "../../../../../utils";
+import { areDatesEqual, truncateText } from "../../../../../utils.ts";
 
 export interface MonthViewProps extends CustomCalendarProps {
   currentMonth: Date;
