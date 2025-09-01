@@ -7,6 +7,7 @@ interface MonthWeekSwitchProps {
   disabled?: boolean;
   size?: 'small' | 'medium' | 'large';
   className?: string;
+  isMobile?: boolean;
 }
 
 const MonthWeekSwitch: React.FC<MonthWeekSwitchProps> = ({ 
@@ -14,7 +15,8 @@ const MonthWeekSwitch: React.FC<MonthWeekSwitchProps> = ({
   setWeekView, 
   disabled = false,
   size = 'medium',
-  className = ''
+  className = '',
+  isMobile = false
 }) => {
   const handleKeyDown = (event: React.KeyboardEvent, isWeek: boolean) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -43,6 +45,7 @@ const MonthWeekSwitch: React.FC<MonthWeekSwitchProps> = ({
       role="radiogroup"
       aria-label="Kalenderansicht auswählen"
       onKeyDown={handleArrowKeys}
+      style={isMobile ? { width: '90%' } : {}}
     >
       <div 
         className={`calendar-toggle__indicator ${isWeekView ? 'right' : 'left'}`}

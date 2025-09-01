@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
-  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   areDatesEqual,
@@ -18,11 +17,11 @@ import {
   scrollTo8AM,
 } from "../../../../utils";
 import MobileCalendarDetails from "./dayView/MobileCalendarDetails";
-import SelectRoomDropDown from "./selectRoom/SelectRoomDropDown";
-import CalendarSkeleton from "./skeleton/CalendarSkeleton";
+import SelectRoomDropDown from "../../calendarComponents/calendarControls/selectRoom/SelectRoomDropDown";
+import CalendarSkeleton from "../../calendarComponents/calendarControls/skeleton/CalendarSkeleton";
 import WeekCalendar from "./weekView/WeekCalendar";
-import { Switch } from "@mui/material";
-
+import MonthWeekSwitch from "../../calendarComponents/switch/MonthWeekSwitch";
+import BackButton from "../../calendarComponents/backButton/BackButton";
 
 const MobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -71,27 +70,26 @@ const MobileCalendar = (props: MobileCalendarProps) => {
 
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd || isAnimating) return;
-  
+
     const distance = touchStart - touchEnd;
     const isSwipeLeft = distance > minSwipeDistance;
     const isSwipeRight = distance < -minSwipeDistance;
-  
+
     if (isSwipeLeft || isSwipeRight) {
       setIsAnimating(true);
       setIsLoading(true);
-  
+
       setTimeout(() => {
         const newSelectedDay = isSwipeLeft
           ? getNextDay(selectedDay!)
           : getPreviousDay(selectedDay!);
-  
+
         setSelectedDay(newSelectedDay);
         setIsAnimating(false);
         setIsLoading(false);
       }, 500);
     }
   };
-  
 
   const goToPreviousMonth = () => {
     setCurrentMonth(
@@ -163,137 +161,91 @@ const MobileCalendar = (props: MobileCalendarProps) => {
     return new Date(today.setDate(diff));
   });
 
-   // Format week range for header
-   const formatWeekRange = () => {
-    const weekEnd = new Date(currentWeekStart);
-    weekEnd.setDate(currentWeekStart.getDate() + 6);
-    
-    const startFormat = currentWeekStart.toLocaleDateString('de-DE', { 
-      day: 'numeric', 
-      month: 'numeric' 
-    });
-    const endFormat = weekEnd.toLocaleDateString('de-DE', { 
-      day: 'numeric', 
-      month: 'numeric', 
-      year: 'numeric' 
-    });
-    
-    return `${startFormat} - ${endFormat}`;
-  };
-
   const getWeekNumber = (date: Date) => {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
+    const pastDaysOfYear =
+      (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-  }
+  };
 
   const formatWeekRangeKW = () => {
     const weekNumber = getWeekNumber(currentWeekStart);
     return `KW ${weekNumber}`;
-  }
-
-  // Back button component to switch between month and day view and go back to Homepage
-  const BackButton = () => {
-    if (selectedDay) {
-      return (
-        <Button className="nav-button back-button" onClick={handleBackClick}>
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </Button>
-      );
-    }
-    return (
-      <Button className="nav-button back-button" onClick={handleBackToHomePageClick}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Button>
-    );
   };
 
   const [isWeekView, setWeekView] = useState(false);
 
-  const MonthWeekSwitch = () => {
-    return (
-      <Switch
-        checked={isWeekView}
-        onChange={() => setWeekView(!isWeekView)}
-        color="primary"
-        inputProps={{ 'aria-label': 'controlled' }}
-      />
-    );
-  }
-  
   const MonthView = () => {
     return (
       <div className="scrollable-body" ref={scrollContainerRef}>
-      {selectedDay ? (
-        <div
-        className="calendar-details-container"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {isLoading ? (
-         <CalendarSkeleton />
+        {selectedDay ? (
+          <div
+            className="calendar-details-container"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {isLoading ? (
+              <CalendarSkeleton />
+            ) : (
+              <MobileCalendarDetails
+                events={selectedDateDetails}
+                day={selectedDay!}
+                room={selectedRoom}
+              />
+            )}
+          </div>
         ) : (
-          <MobileCalendarDetails
-            events={selectedDateDetails}
-            day={selectedDay!}
-            room={selectedRoom}
-          />
-        )}
-      </div>
-    
-      ) : (
-        <>
-          {/* Calendar days of week header */}
-          <div className="calendar-grid">
-            <Row className="calendar-weekdays">
-              <Col className="weekday-cell">Mo</Col>
-              <Col className="weekday-cell">Di</Col>
-              <Col className="weekday-cell">Mi</Col>
-              <Col className="weekday-cell">Do</Col>
-              <Col className="weekday-cell">Fr</Col>
-              <Col className="weekday-cell">Sa</Col>
-              <Col className="weekday-cell">So</Col>
-            </Row>
+          <>
+            {/* Calendar days of week header */}
+            <div className="calendar-grid">
+              <Row className="calendar-weekdays">
+                <Col className="weekday-cell">Mo</Col>
+                <Col className="weekday-cell">Di</Col>
+                <Col className="weekday-cell">Mi</Col>
+                <Col className="weekday-cell">Do</Col>
+                <Col className="weekday-cell">Fr</Col>
+                <Col className="weekday-cell">Sa</Col>
+                <Col className="weekday-cell">So</Col>
+              </Row>
 
-            {/* Calendar grid */}
-            {calendarWeeks.map((week, weekIndex) => (
-              <Row key={`week-${weekIndex}`} className="calendar-week">
-                {week.map((day, dayIndex) => (
-                  <Col
-                    key={`day-${weekIndex}-${dayIndex}`}
-                    className={`calendar-day ${
-                      day.monthOffset !== 0 ? "other-month" : ""
-                    }
+              {/* Calendar grid */}
+              {calendarWeeks.map((week, weekIndex) => (
+                <Row key={`week-${weekIndex}`} className="calendar-week">
+                  {week.map((day, dayIndex) => (
+                    <Col
+                      key={`day-${weekIndex}-${dayIndex}`}
+                      className={`calendar-day ${
+                        day.monthOffset !== 0 ? "other-month" : ""
+                      }
                     ${day.date && isToday(day.date) ? "today" : ""}
                     `}
-                    onClick={() => handleDayClick(day.date ?? null)}
-                  >
-                    <div className={`day-number`}>{day.day}</div>
-                    <div className="day-events">
-                      {day.events.map((event) => (
-                        <div
-                          key={`event-${event.eventId}`}
-                          className="event-item"
-                          style={{ backgroundColor: event.color }}
-                        >
-                          {event.categoryNumber &&
-                            `#${event.categoryNumber} `}
-                          {event.name}
-                        </div>
-                      ))}
-                    </div>
-                  </Col>
-                ))}
-              </Row>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+                      onClick={() => handleDayClick(day.date ?? null)}
+                    >
+                      <div className={`day-number`}>{day.day}</div>
+                      <div className="day-events">
+                        {day.events.map((event) => (
+                          <div
+                            key={`event-${event.eventId}`}
+                            className="event-item"
+                            style={{ backgroundColor: event.color }}
+                          >
+                            {event.categoryNumber &&
+                              `#${event.categoryNumber} `}
+                            {event.name}
+                          </div>
+                        ))}
+                      </div>
+                    </Col>
+                  ))}
+                </Row>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     );
   };
-  
 
   return (
     <div className="MobileCalendar">
@@ -302,7 +254,11 @@ const MobileCalendar = (props: MobileCalendarProps) => {
         <div className="sticky-header">
           <Row className="MobileCalendar-header">
             <Col xs="2" className="menu-icon">
-              <BackButton />
+              <BackButton
+                selectedDay={selectedDay}
+                onBackClick={handleBackClick}
+                onBackToHomePageClick={handleBackToHomePageClick}
+              />
             </Col>
             <Col xs="8" className="month-navigation">
               {selectedDay ? (
@@ -322,56 +278,88 @@ const MobileCalendar = (props: MobileCalendarProps) => {
                 </div>
               ) : (
                 <>
-
-                {/* switch header if isWeekView */
-                  isWeekView ? (
-                   
-                  <>
-                    <Button className="nav-button" onClick={goToPreviousWeek}>
-                      <FontAwesomeIcon icon={faChevronLeft} />
-                    </Button>
-                    <span className="month-title">
-                      {formatWeekRangeKW()}
-                    </span>
-                    <Button className="nav-button" onClick={goToNextWeek}>
-                      <FontAwesomeIcon icon={faChevronRight} />
-                    </Button>
-                  </>
-
-                  ) : (<> <Button className="nav-button" onClick={goToPreviousMonth}>
-                    <FontAwesomeIcon icon={faChevronLeft} />
-                  </Button>
-                  <span className="month-title">
-                    {currentMonth.toLocaleString("de-DE", { month: "long" })}
-                  </span>
-                  <Button className="nav-button" onClick={goToNextMonth}>
-                    <FontAwesomeIcon icon={faChevronRight} />
-                  </Button>
-
-                  </>)
-                }
-                <MonthWeekSwitch />
+                  {
+                    /* switch header if isWeekView */
+                    isWeekView ? (
+                      <>
+                        <Button
+                          className="nav-button"
+                          onClick={goToPreviousWeek}
+                        >
+                          <FontAwesomeIcon icon={faChevronLeft} />
+                        </Button>
+                        <span className="month-title">
+                          {formatWeekRangeKW()}
+                        </span>
+                        <Button className="nav-button" onClick={goToNextWeek}>
+                          <FontAwesomeIcon icon={faChevronRight} />
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <Button
+                          className="nav-button"
+                          onClick={goToPreviousMonth}
+                        >
+                          <FontAwesomeIcon icon={faChevronLeft} />
+                        </Button>
+                        <span className="month-title">
+                          {currentMonth.toLocaleString("de-DE", {
+                            month: "long",
+                          })}
+                        </span>
+                        <Button className="nav-button" onClick={goToNextMonth}>
+                          <FontAwesomeIcon icon={faChevronRight} />
+                        </Button>
+                      </>
+                    )
+                  }
                 </>
               )}
             </Col>
+            <Row
+              style={{
+                paddingTop: "10px",
+                width: "100%",
+                marginRight: "0",
+                marginLeft: "0",
+              }}
+            >
+              <Col xs={!selectedDay? "6" : "12"} className="room-select-col">
+                {/* Room selection dropdown */}
+                <SelectRoomDropDown
+                  onRoomChange={setSelectedRoom}
+                  initialRoom={selectedRoom}
+                />
+              </Col>
 
-            <Col>
-              {/* Room selection dropdown */}
-              <SelectRoomDropDown
-                onRoomChange={setSelectedRoom}
-                initialRoom={selectedRoom}
-              />
-            </Col>
+              {!selectedDay ? (
+                <Col
+                  xs="6"
+                  className="Calendar-switch-container"
+                  style={{ paddingTop: "5px" }}
+                >
+                  <MonthWeekSwitch
+                    isWeekView={isWeekView}
+                    setWeekView={setWeekView}
+                    isMobile={true}
+                  />
+                </Col>
+              ) : null}
+            </Row>
           </Row>
         </div>
-        
 
         {isWeekView ? (
-          <WeekCalendar events={props.events} selectedRoom={selectedRoom} currentWeekStart={currentWeekStart} />
+          <WeekCalendar
+            events={props.events}
+            selectedRoom={selectedRoom}
+            currentWeekStart={currentWeekStart}
+          />
         ) : (
           <MonthView />
         )}
-
       </Container>
     </div>
   );

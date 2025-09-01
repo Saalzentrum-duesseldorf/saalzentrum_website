@@ -1,0 +1,444 @@
+// BackButton.scss
+
+.back-button-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .nav-button.back-button {
+    background: linear-gradient(135deg, #4b5782 0%, #3d4a6b 100%);
+    border: 2px solid transparent;
+    border-radius: 50%;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 3px 8px rgba(75, 87, 130, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    
+    // Remove Bootstrap's default styles
+    &.btn {
+      border: 2px solid transparent;
+    }
+    
+    // Size variants
+    &.small {
+      width: 40px;
+      height: 40px;
+      
+      .back-button__arrow {
+        font-size: 14px;
+      }
+      
+      .context-icon {
+        font-size: 8px;
+      }
+    }
+    
+    &.medium {
+      width: 50px;
+      height: 50px;
+      
+      .back-button__arrow {
+        font-size: 16px;
+      }
+      
+      .context-icon {
+        font-size: 10px;
+      }
+    }
+    
+    &.large {
+      width: 60px;
+      height: 60px;
+      
+      .back-button__arrow {
+        font-size: 18px;
+      }
+      
+      .context-icon {
+        font-size: 12px;
+      }
+    }
+    
+    // Variants
+    &.minimal {
+      background: rgba(75, 87, 130, 0.1);
+      border: 2px solid #4b5782;
+      box-shadow: none;
+      
+      .back-button__arrow {
+        color: #4b5782;
+      }
+      
+      .context-icon {
+        color: #9da4bd;
+      }
+    }
+    
+    &.elevated {
+      box-shadow: 0 6px 16px rgba(75, 87, 130, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    // Content container
+    &__content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    // Main arrow icon
+    &__arrow {
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      position: relative;
+      z-index: 2;
+    }
+    
+    // Context icon (calendar/home)
+    &__context-icon {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      background: rgba(157, 164, 189, 0.9);
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 4;
+      
+      .context-icon {
+        color: #ffffff;
+        font-size: 8px;
+      }
+    }
+    
+    // Ripple effect
+    &__ripple {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(206, 206, 206, 0.4) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease, opacity 0.4s ease;
+      z-index: 1;
+      opacity: 0;
+    }
+    
+    // Glow effect
+    &__glow {
+      position: absolute;
+      inset: -3px;
+      background: linear-gradient(45deg, 
+        rgba(75, 87, 130, 0.6) 0%, 
+        rgba(206, 206, 206, 0.3) 50%, 
+        rgba(75, 87, 130, 0.6) 100%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 0;
+    }
+    
+    // Tooltip
+    &__tooltip {
+      position: absolute;
+      bottom: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(75, 87, 130, 0.95);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      
+      .tooltip-text {
+        position: relative;
+        z-index: 2;
+      }
+      
+      .tooltip-arrow {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid rgba(75, 87, 130, 0.95);
+      }
+    }
+    
+    // Shine effect
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        transparent 50%, 
+        rgba(206, 206, 206, 0.1) 100%);
+      border-radius: 50%;
+      z-index: 2;
+    }
+  
+    // Hover state with unique animations
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5a6796 0%, #4a5775 100%);
+      border-color: rgba(206, 206, 206, 0.3);
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(75, 87, 130, 0.5);
+      
+      .back-button__content {
+        transform: scale(1.1);
+      }
+      
+      .back-button__arrow {
+        transform: translateX(-2px);
+      }
+      
+      .back-button__context-icon {
+        opacity: 1;
+        transform: scale(1);
+      }
+      
+      .back-button__ripple {
+        width: 120%;
+        height: 120%;
+        opacity: 1;
+      }
+      
+      .back-button__glow {
+        opacity: 1;
+      }
+      
+      .back-button__tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+    
+    // Active/pressed state
+    &:active:not(:disabled) {
+      transform: translateY(-2px) scale(1.02);
+      
+      .back-button__content {
+        transform: scale(0.95);
+      }
+      
+      .back-button__arrow {
+        transform: translateX(-1px);
+      }
+    }
+  
+    // Focus state for accessibility
+    &:focus:not(:disabled) {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(75, 87, 130, 0.4),
+                  0 3px 8px rgba(75, 87, 130, 0.3);
+      border-color: rgba(206, 206, 206, 0.5);
+    }
+    
+    // Different states based on view
+    &.day-view {
+      .back-button__arrow {
+        color: #ffffff;
+      }
+      
+      &:hover:not(:disabled) .back-button__context-icon .context-icon {
+        color: #4b5782;
+      }
+    }
+    
+    &.home-view {
+      .back-button__arrow {
+        color: #ffffff;
+      }
+      
+      &:hover:not(:disabled) .back-button__context-icon .context-icon {
+        color: #4b5782;
+      }
+    }
+    
+    // Minimal variant hover
+    &.minimal:hover:not(:disabled) {
+      background: rgba(75, 87, 130, 0.2);
+      border-color: #4b5782;
+      
+      .back-button__arrow {
+        color: #4b5782;
+        transform: translateX(-2px);
+      }
+      
+      .back-button__glow {
+        opacity: 0.5;
+      }
+    }
+    
+    // Disabled state
+    &:disabled,
+    &.disabled {
+      background: linear-gradient(135deg, #8a8a8a 0%, #777 100%);
+      color: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      
+      .back-button__arrow {
+        color: #ccc;
+      }
+      
+      .back-button__context-icon {
+        background: rgba(138, 138, 138, 0.5);
+        
+        .context-icon {
+          color: #ccc;
+        }
+      }
+      
+      &:hover {
+        transform: none;
+        
+        .back-button__content,
+        .back-button__arrow,
+        .back-button__context-icon {
+          transform: none;
+        }
+      }
+    }
+  }
+  
+  // Pulsing animation for important actions
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  .nav-button.back-button.pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    .nav-button.back-button {
+      background: linear-gradient(135deg, #3a4261 0%, #2d3548 100%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #4a5275 0%, #3d4a6b 100%);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      }
+      
+      &__tooltip {
+        background: rgba(42, 47, 58, 0.95);
+        
+        .tooltip-arrow {
+          border-top-color: rgba(42, 47, 58, 0.95);
+        }
+      }
+      
+      &.minimal {
+        background: rgba(75, 87, 130, 0.15);
+        border-color: #4b5782;
+        
+        &:hover:not(:disabled) {
+          background: rgba(75, 87, 130, 0.25);
+        }
+      }
+    }
+  }
+  
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .nav-button.back-button {
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      
+      &:hover:not(:disabled) {
+        transform: none;
+      }
+      
+      &__content, &__arrow, &__context-icon, &__ripple, &__glow, &__tooltip {
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+      
+      &:hover:not(:disabled) {
+        .back-button__content,
+        .back-button__arrow {
+          transform: none;
+        }
+      }
+      
+      &.pulse {
+        animation: none;
+      }
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    .nav-button.back-button {
+      border: 3px solid #ffffff;
+      background: #4b5782;
+      
+      &:hover:not(:disabled) {
+        background: #3a4366;
+        border-color: #ffffff;
+      }
+      
+      &:focus:not(:disabled) {
+        border-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+      }
+      
+      &__context-icon {
+        border: 1px solid #ffffff;
+      }
+      
+      &__tooltip {
+        background: #000000;
+        border: 1px solid #ffffff;
+        
+        .tooltip-arrow {
+          border-top-color: #000000;
+        }
+      }
+      
+      &.minimal {
+        border-color: #4b5782;
+        background: #ffffff;
+        
+        .back-button__arrow {
+          color: #4b5782;
+        }
+      }
+    }
+  }
