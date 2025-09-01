@@ -6,8 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { areDatesEqual, truncateText } from "../../../../utils";
 import MonthButtons from "./monthButtons/MonthButtons.tsx";
-import { Switch } from "@mui/material";
+import { Switch, FormControlLabel } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import WeekView from "./weekView/WeekView.tsx";
+import MonthWeekSwitch from "./switch/MonthWeekSwitch.tsx";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -117,17 +119,6 @@ const CustomCalendar = (props: CustomCalendarProps) => {
       });
   }
 
-  const MonthWeekSwitch = () => {
-    return (
-      <Switch
-        checked={isWeekView}
-        onChange={() => setWeekView(!isWeekView)}
-        color="primary"
-        inputProps={{ 'aria-label': 'controlled' }}
-      />
-    );
-  };
-
   useEffect(() => {
     const today = new Date();
     setSelectedDate(today);
@@ -174,8 +165,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: 25 }} />
             </Button>
           </Col>
-          <MonthWeekSwitch />
-        </Row>
+          <Col md={1} className="Calendar-switch-container">
+            <MonthWeekSwitch isWeekView={isWeekView} setWeekView={setWeekView} />
+          </Col>
+          </Row>
 
         <Row>
           <MonthButtons

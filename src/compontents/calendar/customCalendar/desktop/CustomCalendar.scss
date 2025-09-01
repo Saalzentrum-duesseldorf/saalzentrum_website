@@ -64,8 +64,8 @@
 
     .Calendar-week-day {
       color: #ffffff;
-      width: 180px;
       height: 38px;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -77,11 +77,10 @@
     }
 
     .Calendar-day {
-      width: 160px;
-      height: 190px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      flex: 1;
+      min-width: 120px; // prevent shrinking too much
+      height: auto; // allow height to grow
+      aspect-ratio: 1 / 1; // keep squares responsive
       border: 1px solid #ccc;
 
       .Calendar-day-container {
@@ -95,10 +94,8 @@
       }
 
       .Calendar-day-header {
-        width: 100%;
-        align-self: flex-start;
-        background: rgb(206, 206, 206);
-        font-size: 18px;
+        font-size: clamp(12px, 1.5vw, 16px);
+        padding: 4px;
       }
 
       .Calendar-day-body {

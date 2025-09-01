@@ -1,0 +1,359 @@
+// MonthWeekSwitch.scss
+
+.calendar-toggle {
+    position: relative;
+    display: flex;
+    background: #9da4bd;
+    border-radius: 30px;
+    overflow: hidden;
+    margin: 0 auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid #4b5782;
+    
+    // Size variants
+    &.small {
+      width: 180px;
+      height: 36px;
+      
+      .calendar-toggle__btn {
+        font-size: 14px;
+      }
+    }
+    
+    &.medium {
+      width: 220px;
+      height: 42px;
+      
+      .calendar-toggle__btn {
+        font-size: 16px;
+      }
+    }
+    
+    &.large {
+      width: 260px;
+      height: 48px;
+      
+      .calendar-toggle__btn {
+        font-size: 18px;
+      }
+    }
+    
+    // Disabled state
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #8a8a8a;
+      border-color: #666;
+      
+      .calendar-toggle__btn {
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+    
+    // Focus styles for accessibility
+    &:focus-within {
+      outline: 2px solid #4c5883;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgba(75, 87, 130, 0.2);
+    }
+    
+    // Unique hover effect on container
+    &:not(.disabled):hover {
+      background: #8c93ac;
+      border-color: #4c5883;
+      box-shadow: 0 4px 12px rgba(75, 87, 130, 0.3);
+      transform: translateY(-2px) scale(1.02);
+      
+      .calendar-toggle__indicator {
+        background: linear-gradient(135deg, #4c5883 0%, #3a4261 50%, #4b5782 100%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+      }
+    }
+  
+    &__indicator {
+      position: absolute;
+      top: 3px;
+      bottom: 3px;
+      width: calc(50% - 2px);
+      border-radius: 26px;
+      background: linear-gradient(135deg, #4b5782 0%, #3d4a6b 100%);
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), 
+                  background 0.4s ease,
+                  box-shadow 0.4s ease,
+                  width 0.3s ease;
+      z-index: 1;
+      box-shadow: 0 3px 6px rgba(75, 87, 130, 0.3),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  
+      &.left {
+        transform: translateX(2px);
+        margin-left: 0;
+      }
+  
+      &.right {
+        transform: translateX(calc(100% + 2px));
+      }
+      
+      // Unique animated glow effect
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        border-radius: inherit;
+        background: linear-gradient(45deg, 
+          rgba(75, 87, 130, 0.6) 0%, 
+          rgba(206, 206, 206, 0.3) 50%, 
+          rgba(75, 87, 130, 0.6) 100%);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.15) 0%, 
+          transparent 50%, 
+          rgba(206, 206, 206, 0.1) 100%);
+      }
+    }
+  
+    &__btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: #ffffff;
+      font-weight: 500;
+      z-index: 2;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+      
+      // Remove default button focus outline since we handle it on container
+      &:focus {
+        outline: none;
+      }
+      
+      // Button text wrapper for better control
+      &-text {
+        display: block;
+        transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                    color 0.3s ease;
+        position: relative;
+        z-index: 2;
+      }
+      
+      // Unique ripple effect on hover
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(206, 206, 206, 0.3) 0%, transparent 70%);
+        border-radius: 50%;
+        transition: width 0.6s ease, height 0.6s ease, opacity 0.4s ease;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        opacity: 0;
+      }
+  
+      // Hover states with unique animations
+      &:not(:disabled):hover {
+        color: #f8f6f6;
+        
+        &::before {
+          width: 120%;
+          height: 120%;
+          opacity: 1;
+        }
+        
+        .calendar-toggle__btn-text {
+          transform: translateY(-2px) scale(1.05);
+          text-shadow: 0 2px 4px rgba(75, 87, 130, 0.4);
+        }
+      }
+      
+      // Active press effect with bounce
+      &:not(:disabled):active {
+        .calendar-toggle__btn-text {
+          transform: translateY(1px) scale(0.98);
+        }
+      }
+  
+      // Active state (selected) with enhanced styling
+      &.active {
+        font-weight: 600;
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        
+        .calendar-toggle__btn-text {
+          transform: translateY(-1px);
+        }
+        
+        // Glow effect for active button
+        &::after {
+          content: '';
+          position: absolute;
+          inset: 4px;
+          border-radius: 20px;
+          background: rgba(206, 206, 206, 0.1);
+          opacity: 1;
+          transition: opacity 0.3s ease;
+        }
+      }
+      
+      // Enhanced hover for active button
+      &.active:hover {
+        &::after {
+          background: rgba(248, 246, 246, 0.2);
+        }
+      }
+      
+      // Disabled state
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        color: #8a8a8a;
+      }
+    }
+  }
+  
+  // Active glow animation
+  .calendar-toggle:not(.disabled):hover .calendar-toggle__indicator::before {
+    opacity: 1;
+  }
+  
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    .calendar-toggle {
+      background: #2a2f3a;
+      border-color: #1a1f2a;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      
+      &:not(.disabled):hover {
+        background: #333844;
+        border-color: #4c5883;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      }
+      
+      &:focus-within {
+        outline-color: #4c5883;
+        box-shadow: 0 0 0 4px rgba(75, 87, 130, 0.3);
+      }
+      
+      &__indicator {
+        background: linear-gradient(135deg, #4b5782 0%, #3a4261 100%);
+        
+        &::before {
+          background: linear-gradient(45deg, 
+            rgba(75, 87, 130, 0.8) 0%, 
+            rgba(206, 206, 206, 0.4) 50%, 
+            rgba(75, 87, 130, 0.8) 100%);
+        }
+        
+        &::after {
+          background: linear-gradient(135deg, 
+            rgba(255, 255, 255, 0.05) 0%, 
+            transparent 50%, 
+            rgba(206, 206, 206, 0.05) 100%);
+        }
+      }
+      
+      &__btn {
+        color: #e9ecef;
+        
+        &:not(:disabled):hover {
+          color: #f8f9fa;
+        }
+        
+        &.active {
+          color: #ffffff;
+          
+          &::after {
+            background: rgba(248, 246, 246, 0.05);
+          }
+          
+          &:hover::after {
+            background: rgba(248, 246, 246, 0.1);
+          }
+        }
+        
+        &:disabled {
+          color: #6c757d;
+        }
+      }
+    }
+  }
+  
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .calendar-toggle {
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+      
+      &:not(.disabled):hover {
+        transform: none;
+      }
+      
+      &__indicator {
+        transition: transform 0.3s ease; // Keep indicator transition for usability
+        
+        &::before, &::after {
+          transition: opacity 0.3s ease;
+        }
+      }
+      
+      &__btn {
+        transition: color 0.3s ease;
+        
+        &-text {
+          transition: color 0.3s ease;
+        }
+        
+        &::before {
+          transition: opacity 0.3s ease;
+        }
+        
+        &:not(:disabled):hover .calendar-toggle__btn-text,
+        &:not(:disabled):active .calendar-toggle__btn-text {
+          transform: none;
+        }
+      }
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    .calendar-toggle {
+      border: 3px solid #4b5782;
+      background: #9da4bd;
+      
+      &__indicator {
+        border: 2px solid #ffffff;
+        background: #4b5782;
+      }
+      
+      &__btn {
+        color: #ffffff;
+        
+        &.active {
+          text-shadow: none;
+          font-weight: 700;
+        }
+        
+        &:not(:disabled):hover {
+          color: #f8f6f6;
+          background: rgba(75, 87, 130, 0.2);
+        }
+      }
+    }
+  }

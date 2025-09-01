@@ -1,7 +1,7 @@
 # Saalzentrum Düsseldorf Website
 
 ## Project Overview
-The Saalzentrum Düsseldorf website is a platform designed to provide information about the event venue, its facilities, and services. The website aims to offer an easy and intuitive user experience for visitors looking to book the venue, explore available amenities, or inquire about services.
+The Saalzentrum Düsseldorf website is a platform designed to provide information about the event venue, its facilities, and services. The website aims to offer an easy and intuitive user experience for visitors explore available amenities, or inquire about services.
 
 ## Features
 - **Homepage:** An introduction to the Saalzentrum Düsseldorf, featuring high-quality visuals and a welcoming overview.
