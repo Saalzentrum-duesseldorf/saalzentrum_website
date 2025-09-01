@@ -1,18 +1,82 @@
 .Calendar {
-  .Calendar-header-container {
+  /* ===== Calendar HEADER ===== */
+  .calendar-header {
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
-    align-content: center;
-    flex: 0 0 auto; // This ensures the fixed top doesn't grow or shrink
-    // Add any styles for the fixed top part of the calendar
+    padding: 10px 0;
 
-    .Calendar-header-title {
-      font-size: 40px;
-      margin-bottom: 16px;
-      color: #8a8a8a;
-      z-index: 100;
+    .navigation-col {
+      display: flex;
+      justify-content: center;
+
+      .nav-button {
+        background: #9da4bd;
+        border: none;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: #8c93ac;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          transform: scale(1.05);
+        }
+
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(157, 164, 189, 0.3);
+        }
+      }
     }
+
+    .week-title-col {
+      text-align: center;
+
+      .week-title {
+        font-size: 32px;
+        color: #4b5782;
+        margin: 0;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .today-col {
+    display: flex;
+    justify-content: center;
+
+    .today-button {
+      background-color: #4b5782;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #3a4366;
+        transform: translateY(-2px);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(75, 87, 130, 0.3);
+      }
+    }
+  }
+
+  .resource-col {
+    display: flex;
+    align-items: center;
   }
 
   .Calendar-button-container {
@@ -43,72 +107,6 @@
 
       &.Calendar-button-right {
         left: 5px;
-      }
-    }
-  }
-
-  .Calendar-Grid-Container {
-    border: 8px solid #4b5782;
-    border-radius: 6px;
-    margin-top: 10px;
-    padding: 0;
-    box-sizing: border-box; // Ensures padding and border are included in the element's total width and height
-
-    .Calendar-day-names,
-    .Calendar-days {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      margin: 0; // Adjust margin if needed
-    }
-
-    .Calendar-week-day {
-      color: #ffffff;
-      height: 38px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 0 solid #ccc;
-      background: #4c5883;
-
-      font-size: 18px;
-      padding: 16px;
-    }
-
-    .Calendar-day {
-      flex: 1;
-      min-width: 120px; // prevent shrinking too much
-      height: auto; // allow height to grow
-      aspect-ratio: 1 / 1; // keep squares responsive
-      border: 1px solid #ccc;
-
-      .Calendar-day-container {
-        padding: 0;
-        width: 100%;
-        height: 100%;
-
-        &:hover {
-          background-color: #f8f6f6;
-        }
-      }
-
-      .Calendar-day-header {
-        font-size: clamp(12px, 1.5vw, 16px);
-        padding: 4px;
-      }
-
-      .Calendar-day-body {
-        border-radius: 6px;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        margin: 3px;
-        font-size: 12px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        color: white
       }
     }
   }

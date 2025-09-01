@@ -1,15 +1,17 @@
 import "./CustomCalendar.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Row } from "reactstrap";
-import CalendarDetails from "./calendarDetails/CalendarDetails.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { areDatesEqual, truncateText } from "../../../../utils";
-import MonthButtons from "./monthButtons/MonthButtons.tsx";
-import { Switch, FormControlLabel } from "@mui/material";
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import MonthButtons from "../../calendarComponents/monthButtons/MonthButtons.tsx";
 import WeekView from "./weekView/WeekView.tsx";
-import MonthWeekSwitch from "./switch/MonthWeekSwitch.tsx";
+import MonthWeekSwitch from "../../calendarComponents/switch/MonthWeekSwitch.tsx";
+import MonthView from "./monthView/MonthView.tsx";
+import {SelectChangeEvent} from "@mui/material";
+import CalendarControls from "../../calendarComponents/calendarControls/CalendarControls.tsx";
 
 export interface CustomCalendarEvent {
   eventId: string;
@@ -29,259 +31,142 @@ export interface CustomCalendarProps {
 }
 
 const CustomCalendar = (props: CustomCalendarProps) => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<number>();
-  const [selectedDateDetails, setSelectedDateDetails] = useState<CustomCalendarEvent[] | null>(null);
-  const [selectedMonth, setSelectedMonth] = useState<number>();
   const [isWeekView, setWeekView] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [selectedResource, setSelectedResource] = useState<string>("");
 
-  const daysInMonth: number = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth() + 1,
-    0
-  ).getDate();
-
-  const firstDay: number = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth(),
-    1
-  ).getDay();
-
-  const weeks: { day: number; monthOffset: number }[][] = [];
-  let week: { day: number; monthOffset: number }[] = [];
-
-  const lastDayOfPrevMonth: number = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth(),
-    0
-  ).getDate();
-
-  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-  let dayFromLastMonth = lastDayOfPrevMonth - adjustedFirstDay + 1;
-
-  // Start mit den Tagen aus dem Vormonat
-  for (let i = 0; i < adjustedFirstDay; i++) {
-    week.push({ day: dayFromLastMonth++, monthOffset: -1 });
-  }
-
-  // Tage des aktuellen Monats
-  for (let day = 1; day <= daysInMonth; day++) {
-    week.push({ day, monthOffset: 0 });
-    if (week.length === 7) {
-      weeks.push([...week]);
-      week = [];
-    }
-  }
-
-  // Tage aus dem nächsten Monat
-  let dayFromNextMonth = 1;
-  while (week.length < 7) {
-    week.push({ day: dayFromNextMonth++, monthOffset: 1 });
-  }
-
-  if (week.length > 0) {
-    weeks.push(week);
-  }
-
-  const handleDateClick = (day: number, monthOffset: number) => {
-    const selectedDate = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + monthOffset,
-      day
-    );
-
-    setSelectedDate(selectedDate);
-    setSelectedDay(day);
-    setSelectedMonth(currentMonth.getMonth() + monthOffset);
-
-    const clickedDateDetails = props.events.filter((event) =>
-      areDatesEqual(event.date, selectedDate)
-    );
-
-    setSelectedDateDetails(clickedDateDetails || null);
+  const goToCurrentWeek = () => {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+    const weekStart = new Date(today);
+    weekStart.setDate(diff);
+    setCurrentWeekStart(weekStart);
   };
 
-  function getEventsForDay(day: { day: number; monthOffset: number }): CustomCalendarEvent[] {
-    const dateToCompare = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + day.monthOffset,
-      day.day
-    );
-
-    return props.events
-      .filter(event => areDatesEqual(event.date, dateToCompare))
-      .sort((a, b) => {
-        if (a.isAllDay !== b.isAllDay) {
-          return a.isAllDay ? -1 : 1;
-        }
-        return a.name.localeCompare(b.name);
-      });
-  }
-
-  useEffect(() => {
+  // Week state management
+  const [currentWeekStart, setCurrentWeekStart] = useState(() => {
     const today = new Date();
-    setSelectedDate(today);
-    setSelectedDay(today.getDate());
-    setSelectedMonth(today.getMonth());
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Monday as first day
+    const weekStart = new Date(today);
+    weekStart.setDate(diff);
+    return weekStart;
+  });
 
-    const todayEvents = props.events.filter((event) =>
-      areDatesEqual(event.date, today)
+  const handleResourceChange = (event: SelectChangeEvent) => {
+    setSelectedResource(event.target.value as string);
+  };
+
+  // Format week range for header
+  const formatWeekRange = () => {
+    const weekEnd = new Date(currentWeekStart);
+    weekEnd.setDate(currentWeekStart.getDate() + 6);
+
+    const startFormat = currentWeekStart.toLocaleDateString("de-DE", {
+      day: "numeric",
+      month: "short",
+    });
+    const endFormat = weekEnd.toLocaleDateString("de-DE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+
+    return `${startFormat} - ${endFormat}`;
+  };
+
+  // Week navigation handlers
+  const goToPreviousWeek = () => {
+    const newWeekStart = new Date(currentWeekStart);
+    newWeekStart.setDate(currentWeekStart.getDate() - 7);
+    setCurrentWeekStart(newWeekStart);
+  };
+
+  const goToNextWeek = () => {
+    const newWeekStart = new Date(currentWeekStart);
+    newWeekStart.setDate(currentWeekStart.getDate() + 7);
+    setCurrentWeekStart(newWeekStart);
+  };
+
+  // Month navigation handlers
+
+  const goToPreviousMonth = () => {
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
     );
-    setSelectedDateDetails(todayEvents || null);
-  }, [props.events]);
+  };
+
+  const goToNextMonth = () => {
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
+    );
+  };
+
+  const formatMonthYear = () => {
+    return currentMonth.toLocaleDateString("de-DE", {
+      month: "long",
+      year: "numeric",
+    });
+  };
+
 
   return (
     <div className="Calendar">
       <Container style={{ maxWidth: "80%" }}>
-        <Row className="Calendar-header-container">
-          <Col className="Calendar-button-container" md={1}>
-            <Button
-              className="Calendar-button Calendar-button-left"
-              onClick={() =>
-                setCurrentMonth(
-                  new Date(currentMonth.setMonth(currentMonth.getMonth() - 1))
-                )
-              }
-            >
-              <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: 25 }} />
+        {/* Week navigation header */}
+        <Row className="calendar-header">
+          <Col md={1} className="navigation-col">
+            <Button className="nav-button" onClick={ isWeekView ? goToPreviousWeek : goToPreviousMonth}>
+              <FontAwesomeIcon icon={faChevronLeft} />
             </Button>
           </Col>
-          <Col md={3}>
-            <h1 className="Calendar-header-title">
-              {currentMonth.toLocaleString("default", { month: "long" })}{" "}
-              {currentMonth.getFullYear()}
-            </h1>
+
+          <Col md={6} className="week-title-col">
+            <h2 className="week-title">{isWeekView ? formatWeekRange() : formatMonthYear()}</h2>
           </Col>
-          <Col className="Calendar-button-container" md={1}>
-            <Button
-              className="Calendar-button Calendar-button-right"
-              onClick={() =>
-                setCurrentMonth(
-                  new Date(currentMonth.setMonth(currentMonth.getMonth() + 1))
-                )
-              }
-            >
-              <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: 25 }} />
+
+          <Col md={1} className="navigation-col">
+            <Button className="nav-button" onClick={isWeekView ? goToNextWeek : goToNextMonth}>
+              <FontAwesomeIcon icon={faChevronRight} />
             </Button>
           </Col>
           <Col md={1} className="Calendar-switch-container">
-            <MonthWeekSwitch isWeekView={isWeekView} setWeekView={setWeekView} />
+            <MonthWeekSwitch
+              isWeekView={isWeekView}
+              setWeekView={setWeekView}
+            />
           </Col>
-          </Row>
+        </Row>
 
-        <Row>
-          <MonthButtons
-            setCurrentMonth={setCurrentMonth}
-            currentMonth={currentMonth}
-          />
+        <Row style={{ marginBottom: "10px", justifyContent: "center" }}>
+          {isWeekView ? (
+            <>
+              <CalendarControls selectedResource={selectedResource} onResourceChange={handleResourceChange} onGoToCurrentWeek={goToCurrentWeek} />
+            </>
+          ) : (
+            <MonthButtons
+              setCurrentMonth={setCurrentMonth}
+              currentMonth={currentMonth}
+            />
+          )}
         </Row>
 
         <Row>
           {isWeekView ? (
-            <WeekView events={props.events} />
+            <WeekView
+              events={props.events}
+              currentWeekStart={currentWeekStart}
+              setCurrentWeekStart={setCurrentWeekStart}
+              selectedResource={selectedResource}
+              setSelectedResource={setSelectedResource}
+            />
           ) : (
-            <>
-              <Col md={10} className="Calendar-Grid-Container">
-                <div>
-                  <div className="Calendar-day-names">
-                    <WeekDays />
-                  </div>
-                  {weeks.map((week, index) => (
-                    <div className="Calendar-days" key={index}>
-                      {week.map((day, index) => {
-                        const dayEvents = getEventsForDay(day);
-                        return (
-                          <div
-                            key={index}
-                            className="Calendar-day"
-                            style={{
-                              background: day.monthOffset === 0 ? "#ffffff" : "#f3f3f3",
-                              borderColor:
-                                day.day === selectedDay &&
-                                currentMonth.getMonth() + day.monthOffset === selectedMonth
-                                  ? "#9da4bd"
-                                  : "#d7d7d7",
-                              borderWidth:
-                                day.day === selectedDay &&
-                                currentMonth.getMonth() + day.monthOffset === selectedMonth
-                                  ? 3
-                                  : 1
-                            }}
-                            onClick={() => handleDateClick(day.day, day.monthOffset)}
-                          >
-                            <Container className="Calendar-day-container">
-                              <Row>
-                                <Col>
-                                  <div
-                                    className="Calendar-day-header"
-                                    style={{
-                                      background: day.monthOffset === 0 ? "#d7d7d7" : "#e7e7e7"
-                                    }}
-                                  >
-                                    {day.day !== 0 ? day.day : ""}
-                                  </div>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col>
-                                  {dayEvents.slice(0, 5).map((_event, index) => (
-                                    <div
-                                      className="Calendar-day-body"
-                                      key={index}
-                                      style={{ background: _event.color }}
-                                    >
-                                      {truncateText(_event.name, 15)}
-                                    </div>
-                                  ))}
-                                  {dayEvents.length > 5 && (
-                                    <div
-                                      className="Calendar-day-body"
-                                      style={{ background: "rgba(155,155,155,0.58)" }}
-                                    >
-                                      + {dayEvents.length - 5} mehr
-                                    </div>
-                                  )}
-                                </Col>
-                              </Row>
-                            </Container>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              </Col>
-
-              <Col md={2}>
-                <CalendarDetails events={selectedDateDetails} day={selectedDate} />
-              </Col>
-            </>
+            <MonthView events={props.events} currentMonth={currentMonth} />
           )}
         </Row>
       </Container>
     </div>
-  );
-};
-
-const WeekDays = () => {
-  const weekDays = [
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag",
-    "Sonntag"
-  ];
-  return (
-    <>
-      {weekDays.map((weekDay, index) => (
-        <div key={index} className="Calendar-week-day">
-          {weekDay}
-        </div>
-      ))}
-    </>
   );
 };
 

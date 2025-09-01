@@ -1,0 +1,474 @@
+// CalendarControls.scss
+
+.today-col {
+    display: flex;
+    justify-content: center;
+    
+    // Size variants
+    &.small .today-button {
+      padding: 8px 16px;
+      font-size: 12px;
+    }
+    
+    &.medium .today-button {
+      padding: 10px 20px;
+      font-size: 14px;
+    }
+    
+    &.large .today-button {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+    
+    // Disabled state
+    &.disabled .today-button {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  
+    .today-button {
+      background: linear-gradient(135deg, #4b5782 0%, #3d4a6b 100%);
+      color: #ffffff;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 3px 8px rgba(75, 87, 130, 0.3);
+      text-transform: none;
+      letter-spacing: 0.5px;
+      
+      // Remove Bootstrap's default styles
+      &.btn {
+        border: 2px solid transparent;
+      }
+      
+      &__text {
+        position: relative;
+        z-index: 3;
+        display: block;
+        transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      }
+      
+      // Ripple effect
+      &__ripple {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: radial-gradient(circle, rgba(206, 206, 206, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease, opacity 0.4s ease;
+        z-index: 1;
+        opacity: 0;
+      }
+      
+      // Glow effect
+      &__glow {
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(45deg, 
+          rgba(75, 87, 130, 0.6) 0%, 
+          rgba(206, 206, 206, 0.3) 50%, 
+          rgba(75, 87, 130, 0.6) 100%);
+        border-radius: 10px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 0;
+      }
+      
+      // Shine effect
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 1px;
+        background: linear-gradient(135deg, 
+          rgba(255, 255, 255, 0.1) 0%, 
+          transparent 50%, 
+          rgba(206, 206, 206, 0.05) 100%);
+        border-radius: 6px;
+        z-index: 2;
+      }
+  
+      // Hover state with unique animations
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, #5a6796 0%, #4a5775 100%);
+        border-color: rgba(206, 206, 206, 0.3);
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 6px 16px rgba(75, 87, 130, 0.4),
+                    0 3px 6px rgba(0, 0, 0, 0.1);
+        
+        .today-button__text {
+          transform: translateY(-1px) scale(1.02);
+        }
+        
+        .today-button__ripple {
+          width: 120%;
+          height: 120%;
+          opacity: 1;
+        }
+        
+        .today-button__glow {
+          opacity: 1;
+        }
+      }
+      
+      // Active/pressed state
+      &:active:not(:disabled) {
+        transform: translateY(-1px) scale(1.01);
+        
+        .today-button__text {
+          transform: translateY(0) scale(0.98);
+        }
+      }
+  
+      // Focus state for accessibility
+      &:focus:not(:disabled) {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(75, 87, 130, 0.4),
+                    0 3px 8px rgba(75, 87, 130, 0.3);
+        border-color: rgba(206, 206, 206, 0.5);
+      }
+      
+      // Disabled state
+      &:disabled {
+        background: linear-gradient(135deg, #8a8a8a 0%, #777 100%);
+        color: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  
+  .resource-col {
+    display: flex;
+    align-items: center;
+    
+    // Size variants
+    &.small .resource-select-control {
+      font-size: 12px;
+    }
+    
+    &.medium .resource-select-control {
+      font-size: 14px;
+    }
+    
+    &.large .resource-select-control {
+      font-size: 16px;
+    }
+    
+    // Disabled state
+    &.disabled .resource-select-control {
+      opacity: 0.6;
+    }
+  
+    .resource-select-control {
+      position: relative;
+      
+      // Custom label styling
+      .resource-select-label {
+        color: #4b5782;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        
+        &.Mui-focused {
+          color: #4b5782;
+        }
+        
+        &.Mui-disabled {
+          color: #8a8a8a;
+        }
+      }
+      
+      // Custom select styling
+      .resource-select {
+        .MuiOutlinedInput-root {
+          border-radius: 8px;
+          background: #ffffff;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          position: relative;
+          overflow: hidden;
+          
+          // Default border
+          .MuiOutlinedInput-notchedOutline {
+            border-color: #9da4bd;
+            border-width: 2px;
+            transition: all 0.3s ease;
+          }
+          
+          // Hover state
+          &:hover:not(.Mui-disabled) {
+            background: #f8f6f6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(157, 164, 189, 0.3);
+            
+            .MuiOutlinedInput-notchedOutline {
+              border-color: #4b5782;
+              border-width: 2px;
+            }
+          }
+          
+          // Focused state
+          &.Mui-focused {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(75, 87, 130, 0.4);
+            
+            .MuiOutlinedInput-notchedOutline {
+              border-color: #4b5782;
+              border-width: 2px;
+            }
+          }
+          
+          // Disabled state
+          &.Mui-disabled {
+            background: #f5f5f5;
+            
+            .MuiOutlinedInput-notchedOutline {
+              border-color: #ccc;
+            }
+          }
+          
+          // Select input text
+          .MuiSelect-select {
+            color: #4b5782;
+            font-weight: 500;
+            padding: 12px 14px;
+            
+            &.Mui-disabled {
+              color: #8a8a8a;
+            }
+          }
+          
+          // Dropdown icon
+          .MuiSelect-icon {
+            color: #4b5782;
+            transition: transform 0.3s ease, color 0.3s ease;
+            
+            &.Mui-disabled {
+              color: #8a8a8a;
+            }
+          }
+          
+          &.Mui-focused .MuiSelect-icon {
+            transform: rotate(180deg);
+            color: #4b5782;
+          }
+        }
+      }
+    }
+  }
+  
+  // Custom dropdown menu styling
+  .resource-menu-paper {
+    border-radius: 8px;
+    border: 2px solid #9da4bd;
+    box-shadow: 0 8px 24px rgba(75, 87, 130, 0.3);
+    background: #ffffff;
+    margin-top: 4px;
+    
+    .resource-menu-item {
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      
+      .menu-item-text {
+        color: #4b5782;
+        font-weight: 500;
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+      }
+      
+      // Ripple effect for menu items
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          rgba(157, 164, 189, 0.1) 0%, 
+          rgba(75, 87, 130, 0.1) 100%);
+        transition: width 0.4s ease;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+      
+      &:hover {
+        background: #f8f6f6;
+        
+        &::before {
+          width: 100%;
+        }
+        
+        .menu-item-text {
+          color: #7a8ed4;
+          transform: translateX(4px);
+        }
+      }
+      
+      &.Mui-selected {
+        background: linear-gradient(90deg, 
+          rgba(75, 87, 130, 0.1) 0%, 
+          rgba(157, 164, 189, 0.05) 100%);
+        
+        .menu-item-text {
+          color: #3c54ac;
+          font-weight: 600;
+        }
+        
+        &:hover {
+          background: linear-gradient(90deg, 
+            rgba(75, 87, 130, 0.15) 0%, 
+            rgba(157, 164, 189, 0.08) 100%);
+        }
+      }
+    }
+  }
+  
+//   // Dark mode support
+//   @media (prefers-color-scheme: dark) {
+//     .today-col .today-button {
+//       background: linear-gradient(135deg, #3a4261 0%, #2d3548 100%);
+//       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      
+//       &:hover:not(:disabled) {
+//         background: linear-gradient(135deg, #4a5275 0%, #3d4a6b 100%);
+//         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+//       }
+//     }
+    
+//     .resource-col .resource-select-control {
+//       .resource-select-label {
+//         color: #9da4bd;
+        
+//         &.Mui-focused {
+//           color: #9da4bd;
+//         }
+//       }
+      
+//       .resource-select .MuiOutlinedInput-root {
+//         background: #2a2f3a;
+        
+//         .MuiOutlinedInput-notchedOutline {
+//           border-color: #4b5782;
+//         }
+        
+//         &:hover:not(.Mui-disabled) {
+//           background: #333844;
+//         }
+        
+//         &.Mui-focused {
+//           background: #2a2f3a;
+//         }
+        
+//         .MuiSelect-select {
+//           color: #e9ecef;
+//         }
+        
+//         .MuiSelect-icon {
+//           color: #9da4bd;
+//         }
+//       }
+//     }
+    
+//     .resource-menu-paper {
+//       background: #2a2f3a;
+//       border-color: #4b5782;
+      
+//       .resource-menu-item {
+//         .menu-item-text {
+//           color: #e9ecef;
+//         }
+        
+//         &:hover {
+//           background: #333844;
+//         }
+        
+//         &.Mui-selected {
+//           background: linear-gradient(90deg, 
+//             rgba(75, 87, 130, 0.2) 0%, 
+//             rgba(157, 164, 189, 0.1) 100%);
+//         }
+//       }
+//     }
+//   }
+  
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .today-col .today-button {
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      
+      &:hover:not(:disabled) {
+        transform: none;
+      }
+      
+      &__text, &__ripple, &__glow {
+        transition: opacity 0.3s ease;
+      }
+      
+      &:hover:not(:disabled) .today-button__text {
+        transform: none;
+      }
+    }
+    
+    .resource-col .resource-select-control .resource-select .MuiOutlinedInput-root {
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      
+      &:hover:not(.Mui-disabled),
+      &.Mui-focused {
+        transform: none;
+      }
+    }
+    
+    .resource-menu-paper .resource-menu-item {
+      transition: background-color 0.3s ease;
+      
+      &:hover .menu-item-text {
+        transform: none;
+      }
+    }
+  }
+  
+  // High contrast mode support
+  @media (prefers-contrast: high) {
+    .today-col .today-button {
+      border: 3px solid #ffffff;
+      background: #4b5782;
+      
+      &:hover:not(:disabled) {
+        background: #3a4366;
+        border-color: #ffffff;
+      }
+      
+      &:focus:not(:disabled) {
+        border-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+      }
+    }
+    
+    .resource-col .resource-select-control .resource-select .MuiOutlinedInput-root {
+      .MuiOutlinedInput-notchedOutline {
+        border-width: 3px;
+        border-color: #4b5782;
+      }
+      
+      &:hover:not(.Mui-disabled) .MuiOutlinedInput-notchedOutline,
+      &.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: #4b5782;
+      }
+    }
+    
+    .resource-menu-paper {
+      border-width: 3px;
+      border-color: #4b5782;
+    }
+  }
