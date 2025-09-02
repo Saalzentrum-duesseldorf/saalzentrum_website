@@ -55,7 +55,7 @@
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
-    "@vitejs/plugin-react": "^4.0.0",
+    "@vitejs/plugin-react": "^4.7.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -64,6 +64,6 @@
     "jest-fetch-mock": "^3.0.3",
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
-    "vite": "^4.5.14"
+    "vite": "^7.1.4"
   }
 }
