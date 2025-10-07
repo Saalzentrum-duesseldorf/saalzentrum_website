@@ -1,0 +1,395 @@
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600&display=swap');
+
+.kiosk-view {
+  // Design Tokens (Light)
+  --bg-0: #eef2f5;        // Grundfläche
+  --bg-1: #ffffff;        // Kartenfläche
+  --bg-2: #f8f9fa;        // leichte Absetzung
+  --text-0: #202124;      // primäre Textfarbe
+  --text-1: #5f6368;      // sekundäre Textfarbe
+  --accent: #1a73e8;      // Akzentfarbe Zeit
+  --accent-neutral: rgba(26, 115, 232, 0.22); // dezente einheitliche Akzentlinie
+  --shadow-sm: 0 1px 3px rgba(16,24,40,0.04);
+  --shadow-lg: 0 16px 48px rgba(16,24,40,0.06);
+  --inner-glow: inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.kiosk-view {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+}
+
+.kiosk-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 2rem 3rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .kiosk-title {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #202124;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .current-time {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #5f6368;
+    text-align: right;
+    line-height: 1.4;
+  }
+}
+
+.kiosk-main {
+  padding: 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2rem;
+  height: calc(100vh - 200px);
+  min-height: 600px;
+
+  .room-3 { grid-column: 1; grid-row: 1; } // Saal 3 - oben links
+  .room-4 { grid-column: 2; grid-row: 1; } // Saal 4 - oben rechts  
+  .room-1 { grid-column: 1; grid-row: 2; } // Saal 1 - unten links
+  .room-2 { grid-column: 2; grid-row: 2; } // Saal 2 - unten rechts
+}
+
+.room-card {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.08),          /* weicher, einlagiger Außenschatten */
+    inset 0 1px 0 rgba(255,255,255,0.65),  /* innerer Lichtsaum */
+    inset 0 0 0 1px rgba(16,24,40,0.04);   /* dezente Innenkante */
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  // farbiger Balken oben entfernt für cleaner Look
+  &::before { display: none; }
+
+  // dezenter Highlight-Verlauf oben
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), transparent 28%);
+    mix-blend-mode: screen;
+  }
+
+
+}
+
+.room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  .room-name {
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: #202124;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .room-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.14);
+    opacity: 0.7;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.room-direction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: var(--text-0);
+  font-size: 1.05rem;
+  box-shadow: var(--inner-glow);
+
+  .arrow-icon {
+    width: 22px;
+    height: 22px;
+    line-height: 1;
+  }
+}
+
+.room-direction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(240,242,245,0.85));
+  border: 1px solid rgba(0,0,0,0.06);
+  color: var(--text-0);
+  font-size: 1.2rem;
+  box-shadow: var(--shadow-sm), var(--inner-glow);
+
+  .arrow-icon {
+    width: 26px;
+    height: 26px;
+    line-height: 1;
+  }
+}
+
+.events-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center; // zentriert, wenn nur 1 Termin
+  align-items: stretch;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+  }
+}
+
+.event-item {
+  background: linear-gradient(180deg, rgba(250,251,252,0.96), rgba(243,245,247,0.94));
+  border-radius: 18px;
+  padding: 1.35rem;
+  border-left: 4px solid var(--accent-neutral);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  flex: 1; // füllt die Kachelhöhe bei Einzelevent
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* nur Inset-Schatten für eingebetteten Look, keine äußeren Schatten */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.72), /* Lichtkante oben */
+    inset 0 -10px 16px rgba(16,24,40,0.08), /* dunklere Kante unten */
+    inset 0 0 0 1px rgba(16,24,40,0.06);   /* dezente Innenkante */
+
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: saturate(1.08) blur(6px);
+
+  // sanfte Farbblobs für Liquid-Tiefe
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    filter: blur(28px);
+    opacity: 0.20;
+    pointer-events: none;
+    transform: translate(-30%, -30%);
+    transition: opacity 0.3s ease;
+  }
+  &::before {
+    top: -12%;
+    left: -12%;
+    background: radial-gradient(circle at 30% 30%, rgba(26,115,232,0.18) 0%, transparent 60%);
+  }
+  &::after {
+    bottom: -12%;
+    right: -12%;
+    background: radial-gradient(circle at 70% 70%, rgba(124,137,255,0.18) 0%, transparent 60%);
+  }
+
+  // dünne Innenrahmenlinie (eingelassen) für klarere Kanten
+  &::marker { display: none; }
+  & > .inset-edge {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.55),
+      inset 0 0 0 2px rgba(255,255,255,0.2);
+  }
+
+  .event-time {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, var(--accent), #9bbcff);
+      box-shadow: 0 0 10px rgba(16,24,40,0.15);
+    }
+  }
+
+  .event-title {
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: var(--text-0);
+    line-height: 1.4;
+    margin-bottom: 0.35rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .event-duration {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-1);
+    opacity: 0.8;
+  }
+}
+
+.no-events {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+  color: #9aa0a6;
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-align: center;
+  opacity: 0.7;
+}
+
+// Responsive design for smaller kiosk displays
+@media (max-width: 1400px) {
+  .kiosk-header {
+    padding: 1.5rem 2rem;
+
+    .kiosk-title {
+      font-size: 2rem;
+    }
+
+    .current-time {
+      font-size: 1rem;
+    }
+  }
+
+  .kiosk-main {
+    padding: 2rem;
+  }
+
+  .rooms-grid {
+    gap: 1.5rem;
+    height: calc(100vh - 160px);
+  }
+
+  .room-card {
+    padding: 1.5rem;
+  }
+
+  .room-header .room-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .kiosk-header {
+    padding: 1rem 1.5rem;
+
+    .kiosk-title {
+      font-size: 1.75rem;
+    }
+
+    .current-time {
+      font-size: 0.875rem;
+    }
+  }
+
+  .kiosk-main {
+    padding: 1.5rem;
+  }
+
+  .rooms-grid {
+    gap: 1rem;
+    height: calc(100vh - 140px);
+  }
+
+  .room-card {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .room-header .room-name {
+    font-size: 1.25rem;
+  }
+
+  .event-item {
+    padding: 0.75rem;
+    border-radius: 8px;
+
+    .event-title {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Animation for smooth loading
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.room-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.room-card:nth-child(1) { animation-delay: 0.1s; }
+.room-card:nth-child(2) { animation-delay: 0.2s; }
+.room-card:nth-child(3) { animation-delay: 0.3s; }
+.room-card:nth-child(4) { animation-delay: 0.4s; }
+

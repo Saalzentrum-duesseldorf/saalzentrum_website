@@ -1,3 +1,4 @@
+@use 'sass:color';
 
 .Calendar-month-button-Container {
   margin-left: 110px;
@@ -19,7 +20,7 @@
     }
 
     &:active {
-      color: darken(grey, 10%); // Darkens the text color slightly when the button is pressed
+      color: color.adjust(grey, $lightness: -10%);
     }
   }
 }
