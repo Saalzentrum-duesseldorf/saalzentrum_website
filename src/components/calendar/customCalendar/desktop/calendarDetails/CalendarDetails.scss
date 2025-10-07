@@ -65,6 +65,9 @@
         cursor: pointer; /* Change cursor to indicate clickable */
       }
     }
+    .no-events {
+      min-height: 10px;
+    }
   }
 
   .timeline {

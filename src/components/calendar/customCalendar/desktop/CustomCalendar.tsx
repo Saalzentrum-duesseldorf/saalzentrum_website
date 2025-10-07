@@ -103,6 +103,10 @@ const CustomCalendar = (props: CustomCalendarProps) => {
     );
   };
 
+  const goToToday = () => {
+    setCurrentMonth(new Date());
+  };
+
   const formatMonthYear = () => {
     return currentMonth.toLocaleDateString("de-DE", {
       month: "long",
@@ -162,7 +166,11 @@ const CustomCalendar = (props: CustomCalendarProps) => {
               setSelectedResource={setSelectedResource}
             />
           ) : (
-            <MonthView events={props.events} currentMonth={currentMonth} />
+            <MonthView 
+              events={props.events} 
+              currentMonth={currentMonth} 
+              onNavigateToToday={goToToday}
+            />
           )}
         </Row>
       </Container>

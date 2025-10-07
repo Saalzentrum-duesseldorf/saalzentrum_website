@@ -7,6 +7,7 @@ import { areDatesEqual, truncateText } from "../../../../../utils.ts";
 
 export interface MonthViewProps extends CustomCalendarProps {
   currentMonth: Date;
+  onNavigateToToday?: () => void;
 }
 
 /**
@@ -175,8 +176,53 @@ const MonthView = (props: MonthViewProps) => {
     setSelectedDateDetails(todayEvents || null);
   }, [props.events]);
 
+  /**
+   * Check if current month is different from today's month
+   */
+  const isNotCurrentMonth = useMemo(() => {
+    const today = new Date();
+    return (
+      props.currentMonth.getMonth() !== today.getMonth() ||
+      props.currentMonth.getFullYear() !== today.getFullYear()
+    );
+  }, [props.currentMonth]);
+
+  /**
+   * Navigate back to current month
+   */
+  const handleBackToToday = useCallback(() => {
+    const today = new Date();
+    setSelectedDate(today);
+    setSelectedDay(today.getDate());
+    setSelectedMonth(today.getMonth());
+
+    // Filter today's events
+    const todayEvents = props.events.filter((event) =>
+      areDatesEqual(event.date, today)
+    );
+    setSelectedDateDetails(todayEvents || null);
+
+    // Call parent navigation function if provided
+    if (props.onNavigateToToday) {
+      props.onNavigateToToday();
+    }
+  }, [props.events, props.onNavigateToToday]);
+
   return (
     <>
+      {/* Back to Today Button - only show when not in current month */}
+      {isNotCurrentMonth && (
+        <div className="back-to-today-container">
+          <button 
+            className="back-to-today-btn" 
+            onClick={handleBackToToday}
+            title="Zurück zum aktuellen Monat"
+          >
+            📅 Heute
+          </button>
+        </div>
+      )}
+
       {/* Calendar Grid */}
       <Col md={10} className="Calendar-Grid-Container">
         <div>
