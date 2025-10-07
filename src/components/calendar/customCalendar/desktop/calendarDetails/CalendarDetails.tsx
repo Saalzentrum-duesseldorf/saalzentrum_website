@@ -13,7 +13,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EventPopover from "./EventPopover.tsx";
 
 
@@ -23,7 +23,7 @@ export interface CalendarDetailsProps {
 }
 
 const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
-
+  const timelineRef = useRef<HTMLDivElement>(null);
   const [currentResource, setResource] = useState<string>("");
 
   const filterEvents = (resource: string): CustomCalendarEvent[] | null => {
@@ -38,6 +38,7 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
 
   events = filterEvents(currentResource);
 
+  // Timeline starts at 8 AM, but can scroll up to 0 AM
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -60,96 +61,110 @@ const CalendarDetails = ({ events, day }: CalendarDetailsProps) => {
     setResource(event.target.value as string);
   };
 
+  // Auto-scroll to 8 AM when component loads
+  useEffect(() => {
+    if (timelineRef.current) {
+      // Scroll to 8 AM (8 * 40px = 320px from top)
+      timelineRef.current.scrollTop = 320;
+    }
+  }, [events]);
+
   return (
     <div className="calendar-details">
-      <div className={"calendar-details-header"}>{parseDateToStringWithWrittenOutMonth(day)}</div>
+      {/* Fixed Header Section */}
+      <div className="calendar-details-fixed">
+        <div className={"calendar-details-header"}>{parseDateToStringWithWrittenOutMonth(day)}</div>
 
-      <FormControl size="small" style={{backgroundColor: "#4b5782", color: "white"}}>
-        <InputLabel id="select-resource-lable" style={{fontSize: 13}}>Raum wählen</InputLabel>
-        <Select
-          labelId="select-resource-lable"
-          id="select-resource"
-          label="Raum"
-          onChange={handleSelectResource}
-          style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff"}}
-        >
-          <MenuItem value={""}>Kein Raum</MenuItem>
-          <MenuItem value={"Saal 1"}>Saal 1</MenuItem>
-          <MenuItem value={"Nebenraum 1B"}>Nebenraum 1B</MenuItem>
-          <MenuItem value={"Saal 2"}>Saal 2</MenuItem>
-          <MenuItem value={"Nebenraum 2B"}>Nebenraum 2B</MenuItem>
-          <MenuItem value={"Saal 3"}>Saal 3</MenuItem>
-          <MenuItem value={"Nebenraum 3B"}>Nebenraum 3B</MenuItem>
-          <MenuItem value={"Saal 4"}>Saal 4</MenuItem>
-          <MenuItem value={"Nebenraum 4B"}>Nebenraum 4B</MenuItem>
-          <MenuItem value={"Besprechungsraum"}>Besprechungsraum 2OG</MenuItem>
-          <MenuItem value={"andere"}>Sonstiges</MenuItem>
-        </Select>
-      </FormControl>
+        <FormControl size="small" style={{backgroundColor: "#4b5782", color: "white", width: "100%"}}>
+          <InputLabel id="select-resource-lable" style={{fontSize: 13}}>Raum wählen</InputLabel>
+          <Select
+            labelId="select-resource-lable"
+            id="select-resource"
+            label="Raum"
+            onChange={handleSelectResource}
+            style={{height: 35, borderRadius: 10, backgroundColor: "#ffffff", width: "100%"}}
+          >
+            <MenuItem value={""}>Kein Raum</MenuItem>
+            <MenuItem value={"Saal 1"}>Saal 1</MenuItem>
+            <MenuItem value={"Nebenraum 1B"}>Nebenraum 1B</MenuItem>
+            <MenuItem value={"Saal 2"}>Saal 2</MenuItem>
+            <MenuItem value={"Nebenraum 2B"}>Nebenraum 2B</MenuItem>
+            <MenuItem value={"Saal 3"}>Saal 3</MenuItem>
+            <MenuItem value={"Nebenraum 3B"}>Nebenraum 3B</MenuItem>
+            <MenuItem value={"Saal 4"}>Saal 4</MenuItem>
+            <MenuItem value={"Nebenraum 4B"}>Nebenraum 4B</MenuItem>
+            <MenuItem value={"Besprechungsraum"}>Besprechungsraum 2OG</MenuItem>
+            <MenuItem value={"andere"}>Sonstiges</MenuItem>
+          </Select>
+        </FormControl>
 
-      {/* All Day events section */}
-      <div className="all-day-section">
-        <span style={{fontSize: 18}}>Ganztags: </span>
-        {events && containsAllDayEvent(events) ? (
-          events
-            .filter((e) => e.isAllDay)
-            .map((event) => (
-              <div
-                className={"all-day-event"}
-                key={event.name}
-                style={{ background: event.color }}
-                onClick={(e) => handleEventClick(e, event)}
-              >
-                {event.name}
-              </div>
-            ))
-        ) : (
-          <div className="no-events" >-</div>
-        )}
+        {/* All Day events section */}
+        <div className="all-day-section">
+          <span style={{fontSize: 18}}>Ganztags: </span>
+          {events && containsAllDayEvent(events) ? (
+            events
+              .filter((e) => e.isAllDay)
+              .map((event) => (
+                <div
+                  className={"all-day-event"}
+                  key={event.name}
+                  style={{ background: event.color }}
+                  onClick={(e) => handleEventClick(e, event)}
+                >
+                  {event.name}
+                </div>
+              ))
+          ) : (
+            <div className="no-events" >-</div>
+          )}
+        </div>
       </div>
 
-      <div className="timeline">
-        {hours.map((hour) => (
-          <div className="hour-block" key={hour}>
-            <div className="hour-label">{hour} </div>
+      {/* Scrollable Timeline Section */}
+      <div className="timeline-container" ref={timelineRef}>
+        <div className="timeline">
+          {hours.map((hour) => (
+            <div className="hour-block" key={hour}>
+              <div className="hour-label">{hour} </div>
 
-            <div className="time-slots"  >
-              {getEventsForHour(hour, events).map((event) => {
-                const overlappingEvents = getOverlappingEvents(event, events).sort((a, b) => a.name.localeCompare(b.name));
+              <div className="time-slots"  >
+                {getEventsForHour(hour, events).map((event) => {
+                  const overlappingEvents = getOverlappingEvents(event, events).sort((a, b) => a.name.localeCompare(b.name));
 
-                const eventWidthPercentage = 100 / overlappingEvents.length;
-                const positionIndex = overlappingEvents.findIndex(
-                  (e) => e.name === event.name
-                );
+                  const eventWidthPercentage = 100 / overlappingEvents.length;
+                  const positionIndex = overlappingEvents.findIndex(
+                    (e) => e.name === event.name
+                  );
 
-                return (
-                  <>
-                  <div
-                    className="event"
-                    key={event.name}
-                    style={{
-                      background: event.color,
-                      top: `${getEventTopPosition(event)}px`,
-                      height: `${getEventHeight(event)}px`,
-                      width: `${eventWidthPercentage}%`,
-                      left: `${eventWidthPercentage * positionIndex}%`,
-                      whiteSpace: 'nowrap',  // Fügt hinzu, dass der Text nicht umbrechen soll
-                      overflow: 'hidden',    // Versteckt Text, der über den Container hinausgeht
-                      textOverflow: 'ellipsis' // Fügt "..." am Ende des Textes ein, falls er abgeschnitten wird
-                    }}
-                    onClick={(e) => handleEventClick(e, event)}
-                  >
-                    {event.name}
-                    {/*<br/>*/}
-                    {/*{prettifyRoomKey(findRoomByEmail(event.email))}*/}
+                  return (
+                    <>
+                    <div
+                      className="event"
+                      key={event.name}
+                      style={{
+                        background: event.color,
+                        top: `${getEventTopPosition(event)}px`,
+                        height: `${getEventHeight(event)}px`,
+                        width: `${eventWidthPercentage}%`,
+                        left: `${eventWidthPercentage * positionIndex}%`,
+                        whiteSpace: 'nowrap',  // Fügt hinzu, dass der Text nicht umbrechen soll
+                        overflow: 'hidden',    // Versteckt Text, der über den Container hinausgeht
+                        textOverflow: 'ellipsis' // Fügt "..." am Ende des Textes ein, falls er abgeschnitten wird
+                      }}
+                      onClick={(e) => handleEventClick(e, event)}
+                    >
+                      {event.name}
+                      {/*<br/>*/}
+                      {/*{prettifyRoomKey(findRoomByEmail(event.email))}*/}
 
-                  </div>
-                  </>
-                );
-              })}
+                    </div>
+                    </>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <EventPopover event={selectedEvent} anchorEl={anchorEl} open={open} onClose={handleClose} />

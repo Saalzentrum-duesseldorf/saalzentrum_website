@@ -161,6 +161,22 @@ const MonthView = (props: MonthViewProps) => {
   );
 
   /**
+   * Determines if a day is today
+   */
+  const isToday = useCallback(
+    (calendarDay: CalendarDay): boolean => {
+      const today = new Date();
+      const targetDate = new Date(
+        props.currentMonth.getFullYear(),
+        props.currentMonth.getMonth() + calendarDay.monthOffset,
+        calendarDay.day
+      );
+      return areDatesEqual(targetDate, today);
+    },
+    [props.currentMonth]
+  );
+
+  /**
    * Initialize with today's date and events on component mount or when events change
    */
   useEffect(() => {
@@ -238,6 +254,7 @@ const MonthView = (props: MonthViewProps) => {
                 const dayEvents = getEventsForDay(calendarDay);
                 const isSelected = isDaySelected(calendarDay);
                 const isCurrentMonth = calendarDay.monthOffset === 0;
+                const isTodayDay = isToday(calendarDay);
 
                 return (
                   <CalendarDayCell
@@ -246,6 +263,7 @@ const MonthView = (props: MonthViewProps) => {
                     events={dayEvents}
                     isSelected={isSelected}
                     isCurrentMonth={isCurrentMonth}
+                    isToday={isTodayDay}
                     onDateClick={handleDateClick}
                   />
                 );
@@ -272,6 +290,7 @@ interface CalendarDayCellProps {
   events: CustomCalendarEvent[];
   isSelected: boolean;
   isCurrentMonth: boolean;
+  isToday: boolean;
   onDateClick: (day: number, monthOffset: number) => void;
 }
 
@@ -280,6 +299,7 @@ const CalendarDayCell = ({
   events,
   isSelected,
   isCurrentMonth,
+  isToday,
   onDateClick,
 }: CalendarDayCellProps) => {
   const MAX_VISIBLE_EVENTS = 5;
@@ -295,6 +315,7 @@ const CalendarDayCell = ({
         background: isCurrentMonth ? "#ffffff" : "#f3f3f3",
         borderColor: isSelected ? "#9da4bd" : "#d7d7d7",
         borderWidth: isSelected ? 3 : 1,
+        boxShadow: isToday && !isSelected ? "0 2px 8px rgba(95, 99, 104, 0.15)" : "none",
       }}
       onClick={handleClick}
     >
@@ -305,8 +326,10 @@ const CalendarDayCell = ({
             <div
               className="Calendar-day-header"
               style={{
-                background: isCurrentMonth ? "#d7d7d7" : "#e7e7e7",
-              }}
+                background: isCurrentMonth ? (isToday ? "#90a3da" : "#d7d7d7") : "#e7e7e7",
+                color: isToday ? "#5f6368" : "inherit",
+                fontWeight: isToday ? "600" : "normal",
+                }}
             >
               {calendarDay.day}
             </div>

@@ -1,17 +1,14 @@
 .calendar-details {
-  
   border: 8px solid #4b5782;
-
   display: flex;
   flex-direction: column;
-  overflow: scroll;
-  overflow-y: auto; // Enables vertical scrolling if needed
-  overflow-x: hidden; // Hides horizontal scrollbar
-  height: 1004px;
+  height: 70%; // Ausreichende Höhe für den Inhalt
   width: 180%;
   margin-top: 10px;
   border-radius: 6px;
   margin-left: 8px;
+  overflow: hidden; // Verhindert Scrollen des gesamten Containers
+  box-shadow: 0px 4px 4px #00000030, 0px 12px 12px #00000015;
 
   // Scrollbar styles
   &::-webkit-scrollbar {
@@ -26,7 +23,7 @@
 
     background: #f1f1f1;
     border-radius: 10px;
-
+    
   }
 
   &::-webkit-scrollbar-thumb {
@@ -40,12 +37,29 @@
     }
   }
 
+  // Fixed Header Section
+  .calendar-details-fixed {
+    flex-shrink: 0; // Verhindert Schrumpfen
+    background: #4c5883;
+    z-index: 10;
+  }
+
   .calendar-details-header {
     font-size: 20px;
     background: #4c5883;
     color: #ffffff;
     padding: 5px;
     border: 1px solid #4c5883;
+  }
+
+  // Dropdown Styles für volle Breite
+  .MuiFormControl-root {
+    width: 100% !important;
+    margin: 10px 0;
+    
+    .MuiSelect-root {
+      width: 100% !important;
+    }
   }
 
   .all-day-section {
@@ -70,9 +84,25 @@
     }
   }
 
+  // Scrollable Timeline Container
+  .timeline-container {
+    flex: 1; // Nimmt verbleibenden Platz ein
+    overflow-y: auto; // Ermöglicht Scrollen
+    overflow-x: hidden;
+    
+    // Scrollbar verstecken
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    
+    // Für Firefox
+    scrollbar-width: none;
+  }
+
   .timeline {
     display: flex;
     flex-direction: column;
+    min-height: 100%; // Mindesthöhe für Scrollen
 
     .hour-block {
       display: flex; /* Add flex display to the hour block */
