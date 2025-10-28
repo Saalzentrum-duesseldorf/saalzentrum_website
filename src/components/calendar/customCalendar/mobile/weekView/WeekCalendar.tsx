@@ -3,12 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import { Container } from "reactstrap";
 import {
   areDatesEqual,
-  MobileCalendarProps,
   scrollTo8AM,
   filterEventsByRoom,
 } from "../../../../../utils";
 import EventPopover from "../../desktop/calendarDetails/EventPopover";
 import { CustomCalendarEvent } from "../../desktop/CustomCalendar";
+import { MobileCalendarEvent, MobileCalendarProps } from "../../../../../models";
 
 /**
  * Week calendar component that provides weekly view with day selection and swipe navigation
@@ -18,6 +18,7 @@ import { CustomCalendarEvent } from "../../desktop/CustomCalendar";
 interface WeekCalendarProps extends MobileCalendarProps {
   selectedRoom: string;
   currentWeekStart: Date;
+  events: MobileCalendarEvent[];
 }
 
 const WeekCalendar = (props: WeekCalendarProps) => {
