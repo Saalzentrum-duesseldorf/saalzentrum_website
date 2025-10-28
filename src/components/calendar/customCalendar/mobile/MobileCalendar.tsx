@@ -12,8 +12,6 @@ import {
   generateCalendarDays,
   getNextDay,
   getPreviousDay,
-  MobileCalendarEvent,
-  MobileCalendarProps,
   scrollTo8AM,
 } from "../../../../utils";
 import MobileCalendarDetails from "./dayView/MobileCalendarDetails";
@@ -22,6 +20,7 @@ import CalendarSkeleton from "../../calendarComponents/calendarControls/skeleton
 import WeekCalendar from "./weekView/WeekCalendar";
 import MonthWeekSwitch from "../../calendarComponents/switch/MonthWeekSwitch";
 import BackButton from "../../calendarComponents/backButton/BackButton";
+import { MobileCalendarEvent, MobileCalendarProps } from "../../../../models";
 
 const MobileCalendar = (props: MobileCalendarProps) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -228,7 +227,7 @@ const MobileCalendar = (props: MobileCalendarProps) => {
                           <div
                             key={`event-${event.eventId}`}
                             className="event-item"
-                            style={{ backgroundColor: event.color }}
+                            style={{ background: event.color ?? "#757DC4" }}
                           >
                             {event.categoryNumber &&
                               `#${event.categoryNumber} `}

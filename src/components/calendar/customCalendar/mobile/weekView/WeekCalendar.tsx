@@ -122,7 +122,7 @@ const WeekCalendar = (props: WeekCalendarProps) => {
                           <div
                             key={`event-${event.eventId}`}
                             className="event-item"
-                            style={{ backgroundColor: event.color }}
+                            style={{ background: event.color ?? "#757DC4" }}
                             onClick={(e) => {
                               e.stopPropagation();
                               setSelectedEvent(event);

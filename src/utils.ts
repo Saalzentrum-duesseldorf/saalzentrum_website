@@ -1,4 +1,5 @@
 import { CustomCalendarEvent } from "./components/calendar/customCalendar/desktop/CustomCalendar";
+import { MobileCalendarEvent } from "./models";
 
 export function truncateText(text: string, maxLength: number): string {
   if (text.length > maxLength) {
@@ -212,22 +213,6 @@ export const getNextDayEvents = (
   );
 };
 
-export interface MobileCalendarEvent {
-  eventId: string;
-  date: Date; // Startzeit des Termins
-  endTime?: Date; // Endzeit des Termins (optional)
-  isAllDay?: boolean; // Ganztägiger Termin
-  name: string;
-  description: string;
-  color: string;
-  location?: string;
-  categoryNumber?: string;
-}
-
-export interface MobileCalendarProps {
-  events: MobileCalendarEvent[];
-}
-
 // Format date to display in header (e.g., "Mo, 16. März")
 export const formatDateForHeader = (date: Date) => {
   const dayOfWeek = date.toLocaleString("de-DE", { weekday: "short" });
@@ -381,4 +366,52 @@ export const generateCalendarDays = (
         console.warn("8:00 block not found");
       }
     }
+  };
+
+  export const parseLocationToRoomKey = (event: any): string | undefined => {
+    const location = event.location as string;
+
+    if (!location) {
+      return Resources.andere;
+    }
+
+    const rooms = location.split(', ');
+
+    for (const room of rooms) {
+      for (const pattern in roomPatterns) {
+        if (room.startsWith(pattern)) {
+          return roomPatterns[pattern];
+        }
+      }
+    }
+
+    return event.location;
+  };
+
+  export const parseEvent = (event: any): CustomCalendarEvent | null => {
+    // Parse location if available
+    const location = parseLocationToRoomKey(event);
+
+    // Check for startDate and endDate fields
+    if (event.startDate && event.endDate) {
+      // Convert startDate and endDate to Date objects
+      const startDate = new Date(event.startDate);
+      const endDate = new Date(event.endDate);
+
+      return {
+        eventId: event.eventId,
+        date: startDate, // For all-day events
+        dateFrom: event.allDay ? undefined : startDate,
+        dateTo: event.allDay ? undefined : endDate,
+        isAllDay: event.allDay,
+        name: event.summary || "", // Fallback if `summary` is missing
+        description: event.description || "", // Fallback if `description` is missing
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        color: event.colorId ? ColorIdToColor[ event.colorId] : ColorIdToColor["undefined"], // Default color if colorId is null
+        location: location,
+      };
+    }
+
+    return null; // Return null if data is incomplete
   };

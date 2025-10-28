@@ -5,8 +5,8 @@
   --bg-0: #eef2f5;        // Grundfläche
   --bg-1: #ffffff;        // Kartenfläche
   --bg-2: #f8f9fa;        // leichte Absetzung
-  --text-0: #202124;      // primäre Textfarbe
-  --text-1: #5f6368;      // sekundäre Textfarbe
+  --text-0: #000000;      // primäre Textfarbe
+  --text-1: #000000;      // sekundäre Textfarbe 
   --accent: #1a73e8;      // Akzentfarbe Zeit
   --accent-neutral: rgba(26, 115, 232, 0.22); // dezente einheitliche Akzentlinie
   --shadow-sm: 0 1px 3px rgba(16,24,40,0.04);
@@ -47,7 +47,7 @@
   .current-time {
     font-size: 1.125rem;
     font-weight: 400;
-    color: #5f6368;
+    color: #2c2c2c;
     text-align: right;
     line-height: 1.4;
   }
@@ -113,9 +113,9 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
   .room-name {
-    font-size: 1.75rem;
-    font-weight: 500;
-    color: #202124;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0c0c0c;
     margin: 0;
     letter-spacing: -0.01em;
   }
@@ -127,25 +127,40 @@
     background: rgba(0,0,0,0.14);
     opacity: 0.7;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    
+    // Grüne Farbe wenn Event stattfindet
+    &.has-event {
+      background: #4caf50;
+      opacity: 1;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3), 0 0 8px rgba(76, 175, 80, 0.4);
+    }
   }
 }
 
 .room-direction {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 0.9rem;
+  gap: 2.5rem;
+  padding: 3rem 5rem;
   border-radius: 999px;
-  background: rgba(0,0,0,0.04);
-  border: 1px solid rgba(0,0,0,0.08);
-  color: var(--text-0);
-  font-size: 1.05rem;
-  box-shadow: var(--inner-glow);
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 3px solid rgba(0,0,0,0.15);
+  color: #1a1a1a;
+  font-size: 4.5rem;
+  font-weight: 900;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
 
   .arrow-icon {
-    width: 22px;
-    height: 22px;
+    width: 120px;
+    height: 120px;
     line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 }
 
@@ -269,8 +284,8 @@
   }
 
   .event-title {
-    font-size: 1.45rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    font-weight: 700;
     color: var(--text-0);
     line-height: 1.4;
     margin-bottom: 0.35rem;
@@ -279,10 +294,52 @@
   }
 
   .event-duration {
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text-1);
-    opacity: 0.8;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c2c2c;
+    opacity: 0.9;
+  }
+
+  .next-event-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(26, 115, 232, 0.2);
+    
+    .next-event-label {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a73e8;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(26, 115, 232, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(26, 115, 232, 0.2);
+    }
+    
+    .next-event-time {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1a73e8;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .next-event-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-0);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .next-event-duration {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c2c2c;
+      text-align: center;
+      opacity: 0.9;
+    }
   }
 }
 
